@@ -1,13 +1,23 @@
 #!/bin/bash
 
+case `uname` in
+    Linux)
+        LN=-sfTi
+        ;;
+
+    Darwin)
+        LN=-sfFi
+        ;;
+esac
+
 case `basename $0` in
 
     deploy)
-        ln -sfT $(pwd)/bin              ~/bin
-        ln -sfT $(pwd)/vim              ~/.vim
-        ln -sfT $(pwd)/vim/vimrc        ~/.vimrc
-        ln -sfT $(pwd)/bash_aliases     ~/.bash_aliases
-        ln -sfT $(pwd)/bash_settings    ~/.bash_settings
+        ln $LN $(pwd)/bin               ~/bin
+        ln $LN $(pwd)/vim               ~/.vim
+        ln $LN $(pwd)/vim/vimrc         ~/.vimrc
+        ln $LN $(pwd)/bash_aliases      ~/.bash_aliases
+        ln $LN $(pwd)/bash_settings     ~/.bash_settings
         ;;
 
     undeploy)
