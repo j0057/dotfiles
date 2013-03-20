@@ -1,0 +1,22 @@
+#!/bin/bash
+
+case `basename $0` in
+
+    deploy)
+        ln -sfT $(pwd)/bin              ~/bin
+        ln -sfT $(pwd)/vim              ~/.vim
+        ln -sfT $(pwd)/vim/vimrc        ~/.vimrc
+        ln -sfT $(pwd)/bash_aliases     ~/.bash_aliases
+        ln -sfT $(pwd)/bash_settings    ~/.bash_settings
+        ;;
+
+    undeploy)
+        rm ~/bin
+        rm ~/.bash_aliases
+        rm ~/.bash_settings
+        rm ~/.vim
+        rm ~/.vimrc
+        ;;
+
+esac
+
