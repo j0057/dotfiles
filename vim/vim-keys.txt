@@ -1,0 +1,54 @@
+
+----------------- . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ---
+--- NAVIGATIE -----------------------------------------------------------------
+----------------- . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ---
+
+%                   naar bijbehorende haakje gaan
+
+------------ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ----
+--- TAGS ----------------------------------------------------------------------
+------------ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ----
+
+:set tags=.tags     lees tags uit bestand .tags
+
+:tag [t]            ga naar tag [t]
+:tag /[t]           zoek naar tag [t]
+
+:tselect [t]        kies uit lijst van tags met naam [t]
+:tselect /[t]       kies uit lijst met tags die naam [t] matchen
+
+:tnext              ga naar volgende match
+:tprevious          ga naar vorige match
+
+:tfirst             naar eerste match
+:tlast              naar laatste match
+
+:tpop               pop tag van stack en ga naar nieuwe top
+
+<Ctrl+]>            naar tag onder cursor
+<Ctrl+T>            naar vorige tag (als in :tpop)
+
+-------------------------- . . . . . . . . . . . . . . . . . . . . . . . . ----
+--- EIGEN KEY BINDINGS --------------------------------------------------------
+-------------------------- . . . . . . . . . . . . . . . . . . . . . . . . ----
+
+,b                  ga naar buffer
+,f                  ga naar bestand
+,o                  naar vorige tab
+,p                  naar volgende tab
+
+,nn                 nerdtree toggle
+,nm                 nerdtree mirror
+
+,ce                 ~/.vimrc bewerken
+,cs                 ~/.vimrc opnieuw inlezen
+
+,he                 ~/.vim/vim-keys.txt bewerken
+
+
+--- . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . -----------
+----------------------------------------------------------------------- EOF ---
+--- . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . -----------
+
+
+
