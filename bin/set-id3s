@@ -1,0 +1,94 @@
+#!/usr/bin/env python2.7
+
+from glob import glob
+import argparse
+import os
+import os.path
+import re
+import sys
+import unicodedata # D-:
+
+_FS_ENC = sys.getfilesystemencoding()
+
+assert _FS_ENC in ['utf-8', 'UTF-8']
+
+def normalize(s):
+    return unicodedata.normalize('NFC', s.decode(_FS_ENC)).encode(_FS_ENC)
+
+def denormalize(s):
+    return unicodedata.normalize('NFD', s.decode(_FS_ENC)).encode(_FS_ENC)
+
+def test(cv, yr, fn, ar, al, tr, ti):
+    print "File   :", repr(fn)
+    print "Artist :", repr(ar)
+    print "Album  :", repr(al)
+    print "Track  :", repr(tr)
+    print "Title  :", repr(ti)
+    print "Year   :", repr(yr)
+    print "Cover  :", repr(cv)
+    print
+    assert "{0} - {1}.jpg".format(ar, al) == cv, "Cover file name doesn't match MP3 file name"
+
+def eyed3(cv, yr, fn, ar, al, tr, ti):
+    E = lambda s: s.replace("\\", "\\\\").replace("\"", "\\\"").replace("$", "\\$")
+    Y = ''
+    if yr is not None:
+        Y = "\"--year={0}\"".format(E(yr[0]))
+    print "eyeD3 --remove-all \"--artist={0}\" \"--album={1}\" \"--track={2}\" \"--add-image={4}:FRONT_COVER\" {6} \"--title={3}\" \"{5}\" ;".format(
+        E(ar), E(al), E(tr), E(ti), E(cv), E(fn), Y)
+
+def id3v2(cv, yr, fn, ar, al, tr, ti):
+    pass
+
+def metaflac(cv, yr, fn, ar, al, tr, ti):
+    E = lambda s: s.replace("\\", "\\\\").replace("\"", "\\\"").replace("$", "\\$")
+    Y = ''
+    if yr is not None:
+        Y = "\"--set-tag=YEAR={0}\"".format(E(yr[0]))
+    print "metaflac --dont-use-padding --remove-all \"--set-tag=ARTIST={0}\" \"--set-tag=ALBUM={1}\" \"--set-tag=TRACK NUMBER={2}\" \"--import-picture-from={4}\" {6} \"--set-tag=TITLE={3}\" \"{5}\" ;".format(
+        E(ar), E(al), E(tr), E(ti), E(cv), E(fn), Y)
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Set ID3 tags of MP3 files in current directory according to Joost his fascist standards using whichever tool available.")
+    parser.add_argument("-e", "--ext", action="store", default="mp3", choices=("mp3", "flac"), help="operate on which types of files")
+    parser.add_argument("-A", "--artist", action="store", const=None, default=None, help="Override artist name instead of taking it from filename")
+    parser.add_argument("-a", "--album", action="store", const=None, default=None, help="Override album name instead of taking it from filename")
+    parser.add_argument("-y", "--year", action="store", nargs=1, const=None, default=None, help="year of the release")
+    parser.add_argument("-m", "--mode", action="store", nargs="?", const="test", default="eyed3", choices=("test", "eyed3", "id3v2", "metaflac"), help="mode of operation")
+    parser.add_argument("-d", "--debug", action="store_true", default=False, help="debug mode; show stack traces if needed")
+    return parser.parse_args()
+
+def find_files(ext):
+    for fn in glob("*." + ext):
+        match = re.match(r"^(.+) - (.+) - (\d+) - (.+)." + ext, normalize(fn))
+        if not match:
+            raise Exception("Unable to parse filename \"{0}\"".format(fn))
+        (ar, al, tr, ti) = match.groups()
+        yield [fn, ar, al, tr, ti]
+
+def find_cover(ar, al):
+    try:
+        filename = "{0} - {1}.jpg".format(ar, al)
+        return glob(filename)[0]
+    except:
+        raise Exception("Couldn't find cover file \"{0}\"!".format(filename))
+
+if __name__ == "__main__":
+    ARGS = parse_args()
+    try:
+        if ARGS.debug:
+            print '#', ARGS
+        handler = globals()[ARGS.mode]
+        if ARGS.debug:
+            print '# Handler:', handler
+        for info in find_files(ARGS.ext):
+            cv = find_cover(info[1], info[2])
+            info[1] = ARGS.artist or info[1]
+            info[2] = ARGS.album or info[2]
+            handler(cv, ARGS.year, *info)
+    except Exception as e:
+        print "{0}: {1}".format(type(e).__name__, str(e))
+        if ARGS.debug:
+            raise
+    
+

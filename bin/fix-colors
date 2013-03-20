@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 user@host"
+    exit 1
+fi
+
+RX1="/^DIR / s/^.*$/DIR 01;41;37/"
+RX2="/^BLK / s/^.*$/BLK 40;33/"
+RX3="/^CHR / s/^.*$/CHR 40;33/"
+CMD="[ -f /etc/DIR_COLORS ] && sed -i '$RX1; $RX2; $RX3' /etc/DIR_COLORS"
+
+ssh "$1" "$CMD"
+

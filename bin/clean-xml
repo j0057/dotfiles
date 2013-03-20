@@ -1,0 +1,4 @@
+#!/bin/bash
+py='import re,sys;sys.stdout.write(re.compile("<!--.*?-->",re.S).sub("",sys.stdin.read()))'
+python2.7 -c "$py" | grep -vP '^\s*$' | xmlindent
+

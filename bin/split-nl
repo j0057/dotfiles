@@ -1,0 +1,7 @@
+#!/usr/bin/env sed -f
+
+s/$/\
+/
+s/ | /\
+/g
+

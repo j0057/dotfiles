@@ -1,0 +1,20 @@
+#!/usr/bin/env python2.7
+import time
+import sh
+
+def get_net_log(interval=0.2):
+    prev = []
+    while 1:
+        lines = sh.run('netstat -tupanev').split('\n')[2:]
+        #ines = sh.run('netstat -vetupa').split('\n')[2:]
+        for line in lines:
+            if hash(line) not in prev:
+                yield line
+        prev = [ hash(line) for line in lines ]
+        time.sleep(interval)
+
+for line in get_net_log():
+    print line
+    
+
+

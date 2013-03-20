@@ -1,0 +1,16 @@
+#!/bin/bash
+
+files="$1"
+regex="$2"
+force="$3"
+_sed=`type -P gsed || type -P sed`
+
+for fn in $files; do
+    nfn=`echo "$fn" | $_sed -E "$regex"`
+    if [ "$force" = "" ]; then
+        echo "$nfn"
+    elif [ "$force" = "-f" ]; then
+        mv -v "$fn" "$nfn" 
+    fi
+done
+

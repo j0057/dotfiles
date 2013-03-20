@@ -1,0 +1,8 @@
+#!/bin/bash
+
+counter=1
+while read name; do
+    cdparanoia "$counter" "$name.wav"
+    counter=$[counter+1]
+done < /dev/stdin
+
