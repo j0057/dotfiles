@@ -68,10 +68,11 @@ def find_files(ext):
         yield [fn, ar, al, tr, ti]
 
 def find_cover(ar, al):
-    try:
-        filename = "{0} - {1}.jpg".format(ar, al)
-        return glob(filename)[0]
-    except:
+    filename = "{0} - {1}.jpg".format(ar, al)#.replace("[", "\\[").replace("]", "\\]")
+    #return glob(filename)[0]
+    if filename in os.listdir("."):
+        return filename
+    else:
         raise Exception("Couldn't find cover file \"{0}\"!".format(filename))
 
 if __name__ == "__main__":
