@@ -1,4 +1,5 @@
-let g:pathogen_disabled = ["pathogen"]
+" load modules
+let g:pathogen_disabled = ["pathogen", "nerdtree"]
 execute pathogen#infect()
 
 let NERDTreeIgnore = ['\.pyc$']
@@ -10,6 +11,7 @@ set wildmenu                " show matching filenames on tab completion
 
 syntax on               
 
+" set color scheme
 let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized
