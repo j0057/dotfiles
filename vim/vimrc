@@ -61,6 +61,10 @@ nnoremap    <LEADER>bW  :bwipe!<CR>
 nnoremap    <LEADER>bb  :buffers<CR>:buffer<SPACE>
 nnoremap    <LEADER>b   :buffers<CR>:buffer<SPACE>
 
+nnoremap    <LEADER>gc  :Gcommit<CR>
+nnoremap    <LEADER>gd  :Gdiff<CR>
+nnoremap    <LEADER>gs  :Gstatus<CR>
+
 map         <C-N>       :bnext<CR>
 map         <C-P>       :bprev<CR>
 
@@ -71,7 +75,7 @@ map!        <C-P>       <ESC>:bprev<CR>
 
 " statusline
 
-set statusline=[%n]%m%r\ %F%h%w\ [%{&ff}]\ %y\ \%=0x%04.4B\ %v\ %l/%L\ %p%% 
+set statusline=[%n]%m%r\ %F%h%w\ [%{&ff}]\ %y\ %=%{fugitive#statusline()}\ 0x%04.4B\ %v\ %l/%L\ %p%% 
 highlight statusline   ctermbg=white ctermfg=black term=NONE
 highlight statuslinenc ctermbg=gray ctermfg=black term=none
 
