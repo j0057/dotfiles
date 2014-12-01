@@ -10,3 +10,6 @@
 [submodule "vim/bundle/buftabline"]
 	path = vim/bundle/buftabline
 	url = https://github.com/ap/vim-buftabline
+[submodule "vim/bundle/fugitive"]
+	path = vim/bundle/fugitive
+	url = https://github.com/tpope/vim-fugitive
