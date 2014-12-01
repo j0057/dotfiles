@@ -1,91 +1,74 @@
-set modeline
+let g:pathogen_disabled = ["pathogen"]
+execute pathogen#infect()
+
 let NERDTreeIgnore = ['\.pyc$']
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" kleurtjes
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-syntax on
+set laststatus=2            " enable status line
+set hidden                  " enable hidden modified buffers
 
-set         background=dark
+set wildmenu                " show matching filenames on tab completion
+
+syntax on               
+
+let g:solarized_termcolors=256
+set background=dark
 colorscheme solarized
-hi          Comment         cterm=None term=None ctermfg=Yellow
-hi          vimLineComment  cterm=None term=None ctermfg=Yellow
-hi          shColon         cterm=None term=None ctermfg=Yellow
+highlight shColon cterm=None term=None ctermfg=Yellow
+
+" filetypes
 
 autocmd BufRead *.xhtml set filetype=xml
+autocmd BufRead *.md set filetype=markdown
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" whitespace
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" editing
 
 set tabstop=4
 set shiftwidth=4
 set expandtab
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" insert mode
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-set backspace=eol,start "allow backspacing through eol and start of insert
-
-inoremap <C-h> <Left>
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
-inoremap <C-l> <Right>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" key bindings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let mapleader = ','
-
-nnoremap <Leader>b :hide buffer<SPACE>
-nnoremap <Leader>f :hide edit<SPACE>
-nnoremap <Leader>o :tabprev<CR>
-nnoremap <Leader>p :tabnext<CR>
-nnoremap <Leader>, ,
-nnoremap <Leader>r :!./%<CR>
-
-nnoremap <Leader>nn :NERDTreeToggle<CR>
-nnoremap <Leader>nm :NERDTreeMirror<CR>
-
-nnoremap <Leader>ce :hide edit ~/.vimrc<CR>
-nnoremap <Leader>cs :source ~/.vimrc<CR>
-
-nnoremap <Leader>he :hide edit ~/.vim/vim-keys.txt<CR>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" word wrapping 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nowrap
 set scrolloff=3
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" menu voor openen bestanden
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set wildmode=longest:full
-"set wildmode=list
-set wildmenu
+set backspace=eol,start     "allow backspacing through eol and start of insert
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" regelnummers
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"set number
+" custom keys
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" folding
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set foldmethod=indent
-set foldminlines=0
-set foldnestmax=1
-set nofoldenable
-set foldlevel=1
-set fillchars=fold:\ 
+let mapleader = ','
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" status line
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set laststatus=2
-set statusline=%n:\ %f\ %y\ %m\ %r%=%{fugitive#statusline()}\ %c\ :\ %l/%L
+nnoremap    <LEADER>ce  :edit   ~/.vimrc<CR>
+nnoremap    <LEADER>cs  :source ~/.vimrc<CR>
 
-set tags=.tags
+nnoremap    <LEADER>e   :edit<SPACE>
+
+nnoremap    <LEADER>n   :E<CR>
+
+nnoremap    <LEADER>b1  :buffer<SPACE>1<CR>
+nnoremap    <LEADER>b2  :buffer<SPACE>2<CR>
+nnoremap    <LEADER>b3  :buffer<SPACE>3<CR>
+nnoremap    <LEADER>b4  :buffer<SPACE>4<CR>
+nnoremap    <LEADER>b5  :buffer<SPACE>5<CR>
+nnoremap    <LEADER>b6  :buffer<SPACE>6<CR>
+nnoremap    <LEADER>b7  :buffer<SPACE>7<CR>
+nnoremap    <LEADER>b8  :buffer<SPACE>8<CR>
+nnoremap    <LEADER>b9  :buffer<SPACE>9<CR>
+nnoremap    <LEADER>bd  :bdelete<CR>
+nnoremap    <LEADER>bD  :bdelete!<CR>
+nnoremap    <LEADER>bl  :buffers!<CR>
+nnoremap    <LEADER>bw  :bwipe<CR>
+nnoremap    <LEADER>bb  :buffers<CR>:buffer<SPACE>
+nnoremap    <LEADER>b   :buffers<CR>:buffer<SPACE>
+
+map         <C-N>       :bnext<CR>
+map         <C-P>       :bprev<CR>
+
+map!        <C-N>       <ESC>:bnext<CR>
+map!        <C-P>       <ESC>:bprev<CR>
+
+"nnoremap <LEADER>n :NERDTreeToggle<CR>
+
+" statusline
+
+set statusline=[%n]%m%r\ %F%h%w\ [%{&ff}]\ %y\ \%=0x%04.4B\ %v\ %l/%L\ %p%% 
+highlight statusline   ctermbg=white ctermfg=black term=NONE
+highlight statuslinenc ctermbg=gray ctermfg=black term=none
 
