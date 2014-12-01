@@ -64,6 +64,8 @@ nnoremap    <LEADER>b   :buffers<CR>:buffer<SPACE>
 nnoremap    <LEADER>gc  :Gcommit<CR>
 nnoremap    <LEADER>gd  :Gdiff<CR>
 nnoremap    <LEADER>gs  :Gstatus<CR>
+nnoremap    <LEADER>gp  :Gpush<CR>
+nnoremap    <LEADER>gf  :Gfetch<CR>
 
 map         <C-N>       :bnext<CR>
 map         <C-P>       :bprev<CR>
