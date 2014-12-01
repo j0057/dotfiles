@@ -57,6 +57,7 @@ nnoremap    <LEADER>bd  :bdelete<CR>
 nnoremap    <LEADER>bD  :bdelete!<CR>
 nnoremap    <LEADER>bl  :buffers!<CR>
 nnoremap    <LEADER>bw  :bwipe<CR>
+nnoremap    <LEADER>bW  :bwipe!<CR>
 nnoremap    <LEADER>bb  :buffers<CR>:buffer<SPACE>
 nnoremap    <LEADER>b   :buffers<CR>:buffer<SPACE>
 
