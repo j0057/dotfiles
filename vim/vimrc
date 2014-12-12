@@ -1,43 +1,43 @@
 :set nocompatible
 
-" load modules
+" load modules ---------------------------------------------------------------
+
 :let g:pathogen_disabled = ["pathogen", "nerdtree"]
 :execute pathogen#infect()
-
-"let NERDTreeIgnore = ['\.pyc$']
 
 :set laststatus=2            " enable status line
 :set hidden                  " enable hidden modified buffers
 
 :set wildmenu                " show matching filenames on tab completion
 
-"set number
+:set number
 "set relativenumber
 :set cursorline
 
 :syntax on               
 
-" set color scheme
+" set color scheme -----------------------------------------------------------
+
 :let g:solarized_termcolors=256
 :set background=dark
 :colorscheme solarized
-"highlight shColon cterm=None term=None ctermfg=Yellow
 
-" filetypes
+" filetypes ------------------------------------------------------------------
 
-:autocmd BufRead *.xhtml set filetype=xml
-:autocmd BufRead *.md set filetype=markdown
+:autocmd BufRead *.xhtml :set filetype=xml
+:autocmd BufRead *.md :set filetype=markdown
 
 :autocmd BufRead fugitive://* :setlocal bufhidden=wipe
 :autocmd BufRead .git/* :setlocal bufhidden=wipe
 
 :autocmd FileType netrw :setlocal bufhidden=wipe
 
-" searching
+" searching ------------------------------------------------------------------
+
 :set incsearch
 :set hlsearch
 
-" editing
+" editing --------------------------------------------------------------------
 
 :set tabstop=4
 :set shiftwidth=4
@@ -47,9 +47,9 @@
 :set nowrap
 :set scrolloff=3
 
-:set backspace=eol,start     "allow backspacing through eol and start of insert
+:set backspace=eol,start " allow backspacing through eol and start of insert
 
-" custom keys
+" custom keys ----------------------------------------------------------------
 
 :let mapleader = ','
 
@@ -91,9 +91,8 @@
 :map!       <C-N>       <ESC>:bnext<CR>
 :map!       <C-P>       <ESC>:bprev<CR>
 
-"nnoremap <LEADER>n :NERDTreeToggle<CR>
+" statusline -----------------------------------------------------------------
 
-" statusline
 :set statusline=[%n]%m%r\ %F%h%w\ [%{&ff}]\ %y\ %=%{fugitive#head(7)}\ 0x%04.4B\ %v\ %l/%L\ %p%% 
 :highlight statusline   ctermbg=white ctermfg=black term=NONE
 :highlight statuslinenc ctermbg=gray ctermfg=black term=none
