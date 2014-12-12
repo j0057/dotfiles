@@ -16,3 +16,6 @@
 [submodule "vim/bundle/filebeagle"]
 	path = vim/bundle/filebeagle
 	url = https://github.com/jeetsukumaran/vim-filebeagle
+[submodule "vim/bundle/dispatch"]
+	path = vim/bundle/dispatch
+	url = https://github.com/tpope/vim-dispatch
