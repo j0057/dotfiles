@@ -30,8 +30,6 @@ autocmd BufRead *.md set filetype=markdown
 autocmd BufRead fugitive://* setlocal bufhidden=wipe
 autocmd BufRead .git/* setlocal bufhidden=wipe
 
-autocmd FileType netrw setlocal bufhidden=wipe
-
 filetype plugin indent on
 
 " searching ------------------------------------------------------------------
@@ -55,43 +53,45 @@ set backspace=eol,start " allow backspacing through eol and start of insert
 
 let mapleader = ','
 
-nnoremap   <LEADER>ce  :edit   ~/.vimrc<CR>
-nnoremap   <LEADER>cs  :source ~/.vimrc<CR>
+nnoremap    <LEADER>ce  :edit   $MYVIMRC<CR>
+nnoremap    <LEADER>cs  :source $MYVIMRC<CR>
+ 
+nnoremap    <LEADER>e   :edit<SPACE>
+nnoremap    <LEADER>E   :Explore<CR>
+nnoremap    <LEADER>n   :Explore<CR>
 
-nnoremap   <LEADER>e   :edit<SPACE>
-nnoremap   <LEADER>E   :Explore<CR>
-nnoremap   <LEADER>n   :Explore<CR>
+nnoremap    <LEADER>b1  :buffer<SPACE>1<CR>
+nnoremap    <LEADER>b2  :buffer<SPACE>2<CR>
+nnoremap    <LEADER>b3  :buffer<SPACE>3<CR>
+nnoremap    <LEADER>b4  :buffer<SPACE>4<CR>
+nnoremap    <LEADER>b5  :buffer<SPACE>5<CR>
+nnoremap    <LEADER>b6  :buffer<SPACE>6<CR>
+nnoremap    <LEADER>b7  :buffer<SPACE>7<CR>
+nnoremap    <LEADER>b8  :buffer<SPACE>8<CR>
+nnoremap    <LEADER>b9  :buffer<SPACE>9<CR>
+nnoremap    <LEADER>bd  :bdelete<CR>
+nnoremap    <LEADER>bD  :bdelete!<CR>
+nnoremap    <LEADER>bl  :buffers<CR>
+nnoremap    <LEADER>bL  :buffers!<CR>
+nnoremap    <LEADER>bw  :bwipe<CR>
+nnoremap    <LEADER>bW  :bwipe!<CR>
+nnoremap    <LEADER>bb  :buffers<CR>:buffer<SPACE>
+nnoremap    <LEADER>b   :buffers<CR>:buffer<SPACE>
 
-nnoremap   <LEADER>b1  :buffer<SPACE>1<CR>
-nnoremap   <LEADER>b2  :buffer<SPACE>2<CR>
-nnoremap   <LEADER>b3  :buffer<SPACE>3<CR>
-nnoremap   <LEADER>b4  :buffer<SPACE>4<CR>
-nnoremap   <LEADER>b5  :buffer<SPACE>5<CR>
-nnoremap   <LEADER>b6  :buffer<SPACE>6<CR>
-nnoremap   <LEADER>b7  :buffer<SPACE>7<CR>
-nnoremap   <LEADER>b8  :buffer<SPACE>8<CR>
-nnoremap   <LEADER>b9  :buffer<SPACE>9<CR>
-nnoremap   <LEADER>bd  :bdelete<CR>
-nnoremap   <LEADER>bD  :bdelete!<CR>
-nnoremap   <LEADER>bl  :buffers<CR>
-nnoremap   <LEADER>bL  :buffers!<CR>
-nnoremap   <LEADER>bw  :bwipe<CR>
-nnoremap   <LEADER>bW  :bwipe!<CR>
-nnoremap   <LEADER>bb  :buffers<CR>:buffer<SPACE>
-nnoremap   <LEADER>b   :buffers<CR>:buffer<SPACE>
+nnoremap    <LEADER>gc  :Gcommit<CR>
+nnoremap    <LEADER>gd  :Gdiff<CR>
+nnoremap    <LEADER>gs  :Gstatus<CR>
+nnoremap    <LEADER>gp  :Gpush<CR>
+nnoremap    <LEADER>gf  :Gfetch<CR>
+nnoremap    <LEADER>go  :Git checkout 
+             
+nnoremap    <CR>        :let<SPACE>@/=""<CR><CR>
 
-nnoremap   <LEADER>gc  :Gcommit<CR>
-nnoremap   <LEADER>gd  :Gdiff<CR>
-nnoremap   <LEADER>gs  :Gstatus<CR>
-nnoremap   <LEADER>gp  :Gpush<CR>
-nnoremap   <LEADER>gf  :Gfetch<CR>
-nnoremap   <LEADER>go  :Git checkout 
+map         <C-N>       :bnext<CR>
+map         <C-P>       :bprev<CR>
 
-map        <C-N>       :bnext<CR>
-map        <C-P>       :bprev<CR>
-
-map!       <C-N>       <ESC>:bnext<CR>
-map!       <C-P>       <ESC>:bprev<CR>
+map!        <C-N>       <ESC>:bnext<CR>
+map!        <C-P>       <ESC>:bprev<CR>
 
 " statusline -----------------------------------------------------------------
 
