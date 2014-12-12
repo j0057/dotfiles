@@ -1,3 +1,5 @@
+set nocompatible
+
 " load modules
 let g:pathogen_disabled = ["pathogen", "nerdtree"]
 execute pathogen#infect()
@@ -9,24 +11,38 @@ set hidden                  " enable hidden modified buffers
 
 set wildmenu                " show matching filenames on tab completion
 
+"set number
+"set relativenumber
+set cursorline
+
 syntax on               
 
 " set color scheme
 let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized
-highlight shColon cterm=None term=None ctermfg=Yellow
+"highlight shColon cterm=None term=None ctermfg=Yellow
 
 " filetypes
 
 autocmd BufRead *.xhtml set filetype=xml
 autocmd BufRead *.md set filetype=markdown
 
+autocmd BufRead fugitive://* :setlocal bufhidden=wipe
+autocmd BufRead .git/* :setlocal bufhidden=wipe
+
+autocmd FileType netrw :setlocal bufhidden=wipe
+
+" searching
+set incsearch
+set hlsearch
+
 " editing
 
 set tabstop=4
 set shiftwidth=4
 set expandtab
+set smarttab
 
 set nowrap
 set scrolloff=3
@@ -41,8 +57,8 @@ nnoremap    <LEADER>ce  :edit   ~/.vimrc<CR>
 nnoremap    <LEADER>cs  :source ~/.vimrc<CR>
 
 nnoremap    <LEADER>e   :edit<SPACE>
-
-nnoremap    <LEADER>n   :E<CR>
+nnoremap    <LEADER>E   :Explore<CR>
+nnoremap    <LEADER>n   :Explore<CR>
 
 nnoremap    <LEADER>b1  :buffer<SPACE>1<CR>
 nnoremap    <LEADER>b2  :buffer<SPACE>2<CR>
@@ -55,7 +71,8 @@ nnoremap    <LEADER>b8  :buffer<SPACE>8<CR>
 nnoremap    <LEADER>b9  :buffer<SPACE>9<CR>
 nnoremap    <LEADER>bd  :bdelete<CR>
 nnoremap    <LEADER>bD  :bdelete!<CR>
-nnoremap    <LEADER>bl  :buffers!<CR>
+nnoremap    <LEADER>bl  :buffers<CR>
+nnoremap    <LEADER>bL  :buffers!<CR>
 nnoremap    <LEADER>bw  :bwipe<CR>
 nnoremap    <LEADER>bW  :bwipe!<CR>
 nnoremap    <LEADER>bb  :buffers<CR>:buffer<SPACE>
@@ -66,6 +83,7 @@ nnoremap    <LEADER>gd  :Gdiff<CR>
 nnoremap    <LEADER>gs  :Gstatus<CR>
 nnoremap    <LEADER>gp  :Gpush<CR>
 nnoremap    <LEADER>gf  :Gfetch<CR>
+nnoremap    <LEADER>go  :Git checkout 
 
 map         <C-N>       :bnext<CR>
 map         <C-P>       :bprev<CR>
@@ -77,7 +95,7 @@ map!        <C-P>       <ESC>:bprev<CR>
 
 " statusline
 
-set statusline=[%n]%m%r\ %F%h%w\ [%{&ff}]\ %y\ %=%{fugitive#statusline()}\ 0x%04.4B\ %v\ %l/%L\ %p%% 
+set statusline=[%n]%m%r\ %F%h%w\ [%{&ff}]\ %y\ %=%{fugitive#head(7)}\ 0x%04.4B\ %v\ %l/%L\ %p%% 
 highlight statusline   ctermbg=white ctermfg=black term=NONE
 highlight statuslinenc ctermbg=gray ctermfg=black term=none
 
