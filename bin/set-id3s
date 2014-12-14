@@ -33,7 +33,7 @@ def eyed3(cv, yr, fn, ar, al, tr, ti):
     E = lambda s: s.replace("\\", "\\\\").replace("\"", "\\\"").replace("$", "\\$")
     Y = ''
     if yr is not None:
-        Y = "\"--year={0}\"".format(E(yr[0]))
+        Y = "\"-Y\" \"{0}\"".format(E(yr[0]))
     print "eyeD3 --remove-all \"--artist={0}\" \"--album={1}\" \"--track={2}\" \"--add-image={4}:FRONT_COVER\" {6} \"--title={3}\" \"{5}\" ;".format(
         E(ar), E(al), E(tr), E(ti), E(cv), E(fn), Y)
 
@@ -44,8 +44,8 @@ def metaflac(cv, yr, fn, ar, al, tr, ti):
     E = lambda s: s.replace("\\", "\\\\").replace("\"", "\\\"").replace("$", "\\$")
     Y = ''
     if yr is not None:
-        Y = "\"--set-tag=YEAR={0}\"".format(E(yr[0]))
-    print "metaflac --dont-use-padding --remove-all \"--set-tag=ARTIST={0}\" \"--set-tag=ALBUM={1}\" \"--set-tag=TRACK NUMBER={2}\" \"--import-picture-from={4}\" {6} \"--set-tag=TITLE={3}\" \"{5}\" ;".format(
+        Y = "\"--set-tag=DATE={0}\"".format(E(yr[0]))
+    print "metaflac --dont-use-padding --remove-all-tags \"--set-tag=ARTIST={0}\" \"--set-tag=ALBUM={1}\" \"--set-tag=TRACKNUMBER={2}\" \"--import-picture-from={4}\" {6} \"--set-tag=TITLE={3}\" \"{5}\" ;".format(
         E(ar), E(al), E(tr), E(ti), E(cv), E(fn), Y)
 
 def parse_args():
@@ -56,6 +56,7 @@ def parse_args():
     parser.add_argument("-y", "--year", action="store", nargs=1, const=None, default=None, help="year of the release")
     parser.add_argument("-m", "--mode", action="store", nargs="?", const="test", default="eyed3", choices=("test", "eyed3", "id3v2", "metaflac"), help="mode of operation")
     parser.add_argument("-d", "--debug", action="store_true", default=False, help="debug mode; show stack traces if needed")
+    #parser.add_argument("-h", "--help", action="store_true", default=False, help="help")
     return parser.parse_args()
 
 def find_files(ext):
