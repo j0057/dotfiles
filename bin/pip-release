@@ -1,0 +1,14 @@
+#!/bin/bash
+
+PKG=$HOME/pypkg27
+
+name="$(./setup.py --name)==$(./setup.py --version)"
+
+pip install --download $PKG/src --no-use-wheel -r requirements.txt
+
+./setup.py sdist --dist-dir=$PKG/src
+
+pip wheel --no-index --find-links $PKG/src --find-links $PKG/archlinux/x86_64 --wheel-dir $PKG/archlinux/x86_64 $name
+
+echo -n "$name" | xclip -i -sel clip
+echo "put the following on clipboard: $name"
