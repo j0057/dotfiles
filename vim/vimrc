@@ -49,13 +49,34 @@ set scrolloff=3
 
 set backspace=eol,start " allow backspacing through eol and start of insert
 
+" functions ------------------------------------------------------------------
+
+function! SetSoftWrap()
+    call SetNoWrap()
+    setl wrap linebreak
+endfunction
+
+function! SetHardWrap()
+    call SetNoWrap()
+    setl textwidth=79
+endfunction
+
+function! SetNoWrap()
+    setl textwidth=0
+    setl nowrap nolinebreak
+endfunction
+
 " custom keys ----------------------------------------------------------------
 
 let mapleader = ','
 
 nnoremap    <LEADER>ce  :edit   $MYVIMRC<CR>
 nnoremap    <LEADER>cs  :source $MYVIMRC<CR>
- 
+
+nnoremap    <LEADER>ws  :call SetSoftWrap()<CR>
+nnoremap    <LEADER>wh  :call SetHardWrap()<CR>
+nnoremap    <LEADER>wn  :call SetNoWrap()<CR>
+
 nnoremap    <LEADER>e   :edit<SPACE>
 nnoremap    <LEADER>E   :Explore<CR>
 nnoremap    <LEADER>n   :Explore<CR>
