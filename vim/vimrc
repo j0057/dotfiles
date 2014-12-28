@@ -30,7 +30,7 @@ autocmd BufRead *.md set filetype=markdown
 autocmd BufRead fugitive://* setlocal bufhidden=wipe
 autocmd BufRead .git/* setlocal bufhidden=wipe
 
-filetype plugin indent on
+"filetype plugin indent on
 
 " searching ------------------------------------------------------------------
 
