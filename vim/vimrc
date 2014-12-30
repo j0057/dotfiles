@@ -70,6 +70,8 @@ endfunction
 
 let mapleader = ','
 
+nnoremap    <F5>        :!./%<CR>
+
 nnoremap    <LEADER>ce  :edit   $MYVIMRC<CR>
 nnoremap    <LEADER>cs  :source $MYVIMRC<CR>
 
