@@ -1,0 +1,22 @@
+#!/bin/bash
+case "$1" in
+    deploy)
+        git config --global user.email "j.j.molenaar@gmail.com"
+        git config --global user.name "Joost Molenaar"
+        git config --global push.default "simple"
+        git config --global pull.rebase "true"
+        git config --global alias.history "log --oneline --decorate --graph --all"
+        git config --global alias.foreach '!f() { for x in *; do if [ -d "$x/.git" ]; then echo "# $x"; cd "$x"; git $*; cd ..; fi; echo; done; }; f'
+        git config --global alias.st '!f() { git branch -avv; echo; git status --porcelain; }; f'
+        ;;
+
+    undeploy)
+        git config --global --unset user.email
+        git config --global --unset user.name
+        git config --global --unset push.default
+        git config --global --unset pull.rebase
+        git config --global --unset alias.history
+        git config --global --unset alias.foreach
+        git config --global --unset alias.st
+        ;;
+esac
