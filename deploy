@@ -18,7 +18,7 @@ case `basename $0` in
         ln $LN $(pwd)/vim/vimrc         ~/.vimrc
         ln $LN $(pwd)/bash_aliases      ~/.bash_aliases
         ln $LN $(pwd)/bash_settings     ~/.bash_settings
-        ./git-config deploy
+        ln $LN $(pwd)/gitconfig         ~/.gitconfig
         ;;
 
     undeploy)
@@ -27,7 +27,7 @@ case `basename $0` in
         rm ~/.bash_settings
         rm ~/.vim
         rm ~/.vimrc
-        ./git-config undeploy
+        rm ~/.gitconfig
         ;;
 
 esac
