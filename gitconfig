@@ -1,12 +1,29 @@
 [alias]
-    hist = log --oneline --graph --decorate --all
-    history = log --oneline --decorate --graph --all
-    foreach = "!f() { for x in *; do if [ -d \"$x/.git\" ]; then echo \"# $x\"; cd \"$x\"; git $*; cd ..; fi; echo; done; }; f"
-    st = "!f() { git branch -avv; echo; git status --porcelain; }; f"
+hist = log --oneline --graph --decorate --all
+history = log --oneline --decorate --graph --all
+foreach = "!f() { \
+    for x in *; do \
+        if [ -d \"$x/.git\" ]; then \
+            cd \"$x\"; \
+            v=$(git describe 2>/dev/null) && echo -e \"# $x [$v]\" || echo \"# $x\"; \
+            git $*; \
+            cd ..; \
+            echo; \
+        fi; \
+    done; \
+}; f"
+st = "!f() { \
+    git branch -avv; \
+    echo; \
+    git status --porcelain; \
+}; f"
+
 [user]
-    email = j.j.molenaar@gmail.com
-    name = Joost Molenaar
+email = j.j.molenaar@gmail.com
+name = Joost Molenaar
+
 [push]
-    default = simple
+default = simple
+
 [pull]
-    rebase = true
+rebase = true
