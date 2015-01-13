@@ -2,23 +2,23 @@
 
 case `uname` in
     Linux)
-        LN=-sfTi
+        LN="ln -sfTi"
         ;;
 
     Darwin)
-        LN=-sfFi
+        LN="ln -sfFi"
         ;;
 esac
 
 case `basename $0` in
 
     deploy)
-        ln $LN $(pwd)/bin               ~/bin
-        ln $LN $(pwd)/vim               ~/.vim
-        ln $LN $(pwd)/vim/vimrc         ~/.vimrc
-        ln $LN $(pwd)/bash_aliases      ~/.bash_aliases
-        ln $LN $(pwd)/bash_settings     ~/.bash_settings
-        ln $LN $(pwd)/gitconfig         ~/.gitconfig
+        $LN $(pwd)/bin                 ~/bin
+        $LN $(pwd)/vim                 ~/.vim
+        $LN $(pwd)/vim/vimrc           ~/.vimrc
+        $LN $(pwd)/bash_aliases        ~/.bash_aliases
+        $LN $(pwd)/bash_settings       ~/.bash_settings
+        $LN $(pwd)/gitconfig           ~/.gitconfig
         ;;
 
     undeploy)
@@ -28,6 +28,11 @@ case `basename $0` in
         rm ~/.vim
         rm ~/.vimrc
         rm ~/.gitconfig
+        ;;
+
+    redeploy)
+        ./undeploy
+        ./deploy
         ;;
 
 esac
