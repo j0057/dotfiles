@@ -1,0 +1,3 @@
+#!/bin/bash
+. ~/bin/pip-config.conf
+pip wheel --no-index --find-links $SRC --find-links $PKG --wheel-dir $PKG $*

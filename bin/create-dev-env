@@ -1,0 +1,4 @@
+#!/bin/bash
+. ~/bin/pip-config.conf
+virtualenv --verbose --extra-search-dir=$PKG $1
+$1/bin/pip install --verbose --no-index --find-links=$PKG --use-wheel --upgrade --editable .

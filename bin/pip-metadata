@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ ! -f requirements.txt -o setup.py -nt requirements.txt ]; then
+    echo "generating requirements.txt" 1>&2
+    ./setup.py -q metadata --key=install_requires > requirements.txt
+    echo >> requirements.txt
+fi
+
+if [ ! -f MANIFEST.in -o setup.py -nt MANIFEST.in ]; then
+    echo "generating MANIFEST.in" 1>&2
+    ./setup.py -q metadata --key=x_static_dirs | sed 's/^.*$/recursive-include & *.*/' > MANIFEST.in
+    echo >> MANIFEST.in
+fi
