@@ -1,8 +1,6 @@
-#!/bin/bash
-
+#!/bin/bash -x
 . ~/bin/pip-config.conf
-
-name="$(./setup.py --name)==$(./setup.py --version)"
-
+name="$(./setup.py --name)"
+version="$(./setup.py --version)"
 ./setup.py sdist --dist-dir=$SRC
-pip wheel --no-index --find-links $SRC --find-links $PKG --wheel-dir $PKG $name
+pip wheel --no-index --find-links $SRC --find-links $PKG --wheel-dir $PKG $name==$version
