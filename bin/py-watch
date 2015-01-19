@@ -1,0 +1,5 @@
+#!/bin/bash -x
+inotifywait -r . -q -m -e CLOSE_WRITE \
+    | grep --line-buffered '^.*\.py$' \
+    | while read line ; do clear ; date ; echo $line ; echo ; $* ; done
+

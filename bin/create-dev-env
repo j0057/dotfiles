@@ -1,5 +1,5 @@
 #!/bin/bash -x
 . ~/bin/pip-config.conf
-virtualenv --verbose --extra-search-dir=$PKG ${1:-env}
-${1:-env}/bin/pip install --verbose --no-index --find-links=$PKG --use-wheel "setuptools-metadata" "setuptools-version-command" "wheel"
+virtualenv --verbose --system-site-packages --extra-search-dir=$PKG ${1:-env}
+#${1:-env}/bin/pip install --verbose --no-index --find-links=$PKG --use-wheel "setuptools-metadata" "setuptools-version-command" "wheel"
 ${1:-env}/bin/pip install --verbose --no-index --find-links=$PKG --use-wheel --upgrade --editable .
