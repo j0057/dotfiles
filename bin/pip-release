@@ -2,5 +2,5 @@
 . ~/bin/pip-config.conf
 name="$(./setup.py --name)"
 version="$(./setup.py --version)"
-./setup.py sdist --dist-dir=$SRC
+./setup.py egg_info sdist --dist-dir=$SRC
 pip wheel --no-index --find-links $SRC --find-links $PKG --wheel-dir $PKG $name==$version
