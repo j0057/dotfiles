@@ -49,6 +49,8 @@ set scrolloff=3
 
 set backspace=eol,start " allow backspacing through eol and start of insert
 
+set noswapfile
+
 " functions ------------------------------------------------------------------
 
 function! SetSoftWrap()
