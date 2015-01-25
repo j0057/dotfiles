@@ -1,0 +1,3 @@
+#!/bin/bash -x
+. ~/bin/pip-config.conf
+pip install --download $PKG --use-wheel $*
