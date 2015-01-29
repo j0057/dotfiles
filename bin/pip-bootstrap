@@ -6,10 +6,9 @@ if [ ! -x ~/.local/bin/pip ]; then
     python2.7 ~/get-pip.py --user
 fi
 . ~/bin/pip-config.conf
-pkgs="githubrelease pip setuptools setuptools-metadata setuptools-version-command twine virtualenv wheel"
+pkgs="coverage githubrelease pip setuptools setuptools-metadata setuptools-version-command tox twine virtualenv wheel"
 mkdir -p $SRC $PKG
 pip-download $pkgs
-exit 1
 pip-download-whl $pkgs
 pip-build $pkgs
 ~/.local/bin/pip install --no-index --find-links $PKG --user --upgrade $pkgs
