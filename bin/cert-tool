@@ -1,0 +1,59 @@
+#!/bin/bash 
+
+case $1 in
+	create-key)
+		domain=${2?Domain missing}
+		openssl genrsa -out ${domain}.key 2048
+		;;
+	create-ca-cert)
+		domain=${2?Domain missing}
+		openssl req -x509 -new -nodes -key ${domain}.key -days 365 -out ${domain}.crt \
+			-subj /C=NL/CN=${domain}
+		;;
+	create-csr)
+		domain=${2?Domain missing}
+		openssl req -new -key ${domain}.key -out ${domain}.csr \
+			-subj /C=NL/CN=${domain/wildcard/*}
+		;;
+	sign-cert)
+		ca=${2?CA missing}
+		domain=${3?Domain missing}
+		openssl x509 -req -in ${domain}.csr -CA ${ca}.crt -CAkey ${ca}.key -CAcreateserial -out ${domain}.crt -days 365
+		;;
+	dump-csr)
+		domain=${2?Domain missing}
+		openssl req -text -noout in ${domain}.csr
+		;;
+	dump-cert)
+		domain=${2?Domain missing}
+		openssl x509 -in ${domain}.crt -noout -text
+		;;
+	ca-cert-to-pfx)
+		ca=${2?CA missing}
+		openssl pkcs12 -export -out ${ca}.pfx -certfile ${ca}.crt -name ${ca} -passout pass:
+		;;
+	cert-to-pfx)
+		ca=${2?CA missing}
+		domain=${3?Domain missing}
+		openssl pkcs12 -export -out ${domain}.pfx -inkey ${domain}.key -in ${domain}.crt -certfile ${ca}.crt -name ${domain/wildcard/*} -passout pass:
+		;;
+	create-ca)
+		ca=${2?CA missing}
+		$0 create-key $ca
+		$0 create-ca-cert $ca
+		$0 dump-cert $ca
+		;;
+	create-domain)
+		ca=${2?CA missing}
+		domain=${3?Domain missing}
+		$0 create-key $domain
+		$0 create-csr $domain
+		$0 sign-cert $ca $domain
+		$0 cert-to-pfx $ca $domain
+		$0 dump-cert $domain
+		;;
+	*)
+		echo "Usage: $0 [create-key|create-ca-cert|create-csr|sign-cert] ..."
+		exit 1
+		;;
+esac
