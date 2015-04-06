@@ -12,7 +12,7 @@ set wildmenu                " show matching filenames on tab completion
 
 set number
 "set relativenumber
-set cursorline
+"set cursorline
 
 syntax on               
 
