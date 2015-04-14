@@ -10,6 +10,6 @@ pkgs="coverage githubrelease pip setuptools setuptools-metadata setuptools-versi
 mkdir -p $SRC $PKG
 pip-download $pkgs
 pip-download-whl $pkgs
-pip install --user wheel
+pip install --no-use-cache --user wheel
 pip-build $pkgs
-~/.local/bin/pip install --no-index --find-links $PKG --user --upgrade $pkgs
+~/.local/bin/pip install --no-use-cache --no-index --find-links $PKG --user --upgrade $pkgs
