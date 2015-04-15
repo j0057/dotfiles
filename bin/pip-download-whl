@@ -1,4 +1,0 @@
-#!/bin/bash -x
-. ~/bin/pip-config.conf
-pip install --no-use-cache --download $PKG $*
-find $PKG -type f -not -name '*.whl' -delete

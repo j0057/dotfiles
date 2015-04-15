@@ -1,15 +1,8 @@
 #!/bin/bash -x
 if [ ! -x ~/.local/bin/pip ]; then
-    if [ ! -f ~/get-pip.py ]; then
-        curl -s https://bootstrap.pypa.io/get-pip.py > ~/get-pip.py
-    fi
-    python2.7 ~/get-pip.py --user
+    curl -s https://bootstrap.pypa.io/get-pip.py > /tmp/get-pip-$$.py
+    python2.7 ~/get-pip-$$.py --user
 fi
-. ~/bin/pip-config.conf
+. /etc/default/build-pypkg27.conf
 pkgs="coverage githubrelease pip setuptools setuptools-metadata setuptools-version-command tox twine virtualenv wheel"
-mkdir -p $SRC $PKG
-pip-download $pkgs
-pip-download-whl $pkgs
-pip install --no-use-cache --user wheel
-pip-build $pkgs
-~/.local/bin/pip install --no-use-cache --no-index --find-links $PKG --user --upgrade $pkgs
+~/.local/bin/pip install --no-cache-dir --disable-pip-version-check --no-index --find-links $WHLDIR --user --upgrade $pkgs

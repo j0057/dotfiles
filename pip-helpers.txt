@@ -1,6 +1,0 @@
-download requirements                   : pip-download -r requirements.txt
-create release                          : pip-release
-build sdist to wheel                    : pip-build name[==version]
-create dev virtualenv                   : create-dev-env env
-create requirements.txt and MANIFEST.in : pip-metadata
-
