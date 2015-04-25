@@ -8,6 +8,7 @@ st = "!f() { \
     git status --porcelain; \
 }; f"
 very-clean = clean -xfd
+list-authors = "!git log --format='%aN <%cE>' | sort -u"
 
 [user]
 email = j.j.molenaar@gmail.com
