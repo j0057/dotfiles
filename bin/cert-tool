@@ -36,6 +36,10 @@ case $1 in
         domain=${3?Domain missing}
         openssl x509 -req -in ${domain}.csr -CA ${ca}.crt -CAkey ${ca}.key -CAcreateserial -CAserial ${ca}.srl -out ${domain}.crt -days 365
         ;;
+    self-sign-cert)
+        domain=${2?Domain missing}
+        openssl x509 -req -days 3650 -in ${domain}.csr -signkey ${domain}.key -out ${domain}.crt
+        ;;
     dump-csr)
         domain=${2?Domain missing}
         openssl req -text -noout -in ${domain}.csr
@@ -66,6 +70,13 @@ case $1 in
         $0 create-csr $domain
         $0 sign-cert $ca $domain
         $0 cert-to-pfx $ca $domain
+        $0 dump-cert $domain
+        ;;
+    create-domain-self-signed)
+        domain=${2?Domain missing}
+        $0 create-key $domain
+        $0 create-csr $domain
+        $0 self-sign-cert $domain
         $0 dump-cert $domain
         ;;
     *)
