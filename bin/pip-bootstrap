@@ -1,7 +1,7 @@
 #!/bin/bash -x
 if [ ! -x ~/.local/bin/pip ]; then
     curl -s https://bootstrap.pypa.io/get-pip.py > /tmp/get-pip-$$.py
-    python2.7 ~/get-pip-$$.py --user
+    python2.7 /tmp/get-pip-$$.py --user
 fi
 . /etc/default/build-pypkg27.conf
 pkgs="coverage githubrelease pip setuptools setuptools-metadata setuptools-version-command tox twine virtualenv wheel"
