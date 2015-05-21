@@ -1,5 +1,11 @@
-#!/bin/bash -x
-. ~/bin/pip-config.conf
-virtualenv --verbose --system-site-packages --extra-search-dir=$PKG ${1:-env}
-#${1:-env}/bin/pip install --verbose --no-index --find-links=$PKG --use-wheel "setuptools-metadata" "setuptools-version-command" "wheel"
-${1:-env}/bin/pip install --verbose --no-index --find-links=$PKG --use-wheel --upgrade --editable .
+#!/bin/bash -ex
+
+go() { rm -rf $1 ; virtualenv --quiet --system-site-packages --python=$2 $1 ; $1/bin/pip install --quiet --editable . ; }
+
+go env27 python2.7 &
+go env34 python3.4 &
+
+wait -n
+wait -n
+
+echo 'done'
