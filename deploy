@@ -19,15 +19,20 @@ case `basename $0` in
         $LN $(pwd)/bash_aliases        ~/.bash_aliases
         $LN $(pwd)/bash_settings       ~/.bash_settings
         $LN $(pwd)/gitconfig           ~/.gitconfig
+
+        mkdir -p ~/.ssh
+        chmod 700 ~/.ssh
+        $LN $(pwd)/sshconfig.d         ~/.ssh/config.d
         ;;
 
     undeploy)
-        rm ~/bin
-        rm ~/.bash_aliases
-        rm ~/.bash_settings
-        rm ~/.vim
-        rm ~/.vimrc
-        rm ~/.gitconfig
+        rm -f ~/bin
+        rm -f ~/.bash_aliases
+        rm -f ~/.bash_settings
+        rm -f ~/.vim
+        rm -f ~/.vimrc
+        rm -f ~/.gitconfig
+        rm -f ~/.ssh/config.d
         ;;
 
     redeploy)

@@ -1,0 +1,4 @@
+#!/bin/bash
+for file in ~/.ssh/config.d/* ; do
+    source $file
+done
