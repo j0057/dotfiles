@@ -13,6 +13,10 @@ case $SELF in
 		$FIND . -name '*.wav' -print0 | $XARGS -0 -n 1 -P $CORES bash -c 'echo "${0}"; lame -S -b 320 "${0}" "${0/.wav/.mp3}" 2>&1 1>/dev/null'
 		;;
 
+	wav2mp3_224)
+		$FIND . -name '*.wav' -print0 | $XARGS -0 -n 1 -P $CORES bash -c 'echo "${0}"; lame -S -b 224 "${0}" "${0/.wav/.mp3}" 2>&1 1>/dev/null'
+		;;
+
 	wav2flac)
 		$FIND . -name '*.wav' -print0 | $XARGS -0 -n 1 -P $CORES bash -c 'echo "${0}"; flac -s -o "${0/.wav/.flac}" "${0}" 2>&1 1>/dev/null'
 		;;
