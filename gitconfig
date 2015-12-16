@@ -1,12 +1,33 @@
 [alias]
-hist    = log --oneline --graph --decorate --all
-history = log --oneline --graph --decorate --all
+ap = add --patch
+
+dw = diff --stat --patch
+dc = diff --stat --patch --cached
+di = diff --stat --patch --cached
+
+fa = fetch --all -pvt
+
+sw = diff --stat
+sc = diff --stat --cached
+si = diff --stat --cached
+
+lg    = log --color --oneline --graph --decorate --exclude='*gh-pages' --all
+lg-gh = log --color --oneline --graph --decorate                       --all
+lgw   = "!f() { \
+    watch --color --interval .5 git lg ; \
+}; f"
+
+lp    = log --color --patch
+
+rv = remote -v
+
 st = "!f() { \
     v=$(git describe 2>/dev/null) && echo \"$v\"; \
     git branch -avv; \
     echo; \
     git status --porcelain; \
 }; f"
+
 div = "!f() { \
     git for-each-ref refs/heads/ --format='%(refname:short)' | while read ref ; do \
         if ! git rev-parse $ref@{u} &> /dev/null ; then \
@@ -21,6 +42,7 @@ div = "!f() { \
         echo \"$ref +$a/-$b\" ; \
     done ; \
 }; f"
+
 very-clean = clean -xfd
 list-authors = "!git log --format='%aN <%cE>' | sort -u"
 
