@@ -1,7 +1,10 @@
 [alias]
 ap = add --patch
 
+co = checkout
+
 dw = diff --stat --patch
+dww = diff --stat --patch -w -W
 dc = diff --stat --patch --cached
 di = diff --stat --patch --cached
 
@@ -13,13 +16,16 @@ si = diff --stat --cached
 
 lg    = log --color --oneline --graph --decorate --exclude='*gh-pages' --all
 lg-gh = log --color --oneline --graph --decorate                       --all
-lgw   = "!f() { \
-    watch --color --interval .5 git lg ; \
-}; f"
+lgw   = "!f() { watch --color --interval .5 git lg ; }; f"
+lgw-gh= "!f() { watch --color --interval .5 git lg-gh ; }; f"
 
 lp    = log --color --patch
 
 rv = remote -v
+
+rb = rebase
+ri = rebase --interactive
+rI = rebase --interactive --autosquash
 
 st = "!f() { \
     v=$(git describe 2>/dev/null) && echo \"$v\"; \
