@@ -1,126 +1,29 @@
-set nocompatible
-
-" load modules ---------------------------------------------------------------
-
-let g:pathogen_disabled = ["pathogen", "nerdtree"]
-execute pathogen#infect()
-
-set laststatus=2            " enable status line
-set hidden                  " enable hidden modified buffers
-
-set wildmenu                " show matching filenames on tab completion
-
+" editing options
+set hidden
+set tabstop=4 shiftwidth=4 expandtab nowrap
+set laststatus=2 modeline
+set incsearch hlsearch
 set number
-"set relativenumber
-"set cursorline
+set wildmenu
 
-syntax on               
+" colors!
+set t_Co=16
+colorscheme murphy
+syntax on
 
-" set color scheme -----------------------------------------------------------
-
-let g:solarized_termcolors=256
-set background=dark
-colorscheme solarized
-
-" filetypes ------------------------------------------------------------------
-
-autocmd BufRead *.xhtml set filetype=xml
-autocmd BufRead *.md set filetype=markdown
-
-autocmd BufRead fugitive://* setlocal bufhidden=wipe
-autocmd BufRead .git/* setlocal bufhidden=wipe
-
-"filetype plugin indent on
-
-" searching ------------------------------------------------------------------
-
-set incsearch
-set hlsearch
-
-" editing --------------------------------------------------------------------
-
-set tabstop=4
-set shiftwidth=4
-set expandtab
-set smarttab
-
-set nowrap
-set scrolloff=3
-
-set backspace=eol,start " allow backspacing through eol and start of insert
-
-set noswapfile
-
-" functions ------------------------------------------------------------------
-
-function! SetSoftWrap()
-    call SetNoWrap()
-    setl wrap linebreak
-endfunction
-
-function! SetHardWrap()
-    call SetNoWrap()
-    setl textwidth=79
-endfunction
-
-function! SetNoWrap()
-    setl textwidth=0
-    setl nowrap nolinebreak
-endfunction
-
-" custom keys ----------------------------------------------------------------
+" load plugins
+let g:pathogen_disabled=["pathogen"]
+silent! execute pathogen#infect()
 
 let mapleader = ','
 
-nnoremap    <F5>        :!./%<CR>
+" editing .vimrc
+nnoremap <LEADER>ce :edit $MYVIMRC<CR>
+nnoremap <LEADER>cs :source $MYVIMRC<CR>
 
-nnoremap    <LEADER>ce  :edit   $MYVIMRC<CR>
-nnoremap    <LEADER>cs  :source $MYVIMRC<CR>
+" buffer switching
+nnoremap <LEADER>a :bprev<CR>
+nnoremap <LEADER>f :bnext<CR>
 
-nnoremap    <LEADER>ws  :call SetSoftWrap()<CR>
-nnoremap    <LEADER>wh  :call SetHardWrap()<CR>
-nnoremap    <LEADER>wn  :call SetNoWrap()<CR>
-
-nnoremap    <LEADER>e   :edit<SPACE>
-nnoremap    <LEADER>E   :Explore<CR>
-nnoremap    <LEADER>n   :Explore<CR>
-
-nnoremap    <LEADER>b1  :buffer<SPACE>1<CR>
-nnoremap    <LEADER>b2  :buffer<SPACE>2<CR>
-nnoremap    <LEADER>b3  :buffer<SPACE>3<CR>
-nnoremap    <LEADER>b4  :buffer<SPACE>4<CR>
-nnoremap    <LEADER>b5  :buffer<SPACE>5<CR>
-nnoremap    <LEADER>b6  :buffer<SPACE>6<CR>
-nnoremap    <LEADER>b7  :buffer<SPACE>7<CR>
-nnoremap    <LEADER>b8  :buffer<SPACE>8<CR>
-nnoremap    <LEADER>b9  :buffer<SPACE>9<CR>
-nnoremap    <LEADER>bd  :bdelete<CR>
-nnoremap    <LEADER>bD  :bdelete!<CR>
-nnoremap    <LEADER>bl  :buffers<CR>
-nnoremap    <LEADER>bL  :buffers!<CR>
-nnoremap    <LEADER>bw  :bwipe<CR>
-nnoremap    <LEADER>bW  :bwipe!<CR>
-nnoremap    <LEADER>bb  :buffers<CR>:buffer<SPACE>
-nnoremap    <LEADER>b   :buffers<CR>:buffer<SPACE>
-
-nnoremap    <LEADER>gc  :Gcommit<CR>
-nnoremap    <LEADER>gd  :Gdiff<CR>
-nnoremap    <LEADER>gs  :Gstatus<CR>
-nnoremap    <LEADER>gp  :Gpush<CR>
-nnoremap    <LEADER>gf  :Gfetch<CR>
-nnoremap    <LEADER>go  :Git checkout 
-             
-nnoremap    <CR>        :let<SPACE>@/=""<CR><CR>
-
-map         <C-N>       :bnext<CR>
-map         <C-P>       :bprev<CR>
-
-map!        <C-N>       <ESC>:bnext<CR>
-map!        <C-P>       <ESC>:bprev<CR>
-
-" statusline -----------------------------------------------------------------
-
+" statusline
 set statusline=[%n]%m%r\ %F%h%w\ [%{&ff}]\ %y\ %=%{fugitive#head(7)}\ 0x%04.4B\ %v\ %l/%L\ %p%% 
-highlight statusline   ctermbg=white ctermfg=black term=NONE
-highlight statuslinenc ctermbg=gray ctermfg=black term=none
-

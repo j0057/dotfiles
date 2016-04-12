@@ -1,6 +1,0 @@
-#!/bin/bash -x
-cd tests
-../env/bin/python2 -m coverage run --branch -m unittest discover
-../env/bin/python2 -m coverage report
-../env/bin/python2 -m coverage html -d htmlcov
-../env/bin/python2 -m coverage erase 

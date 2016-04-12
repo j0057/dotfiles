@@ -1,6 +1,0 @@
-#!/bin/bash -x
-. /etc/default/build-pypkg27.conf
-name="$(./setup.py --name)"
-version="$(./setup.py --version)"
-./setup.py egg_info sdist --dist-dir=$SRCDIR
-pip wheel --no-index --find-links $WHLDIR --find-links $SRCDIR --wheel-dir $WHLDIR $name==$version

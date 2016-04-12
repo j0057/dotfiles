@@ -1,6 +1,7 @@
 [alias]
 ap = add --patch
 
+cm = commit --verbose
 co = checkout
 
 dw = diff --stat --patch
@@ -27,34 +28,8 @@ rb = rebase
 ri = rebase --interactive
 rI = rebase --interactive --autosquash
 
-st = "!f() { \
-    v=$(git describe 2>/dev/null) && echo \"$v\"; \
-    git branch -avv; \
-    echo; \
-    git status --porcelain; \
-}; f"
-
-div = "!f() { \
-    git for-each-ref refs/heads/ --format='%(refname:short)' | while read ref ; do \
-        if ! git rev-parse $ref@{u} &> /dev/null ; then \
-            echo \"$ref ??\" ; \
-            continue ; \
-        fi ; \
-        a=$(git rev-list $ref@{u}..$ref --count) ; \
-        b=$(git rev-list $ref..$ref@{u} --count) ; \
-        if [ $a -eq 0 -a $b -eq 0 ] ; then \
-            continue ; \
-        fi ; \
-        echo \"$ref +$a/-$b\" ; \
-    done ; \
-}; f"
-
 very-clean = clean -xfd
 list-authors = "!git log --format='%aN <%cE>' | sort -u"
-
-[user]
-email = j.j.molenaar@gmail.com
-name = Joost Molenaar
 
 [push]
 default = simple

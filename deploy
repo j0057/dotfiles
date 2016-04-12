@@ -10,15 +10,14 @@ case `uname` in
         ;;
 esac
 
-case `basename $0` in
+case "$1" in
 
     deploy)
         $LN $(pwd)/bin                 ~/bin
         $LN $(pwd)/vim                 ~/.vim
-        $LN $(pwd)/vim/vimrc           ~/.vimrc
-        $LN $(pwd)/bash_aliases        ~/.bash_aliases
         $LN $(pwd)/bash_settings       ~/.bash_settings
         $LN $(pwd)/gitconfig           ~/.gitconfig
+        $LN $(pwd)/tmux.conf           ~/.tmux.conf
 
         mkdir -p ~/.ssh
         chmod 700 ~/.ssh
@@ -27,18 +26,22 @@ case `basename $0` in
 
     undeploy)
         rm -f ~/bin
-        rm -f ~/.bash_aliases
-        rm -f ~/.bash_settings
         rm -f ~/.vim
-        rm -f ~/.vimrc
+        rm -f ~/.bash_settings
         rm -f ~/.gitconfig
+        rm -f ~/.tmux.conf
+
         rm -f ~/.ssh/config.d
         ;;
 
     redeploy)
-        ./undeploy
-        ./deploy
+        "$0" undeploy
+        "$0" deploy
+        ;;
+
+    *)
+        echo "usage: $(basename $0) deploy|undeploy|redeploy" 1>&2
+        exit 1
         ;;
 
 esac
-
