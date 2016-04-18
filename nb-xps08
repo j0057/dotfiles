@@ -7,17 +7,17 @@ case "$1" in
         stow -v -t ~ git
         stow -v -t ~ tmux
 
-        stow -v -t ~/.ssh ssh
-        stow -v -t ~/.vim vim
+        stow -v -t ~ ssh
+        stow -v -t ~ vim
         ;;
 
     uninstall)
-        stow -v -t ~ bash
-        stow -v -t ~ git
-        stow -v -t ~ tmux
+        stow -v -t ~ -D bash
+        stow -v -t ~ -D git
+        stow -v -t ~ -D tmux
 
-        stow -v -t ~/.ssh ssh
-        stow -v -t ~/.vim vim
+        stow -v -t ~ -D ssh
+        stow -v -t ~ -D vim
         ;;
 
     reinstall)
