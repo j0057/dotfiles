@@ -1,0 +1,38 @@
+#!/bin/bash
+
+case "$1" in
+
+    install)
+        stow -v -t ~ bash
+        stow -v -t ~ git
+        stow -v -t ~ tmux
+
+        stow -v -t ~/.ssh ssh
+        stow -v -t ~/.vim vim
+        ;;
+
+    uninstall)
+        stow -v -t ~ bash
+        stow -v -t ~ git
+        stow -v -t ~ tmux
+
+        stow -v -t ~/.ssh ssh
+        stow -v -t ~/.vim vim
+        ;;
+
+    reinstall)
+        "$0" "uninstall"
+        "$1" "install"
+        ;;
+
+    help)
+        echo "usage: $(basename $0) [install|uninstall|reinstall|help]" >&2
+        ;;
+
+    *)
+        echo "error: command '$1' not recognized" 2>&1
+        "$0" "help"
+        exit 1
+        ;;
+
+esac
