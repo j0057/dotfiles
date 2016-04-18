@@ -23,7 +23,9 @@ nnoremap <LEADER>cs :source $MYVIMRC<CR>
 
 " buffer switching
 nnoremap <LEADER>a :bprev<CR>
-nnoremap <LEADER>f :bnext<CR>
+nnoremap <LEADER>s :bnext<CR>
+
+nnoremap <LEADER>bw :bwipe<CR>
 
 " statusline
 set statusline=[%n]%m%r\ %F%h%w\ [%{&ff}]\ %y\ %=%{fugitive#head(7)}\ 0x%04.4B\ %v\ %l/%L\ %p%% 

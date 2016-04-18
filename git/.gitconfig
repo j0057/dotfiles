@@ -9,7 +9,7 @@ dww = diff --stat --patch -w -W
 dc = diff --stat --patch --cached
 di = diff --stat --patch --cached
 
-fa = fetch --all -pvt
+fa = fetch --all -pv
 
 sw = diff --stat
 sc = diff --stat --cached

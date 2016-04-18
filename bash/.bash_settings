@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#
+# set editor
+#
+
+export EDITOR=vim
+
+#
+# add paths to $PATH
+#
+
+if [[ :$PATH: != *:$HOME/bin:* ]]; then
+    PATH=$PATH:$HOME/bin
+fi
+
+if [[ :$PATH: != *:$HOME/.local/bin:* ]]; then
+    PATH=$PATH:$HOME/.local/bin
+fi
+
+#
+# start ssh-(p)age(a)nt
+#
+
+if [ -z "$SSH_AUTH_SOCK" ]; then
+
+    if [ -n "$(type -p ssh-pageant.exe)" ]; then
+        eval $(ssh-pageant)
+        SSH_PAGEANT_KILL_ON_LOGOUT=1
+    fi
+
+fi
