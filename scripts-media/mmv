@@ -13,4 +13,3 @@ for fn in $files; do
         mv -v "$fn" "$nfn" 
     fi
 done
-

@@ -1,0 +1,4 @@
+#!/bin/bash
+export cores="$(grep -c processor /proc/cpuinfo)"
+find . -name '*.wav' -print0 \
+    | xargs -0 -n 1 -P $cores bash -c 'echo $0; flac --silent --output-name="${0/.wav/.flac}" "$0" &> /dev/null'
