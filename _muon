@@ -1,0 +1,10 @@
+#!/bin/bash -e
+
+[ -z "$1" -o "$1" = "-D" ] || exit 1
+
+stow -v -t $HOME $1 bash
+stow -v -t $HOME $1 git
+stow -v -t $HOME $1 tmux
+stow -v -t $HOME $1 ssh
+stow -v -t $HOME $1 vim
+stow -v -t $HOME/.local/bin $1 scripts
