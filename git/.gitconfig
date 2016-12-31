@@ -30,6 +30,7 @@ rI = rebase --interactive --autosquash
 
 very-clean = clean -xfd
 list-authors = "!git log --format='%aN <%cE>' | sort -u"
+e = "!f() { $EDITOR $(git status --porcelain | cut -b 4-); }; f"
 
 [push]
 default = simple
