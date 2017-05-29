@@ -47,3 +47,7 @@ helper = cache --timeout 3600
 
 [commit]
 verbose = true
+
+[rebase]
+autosquash = true
+autostash = true
