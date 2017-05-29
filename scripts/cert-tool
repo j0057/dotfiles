@@ -83,6 +83,7 @@ case $1 in
         bundle="${2?Bundle filename missing}"
         shift 2
         openssl crl2pkcs7 -nocrl -certfile CHAINED.pem | openssl pkcs7 -print_certs -text $*
+        ;;
     *)
         echo "Usage: $0 [create-key|create-ca-cert|create-csr|sign-cert] ..."
         exit 1
