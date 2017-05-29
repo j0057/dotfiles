@@ -18,6 +18,15 @@ if [[ :$PATH: != *:$HOME/.local/bin:* ]]; then
     PATH=$PATH:$HOME/.local/bin
 fi
 
+case $(uname) in
+    CYGWIN_NT*)
+        if [ -d '/cygdrive/c/Program Files/Wireshark' ]; then
+            PATH="$PATH:/cygdrive/c/Program Files/Wireshark"
+        fi
+        ;;
+
+esac
+
 #
 # start ssh-(p)age(a)nt
 #
