@@ -51,3 +51,6 @@ verbose = true
 [rebase]
 autosquash = true
 autostash = true
+
+[transfer]
+fsckObjects = true
