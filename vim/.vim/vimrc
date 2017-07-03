@@ -5,6 +5,7 @@ set laststatus=2 modeline
 set incsearch hlsearch
 set number
 set wildmenu
+set noswapfile
 
 " colors!
 set t_Co=16
