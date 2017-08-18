@@ -16,7 +16,7 @@ syntax on
 let g:pathogen_disabled=["pathogen"]
 silent! execute pathogen#infect()
 
-let mapleader = ','
+" let mapleader = ','
 
 " editing .vimrc
 nnoremap <LEADER>ce :edit $MYVIMRC<CR>
@@ -27,6 +27,8 @@ nnoremap <LEADER>a :bprev<CR>
 nnoremap <LEADER>s :bnext<CR>
 
 nnoremap <LEADER>bw :bwipe<CR>
+
+nnoremap <LEADER>f :grep -R <C-r><C-w> *<CR>:copen<CR>
 
 " statusline
 set statusline=[%n]%m%r\ %F%h%w\ [%{&ff}]\ %y\ %=%{fugitive#head(7)}\ 0x%04.4B\ %v\ %l/%L\ %p%% 
