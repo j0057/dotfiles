@@ -1,0 +1,2 @@
+#!/bin/bash
+{ comm -23 <(pacman -Qqe | sort) <(pacman -Qg $(pacman -Qg | awk '{print $1}' | sort -u | { while read g; do if [ -z "$(comm -23 <(pacman -Sg $g | awk '{print $2}' | sort -u) <(pacman -Qq | sort))" ]; then echo $g; fi; done; } | tee /dev/fd/4) | awk '{print $2}' | sort -u); } 4>&1
