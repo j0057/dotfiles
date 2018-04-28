@@ -5,6 +5,7 @@ test -z "$1" -o "$1" = "-D" || exit 1
 stow -v -t $HOME $1 bash
 stow -v -t $HOME $1 git
 stow -v -t $HOME $1 vim
+stow -v -t $HOME $1 pip
 
 mkdir -pv $HOME/.local/bin
 stow -v -t $HOME/.local/bin $1 scripts

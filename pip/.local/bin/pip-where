@@ -1,0 +1,4 @@
+#!/bin/bash
+for dist in $(${PY:-python3} -m pip list installed | awk 'NR<3{next} {print $1}'); do
+    printf '%-20s %s\n' "$dist" "$(${PY:-python3} -m pip show $dist | awk '/^Location:/{print $2}')"
+done
