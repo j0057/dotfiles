@@ -58,3 +58,6 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
     #    echo "Started socat PID $SSH_AUTH_SOCAT_PID from $SSH_AUTH_SOCK to 127.0.0.1:$KEEAGENT_PORT"
     #fi
 fi
+
+# set the umask so that not everything gets created 755 / rwxr-xr-x --> thanks, Microsoft!
+umask 0022
