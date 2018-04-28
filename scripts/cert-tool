@@ -50,7 +50,7 @@ case $1 in
         ;;
     ca-cert-to-pfx)
         ca=${2?CA missing}
-        openssl pkcs12 -export -out ${ca}.pfx -certfile ${ca}.crt -name ${ca} -passout pass:
+        openssl pkcs12 -export -out ${ca}.pfx -certfile ${ca}.crt -nokeys -name ${ca} -passout pass:
         ;;
     cert-to-pfx)
         ca=${2?CA missing}
