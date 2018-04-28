@@ -33,9 +33,15 @@ esac
 
 if [ -z "$SSH_AUTH_SOCK" ]; then
 
+    # on cygwin
     if [ -n "$(type -p ssh-pageant.exe)" ]; then
         eval $(ssh-pageant)
         SSH_PAGEANT_KILL_ON_LOGOUT=1
+
+    # on normal linuxes
+    elif [ -n "$(type -p ssh-agent)" ]; then
+        eval $(ssh-agent)
+
     fi
 
 fi
