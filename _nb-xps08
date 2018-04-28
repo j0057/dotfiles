@@ -7,4 +7,7 @@ stow -v -t $HOME $1 git
 stow -v -t $HOME $1 tmux
 stow -v -t $HOME $1 ssh
 stow -v -t $HOME $1 vim
+stow -v -t $HOME $1 pip
+
+mkdir -pv $HOME/.local/bin
 stow -v -t $HOME/.local/bin $1 scripts
