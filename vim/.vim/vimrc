@@ -30,5 +30,8 @@ nnoremap <LEADER>bw :bwipe<CR>
 
 nnoremap <LEADER>g :grep -R <C-r><C-w> *<CR>:copen<CR>
 
+nnoremap <F5> :!./%<CR>
+nnoremap <F6> :!pytest %<CR>
+
 " statusline
 set statusline=[%n]%m%r\ %F%h%w\ [%{&ff}]\ %y\ %=%{fugitive#head(7)}\ 0x%04.4B\ %v\ %l/%L\ %p%% 
