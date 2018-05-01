@@ -1,4 +1,6 @@
-#!/bin/bash -x
+#!/bin/bash
+exec > >(cat)
+set -x
 ${PY:-python3} -m pip download $*
 ${PY:-python3} -m pip download --no-binary :all: $*
 ${PY:-python3} -m pip wheel $*
