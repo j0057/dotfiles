@@ -13,6 +13,7 @@ colorscheme murphy
 syntax on
 
 " load plugins
+let g:fzf_command_prefix="Fzf"
 let g:pathogen_disabled=["pathogen"]
 silent! execute pathogen#infect()
 
