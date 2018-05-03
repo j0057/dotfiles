@@ -31,6 +31,31 @@ nnoremap <LEADER>bw :bwipe<CR>
 
 nnoremap <LEADER>g :grep -R <C-r><C-w> *<CR>:copen<CR>
 
+nnoremap <LEADER>ff     :FzfFiles<CR>
+nnoremap <LEADER>fg     :FzfGFiles<CR>
+nnoremap <LEADER>fgf    :FzfGFiles<CR>
+nnoremap <LEADER>fb     :FzfBuffers<CR>
+nnoremap <LEADER>fbb    :FzfBuffers<CR>
+nnoremap <LEADER>fc     :FzfColors<CR>
+nnoremap <LEADER>fl     :FzfLines<CR>
+nnoremap <LEADER>fbl    :FzfBLines<CR>
+nnoremap <LEADER>ft     :FzfTags<CR>
+nnoremap <LEADER>fbt    :FzfBTags<CR>
+nnoremap <LEADER>fm     :FzfMarks<CR>
+nnoremap <LEADER>fw     :FzfWindows<CR>
+nnoremap <LEADER>fw     :FzfWindows<CR>
+nnoremap <LEADER>fh     :FzfHistory<CR>
+nnoremap <LEADER>fhf    :FzfHistory<CR>
+nnoremap <LEADER>fh:    :FzfHistory:<CR>
+nnoremap <LEADER>fh/    :FzfHistory/<CR>
+nnoremap <LEADER>fgc    :FzfCommits<CR>
+nnoremap <LEADER>fgb    :FzfBCommits<CR>
+nnoremap <LEADER>fgb    :FzfBCommits<CR>
+nnoremap <LEADER>f:     :FzfCommands<CR>
+nnoremap <LEADER>fm     :FzfMaps<CR>
+nnoremap <LEADER>fH     :FzfHelptags<CR>
+nnoremap <LEADER>fF     :FzfFiletypes<CR>
+
 nnoremap <F5> :!./%<CR>
 nnoremap <F6> :!pytest %<CR>
 
