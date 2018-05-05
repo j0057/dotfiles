@@ -14,7 +14,7 @@ syntax on
 
 " load plugins
 let g:fzf_command_prefix="Fzf"
-let g:fzf_layout={ 'right': '~40%' }
+"et g:fzf_layout={ 'right': '~40%' }
 let g:pathogen_disabled=["pathogen"]
 silent! execute pathogen#infect()
 
@@ -52,7 +52,6 @@ nnoremap <LEADER>fhf    :FzfHistory<CR>
 nnoremap <LEADER>fh:    :FzfHistory:<CR>
 nnoremap <LEADER>fh/    :FzfHistory/<CR>
 nnoremap <LEADER>fgc    :FzfCommits<CR>
-nnoremap <LEADER>fgb    :FzfBCommits<CR>
 nnoremap <LEADER>fgb    :FzfBCommits<CR>
 nnoremap <LEADER>f:     :FzfCommands<CR>
 nnoremap <LEADER>fm     :FzfMaps<CR>
