@@ -5,7 +5,6 @@
 stow -v -t $HOME $1 bash
 stow -v -t $HOME $1 git
 stow -v -t $HOME $1 tmux
-stow -v -t $HOME $1 ssh
 stow -v -t $HOME $1 vim
 stow -v -t $HOME $1 pip
 stow -v -t $HOME $1 scripts
