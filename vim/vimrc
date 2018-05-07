@@ -8,6 +8,8 @@ set number
 set wildmenu
 set noswapfile
 set showcmd
+set completeopt=longest,menuone,preview
+set previewheight=5
 
 let maplocalleader='-'
 
@@ -35,6 +37,16 @@ let g:syntastic_check_on_open    = 1
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_python_python_exec = 'python3.7'
 
+
+" configure omnisharp
+let g:OmniSharp_server_type='roslyn'
+let g:OmniSharp_prefer_global_sln=1
+let g:OmniSharp_server_path=$HOME . '/git/dotfiles/omnisharp-http-mono/OmniSharp.exe'
+let g:OmniSharp_server_use_mono=1
+let g:OmniSharp_selector_ui='fzf'
+let g:OmniSharp_timeout=1
+
+let g:syntastic_cs_checkers=['code_checker']
 
 " colors
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $TERM == "tmux-256color"
