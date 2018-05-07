@@ -29,7 +29,6 @@ case $(uname) in
             PATH="$PATH:/cygdrive/c/Program Files/Wireshark"
         fi
         ;;
-
 esac
 
 #
@@ -37,31 +36,12 @@ esac
 #
 
 if [ -z "$SSH_AUTH_SOCK" ]; then
-
-    # on cygwin
     if [ -n "$(type -p ssh-pageant.exe)" ]; then
         eval $(ssh-pageant)
         SSH_PAGEANT_KILL_ON_LOGOUT=1
-
-    # on normal linuxes
     elif [ -n "$(type -p ssh-agent)" ]; then
         eval $(ssh-agent)
-
     fi
-
-    # tell SSH where the auth socket is
-    #if [ -z "$SSH_AUTH_SOCK" ]; then
-    #    export SSH_AUTH_SOCK="/tmp/ssh-agent-wsl.sock"
-    #fi
-
-    # start a socat that forwards ssh-agent requests to keepass/keeagent
-    #if [ ! -S "$SSH_AUTH_SOCK" ]; then
-    #    KEEAGENT_PORT=$(sed -r 's/^!<socket >([0-9]*) .*$/\1/' /mnt/c/Temp/ssh-agent-msysgit.sock)
-    #    socat "UNIX-LISTEN:$SSH_AUTH_SOCK,mode=0600,fork,shut-down" "TCP:127.0.0.1:$KEEAGENT_PORT,connect-timeout=2" &> /dev/null &
-    #    export SSH_AUTH_SOCAT_PID=$!   
-    #    disown -a
-    #    echo "Started socat PID $SSH_AUTH_SOCAT_PID from $SSH_AUTH_SOCK to 127.0.0.1:$KEEAGENT_PORT"
-    #fi
 fi
 
 # set the umask so that not everything gets created 755 / rwxr-xr-x --> thanks, Microsoft!
