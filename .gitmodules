@@ -4,9 +4,6 @@
 [submodule "vim/bundle/buftabline"]
 	path = vim/.vim/bundle/buftabline
 	url = https://github.com/ap/vim-buftabline
-[submodule "vim/bundle/filebeagle"]
-	path = vim/.vim/bundle/filebeagle
-	url = https://github.com/jeetsukumaran/vim-filebeagle
 [submodule "vim/bundle/fugitive"]
 	path = vim/.vim/bundle/fugitive
 	url = https://github.com/tpope/vim-fugitive
