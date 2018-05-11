@@ -1,0 +1,29 @@
+#!/bin/bash -e
+
+version=${1:-0.17.3}
+
+cd "$(dirname ${BASH_SOURCE[0]})"
+
+if [ "$1" = '-D' ]; then
+    rm -vrf fzf
+    rm -vf vim/.vim/bundle/fzf
+    exit 0
+fi
+
+if [ -x fzf/bin/fzf ] && [[ $(fzf/bin/fzf --version) = ${version}* ]]; then
+    exit 0
+fi
+
+mkdir -p 'fzf/bin'
+curl -sLf "https://github.com/junegunn/fzf-bin/releases/download/${version}/fzf-${version}-linux_amd64.tgz" \
+    | tar xz -C 'fzf/bin'
+
+curl -sLf "https://raw.githubusercontent.com/junegunn/fzf/${version}/shell/completion.bash" -o 'fzf/share/fzf/completion.bash' --create-dirs
+curl -sLf "https://raw.githubusercontent.com/junegunn/fzf/${version}/shell/key-bindings.bash" -o 'fzf/share/fzf/key-bindings.bash' --create-dirs
+curl -sLf "https://raw.githubusercontent.com/junegunn/fzf/${version}/man/man1/fzf.1" -o 'fzf/share/man/man1/fzf.1' --create-dirs
+curl -sLf "https://raw.githubusercontent.com/junegunn/fzf/${version}/doc/fzf.txt" -o 'fzf/share/fzf/vim/doc/fzf.txt' --create-dirs
+curl -sLf "https://raw.githubusercontent.com/junegunn/fzf/${version}/plugin/fzf.vim" -o 'fzf/share/fzf/vim/plugin/fzf.vim' --create-dirs
+
+ln -s '/usr/local/share/fzf/vim' vim/.vim/bundle/fzf
+
+sha256sum --check --quiet fzf-sums.txt

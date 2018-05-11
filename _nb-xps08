@@ -9,3 +9,6 @@ stow -v -t $HOME $1 ssh
 stow -v -t $HOME $1 vim
 stow -v -t $HOME $1 pip
 stow -v -t $HOME $1 scripts
+
+./fzf-get
+sudo stow -v -t '/usr/local' $1 fzf
