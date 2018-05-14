@@ -47,3 +47,23 @@ fi
 
 # set the umask so that not everything gets created 755 / rwxr-xr-x --> thanks, Microsoft!
 umask 0022
+
+#
+# load fzf completions and keybindings
+#
+
+#if [ -f '/usr/local/share/fzf/completion.bash' ]; then
+#    echo 1
+#    . '/usr/local/share/fzf/completion.bash'
+#elif [ -f '/usr/share/fzf/completion.bash' ]; then
+#    echo 2
+#    . '/usr/share/fzf/completion.bash'
+#fi
+
+#if [ -f '/usr/local/share/fzf/key-bindings.bash' ]; then
+#    echo 3
+#    . '/usr/local/share/fzf/key-bindings.bash'
+#elif [ -f '/usr/share/fzf/key-bindings.bash' ]; then
+#    echo 4
+#    . '/usr/share/fzf/key-bindings.bash'
+#fi
