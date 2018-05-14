@@ -41,7 +41,7 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
         SSH_PAGEANT_KILL_ON_LOGOUT=1
     elif [ -n "$(type -p ssh-agent)" ]; then
         eval $(ssh-agent)
-        SSH_AGENT_KILL_ON_LOGOUT=1
+        export SSH_AGENT_KILL_ON_LOGOUT=$$
     fi
 fi
 
