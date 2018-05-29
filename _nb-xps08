@@ -2,6 +2,8 @@
 
 [ -z "$1" -o "$1" = "-D" ] || exit 1
 
+echo 'Include ~/.ssh/nb-xps08.conf' > ssh/.ssh/config
+
 stow -v -t $HOME $1 bash
 stow -v -t $HOME $1 git
 stow -v -t $HOME $1 tmux
