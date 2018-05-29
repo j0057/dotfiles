@@ -2,7 +2,8 @@
 
 [ -z "$1" -o "$1" = "-D" ] || exit 1
 
-echo 'Include ~/.ssh/nb-xps08.conf' > ssh/.ssh/config
+# WSL's Ubuntu 16.04 SSH does not support Include yet... (>_<)
+#echo 'Include ~/.ssh/nb-xps08.conf' > ssh/.ssh/config
 
 stow -v -t $HOME $1 bash
 stow -v -t $HOME $1 git
@@ -14,3 +15,6 @@ stow -v -t $HOME $1 scripts
 
 ./fzf-get
 sudo stow -v -t '/usr/local' $1 fzf
+
+# Oh well, just do a ranzige hack for now
+sed 's/Include//' ~/.ssh/nb-xps08.conf | xargs bash -c 'eval "cat $*"' -s > ~/.ssh/config
