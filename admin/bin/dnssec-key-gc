@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# This should run daily at 02:01 CET/CEST, to pick up keys quickly after they get deleted.
+
+[ "${DRY_RUN:-1}" = 0 ] && ACTION='rm -v' || ACTION='ls -al'
+
+NOW=$(date -u +%Y%m%d%H%M%S)
+
+find /var/named/keys -type f -name '*.key' \
+    | sort \
+    | { while read filename ; do
+            awk '/Publish:/{exit($3<NOW)}' NOW=$NOW $filename && continue
+            awk '/Delete:/ {exit($3<NOW)}' NOW=$NOW $filename && continue
+            find "$(dirname $filename)" -type f -name "$(basename -s.key $filename)*"
+        done ; } \
+    | xargs $ACTION

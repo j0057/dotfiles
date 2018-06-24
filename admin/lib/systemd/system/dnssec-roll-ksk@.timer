@@ -1,0 +1,8 @@
+[Timer]
+OnCalendar=*-12-01 08:23:00
+Persistent=true
+AccuracySec=1s
+RandomizedDelaySec=60
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,62 @@
+#!/bin/bash
+
+create_dir() {
+    if [ ! -d /etc/opendkim/$1 ]; then
+        install -o opendkim -g mail -m 750 -d /etc/opendkim/$1
+    fi
+}
+
+create_new_key() {
+    if [ ! -f /etc/opendkim/$1/$2.private ]; then
+        opendkim-genkey -D /etc/opendkim/$1 -d $1 -s $2 -r
+        chown opendkim.mail /etc/opendkim/$1/$2.*
+    fi
+}
+
+gen_key_table() {
+    find /etc/opendkim -name '*.private' \
+        | { while read fn ; do
+                dom=$(sed 's_/etc/opendkim/__; s_/.*__' <<< "$fn")
+                tag=$(sed 's_/etc/opendkim/.*/\(.*\)\.private_\1_' <<< "$fn")
+                printf '%-31s %s:%s:%s\n' "$dom-$tag" "$dom" "$tag" "$fn"
+            done ; } \
+        | sort \
+        > /etc/opendkim/key.table
+}
+
+gen_signing_table() {
+    find /etc/opendkim -mindepth 1 -type d \
+        | { while read dn ; do
+                dom=$(sed 's_/etc/opendkim/__' <<< "$dn")
+                tag=$(ls -tR $dn/*.txt | head -1 | sed "s_/etc/opendkim/$dom/__; s_\\.txt__")
+                printf '%-31s %s\n' "*@$dom" "$dom-$tag"
+            done ; } \
+        | sort \
+        > /etc/opendkim/signing.table
+}
+
+gen_zonefile() {
+    find /etc/opendkim/$1 -name '*.txt' \
+        | sort \
+        | xargs cat \
+        > /var/named/$1.dkim.txt
+}
+
+: ${1?missing hostname for which to DKIM key rollover}
+
+if [ ! -f "/var/named/$1.zone" ]; then
+    echo "error: can't find zone file for zone $1" >&2
+    exit 1
+fi
+
+create_dir $1
+create_new_key $1 $(date +%Y%m)
+gen_zonefile $1
+
+{   flock -n 9 || exit 1
+    gen_key_table
+    gen_signing_table
+    systemctl restart opendkim.service
+} 9>/run/$(basename $0).lock
+
+dns-bump-serial $1

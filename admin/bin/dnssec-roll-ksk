@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# this script run once a year on December 1
+
+: ${1?need a hostname}
+
+if [ ! -d /var/named/keys/$1 ]; then
+    echo "error: cannot find keys for zone $1" >&2
+    exit 1
+fi
+
+# calculate dates
+cur_year=$(date +%Y)0101
+pub_date=$(date -d "$cur_year + 12 months - 2 weeks" +%Y%m%d)
+act_date=$(date -d "$cur_year + 12 months - 1 weeks" +%Y%m%d)
+ina_date=$(date -d "$cur_year + 12 months + 0 weeks" +%Y%m%d)
+del_date=$(date -d "$cur_year + 12 months + 1 weeks" +%Y%m%d)
+
+# find current key tag
+tag=$(dig +dnssec +noall +answer $1 DS | awk '$4=="DS"{print $5}')
+tag=$(printf '%05d' $tag)
+
+old_key=K$1.+008+$tag
+
+# set inactivation and deletion dates for current key
+dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date $old_key 1>/dev/null
+
+# create a new key
+new_key=$(dnssec-keygen -q -K /var/named/keys/$1 -a RSASHA256 -b 2048 -f KSK -P $pub_date -A $act_date $1)
+
+chown named.named /var/named/keys/$1/$new_key*
+
+{
+    echo "Hi! This is $(basename $0). It's time to roll over the KSK for $1!"
+    echo "The new tag is $tag."
+    echo
+    echo "These are the contents of the new key file, $new_key.key:"
+    echo
+    cat /var/named/keys/$1/$new_key.key
+    echo 
+    echo "These are the DS records, if you need them:"
+    echo
+    dnssec-dsfromkey /var/named/keys/$1/$new_key.key
+    echo
+    echo "These are the important dates:"
+    echo
+    echo "$pub_date -- $new_key gets published"
+    echo "$act_date -- $new_key gets activated"
+    echo "$ina_date -- $old_key gets inactivated"
+    echo "$del_date -- $old_key gets deleted"
+} \
+| mail -s "[DNSSEC] Manual action required for $1 KSK rollover" jjm@j0057.nl

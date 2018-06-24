@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# this script should be run once a month on the 26th:
+# 26 gen key; 27 publish next; 28 activate next; 01 inactivate current, 02 delete current
+# it will still work for months that are longer than february in non-leap years
+
+: ${1?need a hostname}
+
+if [ ! -d /var/named/keys/$1 ]; then
+    echo "error: cannot find keys for zone $1" >&2
+    exit 1
+fi
+
+# calculate days dates
+cur_month=$(date +%Y%m)01
+pub_date=$(date -d "$cur_month + 1 month - 2 day" +%Y%m%d)
+act_date=$(date -d "$cur_month + 1 month - 1 day" +%Y%m%d)
+ina_date=$(date -d "$cur_month + 1 month + 0 day" +%Y%m%d)
+del_date=$(date -d "$cur_month + 1 month + 1 day" +%Y%m%d)
+
+# find current key tag
+tag=$(dig +dnssec +noall +answer $1 SOA | awk '/RRSIG/{print $11}')
+tag=$(printf '%05d' $tag)
+
+# set inactivation and deletion dates for current key
+dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date "K${1}.+008+$tag" 
+
+# create a new key
+sudo -u named dnssec-keygen -K /var/named/keys/$1 -a RSASHA256 -b 2048 -P $pub_date -A $act_date $1

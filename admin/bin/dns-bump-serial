@@ -1,0 +1,22 @@
+#!/bin/bash
+
+: ${1?Missing zone to bump}
+
+# check sanity
+if [ ! -f "/var/named/$1.zone" ]; then
+    echo "error: can't find zone file for $1" >&2
+    exit 1
+fi
+
+# set serial to 'YYMMDDhhmm'
+sed -i "/SOA/ s/([0-9]\+/($(date -u +%y%m%d%H%M)/" "/var/named/$1.zone"
+
+# reload zone and allow some time for the secondaries
+rndc reload "$1" >/dev/null
+sleep 5
+
+# query the SOA record on the NS servers
+dig +short "$1" NS \
+    | sed 's/^/@/' \
+    | xargs -n1 dig +noall +answer "$1" SOA \
+    | sed 's/\t\+/ /g'

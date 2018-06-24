@@ -1,0 +1,32 @@
+#!/bin/bash
+
+get_cert() {
+    case $selector in
+        0)  openssl x509 -in $cert -outform DER ;;
+        1)  openssl x509 -in $cert -noout -pubkey | openssl enc -d '-base64' ;;
+        *)  echo "error: unrecognized selector $selector" >&2
+            exit 1 ;;
+    esac
+}
+
+encode_data() {
+    case $matching in
+        0)  openssl enc -base64 ;;
+        1)  sha256sum | awk '{ print $1 }' ;;
+        2)  sha512sum | awk '{ print $1 }' ;;
+        *)  echo "error: unrecognized encoding $matching" >&2
+            exit 1 ;;
+    esac
+}
+
+set -o pipefail -o errexit
+
+cert=${1:?missing path to PEM encoded cert file}
+domain=${2:?missing domain name, eg _443._tcp}
+usage=${3:-1}
+selector=${4:-1}
+matching=${5:-2}
+
+value="$(get_cert | encode_data)"
+
+echo "$domain IN TLSA $usage $selector $matching $value"
