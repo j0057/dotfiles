@@ -1,2 +1,15 @@
 #!/bin/bash
-{ comm -23 <(pacman -Qqe | sort) <(pacman -Qg $(pacman -Qg | awk '{print $1}' | sort -u | { while read g; do if [ -z "$(comm -23 <(pacman -Sg $g | awk '{print $2}' | sort -u) <(pacman -Qq | sort))" ]; then echo $g; fi; done; } | tee /dev/fd/4) | awk '{print $2}' | sort -u); } 4>&1
+{ comm -23 \
+    <(pacman -Qqe | sort) \
+    <(pacman -Qg $(pacman -Qg \
+                       | awk '{print $1}' \
+                       | sort -u \
+                       | { while read g; do
+                               comm -23 \
+                                   <(pacman -Sg $g | awk '{print $2}' | sort -u) \
+                                   <(pacman -Qq | sort) \
+                                   | ifne -n bash -c "echo '$g' 1>&4" 1>/dev/null
+                           done ; } \
+                       | tee /dev/fd/4) \
+          | awk '{print $2}' \
+          | sort -u) ; } 4>&1
