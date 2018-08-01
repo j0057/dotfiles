@@ -9,14 +9,17 @@ if [ ! -f "/var/named/$1.zone" ]; then
 fi
 
 # set serial to 'YYMMDDhhmm'
-sed -i "/SOA/ s/([0-9]\+/($(date -u +%y%m%d%H%M)/" "/var/named/$1.zone"
+new_serial=$(date -u +%y%m%d%H%M)
+echo "bumping serial of $1 to $new_serial in /var/named/$1.zone"
+sed -i "/SOA/ s/([0-9]\+/($new_serial/" "/var/named/$1.zone"
 
 # reload zone and allow some time for the secondaries
 rndc reload "$1" >/dev/null
 sleep 5
 
 # query the SOA record on the NS servers
-dig +short "$1" NS \
-    | sed 's/^/@/' \
-    | xargs -n1 dig +noall +answer "$1" SOA \
-    | sed 's/\t\+/ /g'
+echo "querying serials on NS servers for $1"
+for ns in $(dig +short "$1" NS); do
+    dig +noall +answer "$1" SOA "@$ns" \
+        | sed "s/^/@${ns}: /; s/\t\+/ /g"
+done
