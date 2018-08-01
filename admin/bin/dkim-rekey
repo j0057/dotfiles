@@ -60,7 +60,11 @@ create_dir $1
 create_new_key $1 $(date +%Y%m)
 gen_zonefile $1
 
-{   flock -n 9 || exit 1
+{
+    if ! flock 9; then
+        echo "error: cannot get lock on lockfile"
+        exit 1
+    fi
     gen_key_table
     gen_signing_table
     systemctl restart opendkim.service
