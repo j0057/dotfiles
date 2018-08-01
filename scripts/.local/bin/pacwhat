@@ -1,15 +1,20 @@
 #!/bin/bash
-{ comm -23 \
-    <(pacman -Qqe | sort) \
-    <(pacman -Qg $(pacman -Qg \
-                       | awk '{print $1}' \
-                       | sort -u \
-                       | { while read g; do
-                               comm -23 \
-                                   <(pacman -Sg $g | awk '{print $2}' | sort -u) \
-                                   <(pacman -Qq | sort) \
-                                   | ifne -n bash -c "echo '$g' 1>&4" 1>/dev/null
-                           done ; } \
-                       | tee /dev/fd/4) \
-          | awk '{print $2}' \
-          | sort -u) ; } 4>&1
+
+query_installed_all() { pacman -Qq  | sort ; }
+query_installed_exp() { pacman -Qqe | sort ; }
+
+query_group_names() { pacman -Qg "$@" | awk '{print $1}' | sort -u ; }
+query_group_pkgs()  { pacman -Qg "$@" | awk '{print $2}' | sort -u ; }
+
+sync_group_names() { pacman -Sg "$@" | awk '{print $1}' | sort -u ; }
+sync_group_pkgs()  { pacman -Sg "$@" | awk '{print $2}' | sort -u ; }
+
+export -f query_installed_all
+export -f sync_group_pkgs
+
+exec 4>&1
+
+comm -23 <(query_installed_exp) \
+         <(query_group_pkgs $(query_group_names \
+                                | xargs -n1 -IX bash -c '[ -z "$(comm -23 <(sync_group_pkgs X) <(query_installed_all))" ] && echo X' \
+                                | tee /dev/fd/4))
