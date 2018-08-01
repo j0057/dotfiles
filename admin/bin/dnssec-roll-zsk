@@ -22,8 +22,15 @@ del_date=$(date -d "$cur_month + 1 month + 1 day" +%Y%m%d)
 tag=$(dig +dnssec +noall +answer $1 SOA | awk '/RRSIG/{print $11}')
 tag=$(printf '%05d' $tag)
 
+old_key=K$1.+008+$tag
+
+if [ ! -f "/var/named/keys/$1/$old_key.key" ]; then
+    echo "error: can't find $old_key" 1>&2
+    exit 1
+fi
+
 # set inactivation and deletion dates for current key
-dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date "K${1}.+008+$tag" 
+dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date $old_key 1>/dev/null
 
 # create a new key
 sudo -u named dnssec-keygen -K /var/named/keys/$1 -a RSASHA256 -b 2048 -P $pub_date -A $act_date $1
