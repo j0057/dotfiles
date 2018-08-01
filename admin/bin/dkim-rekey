@@ -2,18 +2,21 @@
 
 create_dir() {
     if [ ! -d /etc/opendkim/$1 ]; then
+        echo "creating key directory /etc/opendkim/$1"
         install -o opendkim -g mail -m 750 -d /etc/opendkim/$1
     fi
 }
 
 create_new_key() {
     if [ ! -f /etc/opendkim/$1/$2.private ]; then
+        echo "creating key /etc/opendkim/$1/$2.private"
         opendkim-genkey -D /etc/opendkim/$1 -d $1 -s $2 -r
         chown opendkim.mail /etc/opendkim/$1/$2.*
     fi
 }
 
 gen_key_table() {
+    echo "generating key table"
     find /etc/opendkim -name '*.private' \
         | { while read fn ; do
                 dom=$(sed 's_/etc/opendkim/__; s_/.*__' <<< "$fn")
@@ -25,6 +28,7 @@ gen_key_table() {
 }
 
 gen_signing_table() {
+    echo "generating signing table"
     find /etc/opendkim -mindepth 1 -type d \
         | { while read dn ; do
                 dom=$(sed 's_/etc/opendkim/__' <<< "$dn")
@@ -36,6 +40,7 @@ gen_signing_table() {
 }
 
 gen_zonefile() {
+    echo "creating zone file fragment /var/named/$1.dkim.txt"
     find /etc/opendkim/$1 -name '*.txt' \
         | sort \
         | xargs cat \
