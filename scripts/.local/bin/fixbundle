@@ -1,0 +1,13 @@
+#!/bin/bash
+cat $1 \
+    | gawk '/BEGIN CERT/,/END CERT/{print $0}' \
+    | gawk "BEGIN{RS=\"-+(BEGIN|END) CERTIFICATE-+\"}
+            NR%2==1{x=RT}
+            NR%2==0{system(\"bash -c 'openssl x509 -subject -issuer -dates -serial <<< \\\"\" x $0 RT \"\\\"'\")
+                    print \"\"}"
+
+# 3 : print lines from 'BEGIN CERTIFICATE' through 'END CERTIFICATE' (filter out the not-cert stuff)
+# 4 : before start of gawk program, set Record Separator to regex matching BEGIN/END lines
+# 5 : on uneven numbered records, save 'BEGIN' line (RT is the matched separator text)
+# 7 : on evenly numberes records, reconstruct certificate including delimiters and send as stdin to openssl x509
+#     ($0 is the entire record, that is, the stuff between the record separators)
