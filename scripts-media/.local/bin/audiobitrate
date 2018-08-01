@@ -1,0 +1,45 @@
+#!/bin/bash
+
+codec() {
+    mediainfo '--output=Audio;%Codec%' "$1"
+}
+
+brmode() {
+    mediainfo '--output=Audio;%BitRate_Mode%' "$1"
+}
+
+bitrate() {
+    mediainfo '--output=Audio;%BitRate%' "$1"
+}
+
+all() {
+    mediainfo --output=JSON "$1" | jq .
+}
+
+case "$1" in
+    report)
+        : ${2?missing directory}
+        "$0" list "$2" | sort -b -k4
+        ;;
+
+    list)
+        : ${2?missing directory}
+        find "$2" -type f -and \( -name '*.mp3' -or -name '*.flac' \) -print0 \
+            | xargs -0 -n1 -P$(nproc) "$0" info
+        ;;
+    info)
+        : ${2?missing filename}
+        printf '%-6s %-3s %7d %-80s\n' \
+            "$(codec "$2")" \
+            "$(brmode "$2")" \
+            "$(bitrate "$2")" \
+            "$(basename "$2")"
+        ;;
+    *)
+        {   echo "usage:"
+            echo " $(basename "$0") report [dir]"
+            echo " $(basename "$0") info [filename]"
+        } >&2
+        exit 1
+        ;;
+esac
