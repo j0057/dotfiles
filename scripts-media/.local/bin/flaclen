@@ -1,0 +1,7 @@
+#!/bin/bash
+find . -name '*.flac' -print0 \
+    | sort -z \
+    | xargs -0n1 bash -c '
+        r=$(metaflac --show-sample-rate "$0");
+        t=$(metaflac --show-total-samples "$0");
+        printf "%2d:%02d %s\n" $[t/r/60] $[t/r%60] "$(basename "$0")"'
