@@ -1,0 +1,3 @@
+#!/bin/bash
+find . -type f -name '*.aif' -print0 \
+    | xargs -0 -n1 -P0 bash -c 'echo "$1"; ffmpeg -loglevel quiet -i "$1" "${1/.aif/.wav}"' -s
