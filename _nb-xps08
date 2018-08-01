@@ -17,4 +17,8 @@ stow -v -t $HOME $1 scripts
 sudo stow -v -t '/usr/local' $1 fzf
 
 # Oh well, just do a ranzige hack for now
-sed 's/Include//' ~/.ssh/nb-xps08.conf | xargs bash -c 'eval "cat $*"' -s > ~/.ssh/config
+cat ~/.ssh/nb-xps08.conf \
+    | sed 's/Include //' \
+    | sed "s_~_${HOME}_" \
+    | xargs cat \
+    > ~/.ssh/config
