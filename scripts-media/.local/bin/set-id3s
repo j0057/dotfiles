@@ -73,7 +73,7 @@ def find_cover(ar, al):
     if filename in os.listdir("."):
         return filename
     else:
-        raise Exception("Couldn't find cover file \"{0}\"!".format(filename))
+        raise Exception("Couldn't find cover file \"{0}\"".format(filename))
 
 if __name__ == "__main__":
     ARGS = parse_args()
@@ -89,7 +89,8 @@ if __name__ == "__main__":
             info[2] = ARGS.album or info[2]
             handler(cv, ARGS.year, *info)
     except Exception as e:
-        print "{0}: {1}".format(type(e).__name__, str(e))
+        esc = lambda s: s.replace('\\', '\\\\').replace('"', '\\"')
+        print "echo \"{0}: {1}\" >&2".format(type(e).__name__, esc(str(e)))
         if ARGS.debug:
             raise
     
