@@ -47,6 +47,8 @@ gen_zonefile() {
         > /var/named/$1.dkim.txt
 }
 
+[ "$DEBUG" = 1 ] && set -x
+
 : ${1?missing hostname for which to DKIM key rollover}
 
 if [ ! -f "/var/named/$1.zone" ]; then
