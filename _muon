@@ -10,4 +10,5 @@ stow -v -t $HOME $1 tmux
 stow -v -t $HOME $1 vim
 stow -v -t $HOME $1 pip
 stow -v -t $HOME $1 scripts
+stow -v -t $HOME $1 scripts-media
 stow -v -t $HOME $1 ssh
