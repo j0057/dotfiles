@@ -1,0 +1,26 @@
+#!/bin/bash
+
+echo
+printf "%-15s %3s %5s %3s %3s %-14s %-14s %-14s %-14s %s\n" domain flg tag prt alg created publish activate inactive delete
+
+find /var/named/keys -name '*.key' -print0 \
+    | xargs -0 -n1 awk '
+        /^; This is/{tag=gensub(",","","g",$8); dom=$10}
+        /; Created:/{crd=$3}
+        /; Publish:/{pub=$3}
+        /; Activate:/{act=$3}
+        /; Inactive:/{ina=$3}
+        /; Delete:/{del=$3}
+        /DNSKEY/{flg=$4; prt=$5; alg=$6}
+        END{
+            printf("%-15s %3s %05d %3s %3s %14s %14s %14s %14s %s\n", dom, flg, tag, prt, alg, crd, pub, act, ina, del)
+        }
+    ' \
+    | sort \
+    | awk '{
+        if (prev != $1) { print "" }
+        print $0
+        prev = $1
+    }'
+
+echo
