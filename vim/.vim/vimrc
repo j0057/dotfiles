@@ -8,8 +8,8 @@ set wildmenu
 set noswapfile
 
 " colors!
-set t_Co=16
-colorscheme murphy
+"set t_Co=16
+colorscheme zellner
 syntax on
 
 " load plugins
