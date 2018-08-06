@@ -8,5 +8,5 @@ find "$src" -type f -print0 \
     | grep -v -F -f <(find "$tgt" -type f -print0 \
         | xargs -0 -n1 -P8 sha256sum \
         | awk '{print $1}') \
-    | cut -c 66- \
+    | cut -c 67- \
     | sort
