@@ -1,8 +1,6 @@
 #!/bin/bash -ex
 
-[ "$1" = "-R" ] && { "$0" -D && "$0" ; } && exit 0
-
-[ -z "$1" -o "$1" = "-D" ] || exit 1
+[ -z "$1" -o "$1" = "-D" -o "$1" = "-R" ] || exit 1
 
 # WSL's Ubuntu 16.04 SSH does not support Include yet... (>_<)
 #echo 'Include ~/.ssh/nb-xps08.conf' > ssh/.ssh/config

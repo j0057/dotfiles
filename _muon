@@ -4,6 +4,10 @@
 
 [ -z "$1" -o "$1" = "-D" ] || exit 1
 
+mkdir -pv \
+    $HOME/.ssh \
+    $HOME/.vim
+
 echo 'Include ~/.ssh/muon.conf' > ssh/.ssh/config
 
 stow -v -t $HOME            $1 bash
