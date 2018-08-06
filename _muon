@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 [ -z "$1" -o "$1" = "-D" ] || exit 1
 
