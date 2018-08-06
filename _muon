@@ -1,5 +1,7 @@
 #!/bin/bash -ex
 
+[ "$1" = "-R" ] && { "$0" -D && "$0" ; } && exit 0
+
 [ -z "$1" -o "$1" = "-D" ] || exit 1
 
 echo 'Include ~/.ssh/muon.conf' > ssh/.ssh/config
