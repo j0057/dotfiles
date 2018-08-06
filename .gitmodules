@@ -1,18 +1,18 @@
 [submodule "vim/bundle/pathogen"]
-	path = vim/.vim/bundle/pathogen
+	path = vim/bundle/pathogen
 	url = https://github.com/tpope/vim-pathogen
 [submodule "vim/bundle/buftabline"]
-	path = vim/.vim/bundle/buftabline
+	path = vim/bundle/buftabline
 	url = https://github.com/ap/vim-buftabline
 [submodule "vim/bundle/fugitive"]
-	path = vim/.vim/bundle/fugitive
+	path = vim/bundle/fugitive
 	url = https://github.com/tpope/vim-fugitive
-[submodule "vim/.vim/bundle/jinja2"]
-	path = vim/.vim/bundle/jinja2
+[submodule "vim/bundle/jinja2"]
+	path = vim/bundle/jinja2
 	url = https://github.com/Glench/Vim-Jinja2-Syntax
-[submodule "vim/.vim/bundle/gitgutter"]
-	path = vim/.vim/bundle/gitgutter
+[submodule "vim/bundle/gitgutter"]
+	path = vim/bundle/gitgutter
 	url = https://github.com/airblade/vim-gitgutter
-[submodule "vim/.vim/bundle/fzf.vim"]
-	path = vim/.vim/bundle/fzf.vim
+[submodule "vim/bundle/fzf.vim"]
+	path = vim/bundle/fzf.vim
 	url = https://github.com/junegunn/fzf.vim
