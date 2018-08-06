@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# validate inputs
+: "${1?missing sha256sum file path}"
+: "${2?missing path to index}"
+
+# create empty sha256sum file if needed, or else the rest will fail
+[ ! -f "$1" ] && touch "$1"
+
+# remove modified files from sha256sum file
+<"$1" grep -v -F -f <(find "$2" -type f -newer "$1") \
+    | sponge "$1"
+
+# remove deleted files from sha256sum file
+<"$1" grep -F -f <(find "$2" -type f) \
+    | sponge "$1"
+
+# add new or removed-because-modified files to sha256sum database
+find "$2" -type f -print0 \
+    | grep -z -v -F -f <(cut -c 67- "$1") \
+    | xargs -0 -r -n1 -P8 sha256sum \
+    >> "$1"
+
+# nicely sort the sha256sum database
+<"$1" sort -k 2 \
+    | sponge "$1"
+
+# also dump the sha256sum file onto stdout
+cat "$1"

@@ -3,10 +3,10 @@
 src="${1?missing source path}"
 tgt="${2?missing target path}"
 
-find "$src" -type f -print0 \
-    | xargs -0 -n1 -P8 sha256sum \
-    | grep -v -F -f <(find "$tgt" -type f -print0 \
-        | xargs -0 -n1 -P8 sha256sum \
-        | awk '{print $1}') \
+srcdb="$(dirname "$src")/.$(basename "$src")-sha256"
+tgtdb="$(dirname "$tgt")/.$(basename "$tgt")-sha256"
+
+update-sha256sum "$srcdb" "$src" \
+    | grep -v -F -f <(update-sha256sum "$tgtdb" "$tgt" | awk '{print $1}') \
     | cut -c 67- \
     | sort
