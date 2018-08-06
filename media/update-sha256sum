@@ -4,6 +4,9 @@
 : "${1?missing sha256sum file path}"
 : "${2?missing path to index}"
 
+# optionally output sha256 commands
+[ -n "$VERBOSE" ] && VERBOSE=-t
+
 # create empty sha256sum file if needed, or else the rest will fail
 [ ! -f "$1" ] && touch "$1"
 
@@ -18,7 +21,7 @@
 # add new or removed-because-modified files to sha256sum database
 find "$2" -type f -print0 \
     | grep -z -v -F -f <(cut -c 67- "$1") \
-    | xargs -0 -r -n1 -P8 sha256sum \
+    | xargs -0 -r -n1 -P8 $VERBOSE sha256sum \
     >> "$1"
 
 # nicely sort the sha256sum database
