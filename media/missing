@@ -1,9 +1,11 @@
 #!/bin/bash
-: ${1?source}
-: ${2?destination}
-find "$1" -type f -print0 \
+
+src="${1?missing source path}"
+tgt="${2?missing target path}"
+
+find "$src" -type f -print0 \
     | xargs -0 -n1 -P8 sha256sum \
-    | grep -v -F -f <(find "$2" -type f -print0 \
+    | grep -v -F -f <(find "$tgt" -type f -print0 \
         | xargs -0 -n1 -P8 sha256sum \
         | awk '{print $1}') \
     | cut -c 66- \
