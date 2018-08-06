@@ -1,0 +1,12 @@
+#!/bin/bash
+
+: ${1?missing glob pattern}
+
+m=0
+for x in $1; do
+    [ "${#x}" -gt "$m" ] && m="${#x}"
+done
+
+for x in $1; do
+    printf "mv %-$[m+2]s %s\n" '"'"$x"'"' '"'"$x"'"'
+done
