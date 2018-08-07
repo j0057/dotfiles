@@ -1,0 +1,308 @@
+#!/usr/bin/env python
+
+import argparse
+import json
+import sys
+import os.path
+import logging
+import pprint
+
+from collections import namedtuple
+from struct import Struct as struct
+from base64 import b64encode
+
+read_from = lambda f, struct, cls: cls(*struct.unpack(f.read(struct.size)))
+
+def bitfield(name, **spec):
+    def __init__(self, value):
+        self.value = value 
+    def __getattr__(self, name):
+        # bit twiddling ... apply mask to value and shift right by number of trailing 0 bits in mask
+        return (self.value & spec[name]) >> bin((spec[name] ^ (spec[name]-1)) >> 1).count('1')
+    def __repr__(self):
+        values = ' '.join(f"{name}:{getattr(self,name)}" for name in spec if getattr(self, name))
+        return f"{name}({values})"
+    return type(name, (), {'__init__': __init__, '__getattr__': __getattr__, '__repr__': __repr__})
+
+#
+# ID3v1
+#
+
+ID3v1Bytes = struct('<3s30s30s30s4s28sBBB')
+ID3v1      = namedtuple('ID3v1', 'tag title artist album year comment zero track genre')
+
+def decode_id3v1(f):
+    f.seek(-128, 2)
+    id3 = read_from(f, ID3v1Bytes, ID3v1)
+    if id3.tag != b'TAG':
+        raise ValueError('No ID3v1 tag found')
+    if id3.zero == 0x00:
+        v = '1.1'
+    else:
+        v = '1.0'
+        id3 = id3._replace(comment=(id3.comment + id3.zero + id3.track), track=None)
+    id3 = id3._replace(**{ k: v.rstrip(b'\x00').rstrip(b'\x20').decode('ISO-8859-1') if isinstance(v, bytes) else v 
+                           for (k, v) in id3._asdict().items() })
+    logging.debug(f"{id3}")
+    return { 'v': v,
+             'artist': id3.artist,
+             'album': id3.album,
+             'track': id3.track,
+             'title': id3.title,
+             'year': id3.year,
+             'comment': id3.comment,
+             'genre': id3.genre }
+
+#
+# ID3v2
+#
+
+un_sync_safe = lambda i: ((i & 0xff000000) >> 3) \
+                       | ((i & 0x00ff0000) >> 2) \
+                       | ((i & 0x0000ff00) >> 1) \
+                       | ((i & 0x000000ff) >> 0)
+
+ID3v2HeaderFlags = bitfield('ID3v2HeaderFlags', unsync      =0x80,
+                                                extended    =0x40,
+                                                experimental=0x20,
+                                                footer      =0x10,
+                                                zero        =0x0f)
+ID3v2Header      = namedtuple('ID3v2Header', 'tag major minor flags size')
+ID3v2HeaderBytes = struct('>3sBBBI')
+ID3v2TagFlags    = bitfield('ID3v2TagFlags', frame_discard=0x4000,
+                                             file_discard =0x2000,
+                                             read_only    =0x1000,
+                                             group_id     =0x0040,
+                                             compressed   =0x0008,
+                                             encrypted    =0x0004,
+                                             unsynced     =0x0002,
+                                             data_len     =0x0001)
+ID3v2Tag         = namedtuple('ID3v2Tag', 'code size flags')
+ID3v2TagBytes    = struct('>4sIH')
+
+def decode_id3v2(f):
+    header = read_from(f, ID3v2HeaderBytes, ID3v2Header)
+    if header.tag != b'ID3':
+        raise ValueError('No ID3 tag found')
+    header = header._replace(size=un_sync_safe(header.size),
+                             flags=ID3v2HeaderFlags(header.flags))
+    logging.debug(f"{header} → {header.size:x}")
+    if header.flags.zero != 0x00:
+        raise ValueError(f"Unexpected non-zero flags: 0x{header.flags.zero:02x}")
+
+    tags = []
+    while f.tell() < header.size:
+        tag = read_from(f, ID3v2TagBytes, ID3v2Tag)
+        if (header.major < 4 and header.flags.unsync) or (header.major == 4): # wtf?
+            tag = tag._replace(size=un_sync_safe(tag.size))
+        if tag.code == b'\x00\x00\x00\x00':
+            continue
+        tag = tag._replace(code=tag.code.decode('ascii'),
+                           flags=ID3v2TagFlags(tag.flags))
+
+        val = f.read(tag.size)
+        if tag.code[0] == 'T':
+            enc = ['ISO-8859-1', 'UTF-16', 'UTF-16BE', 'UTF-8'][val[0]]
+            val = val[1:].decode(enc)
+        else:
+            enc = None
+
+        logging.debug(f"{tag} {enc} ~ {val[:40]} → {f.tell():x}")
+        tags.append({ 'size': tag.size,
+                      'code': tag.code, 
+                      'enc': enc,
+                      'value': val if isinstance(val, str) else "..." })
+        #'val': val if isinstance(val, str) else b64encode(val).decode('ascii') })
+
+    return { 'version': f"2.{header.major}.{header.minor}",
+             'flags': { 'unsync': header.flags.unsync, 'extended': header.flags.extended, 'experimental': header.flags.experimental },
+             'tags': tags }
+
+#
+# APE
+#
+
+APEFlags       = bitfield('APEFlags', has_header=0x80000000,
+                                      has_footer=0x40000000,
+                                      is_header =0x20000000,
+                                      kind      =0x00000006,
+                                      read_only =0x00000001,
+                                      zero      =0x1ffffff8)
+APEHeader      = namedtuple('APEHeader', 'tag version size count flags zero')
+APEHeaderBytes = struct('<8sLLLLQ')
+APETag         = namedtuple('APETag', 'size flags')
+APETagBytes    = struct('<LL')
+
+def decode_ape(f):
+    for pos in [-32, -128-32]:
+        f.seek(pos, 2)
+        foot = read_from(f, APEHeaderBytes, APEHeader)
+        foot = foot._replace(flags=APEFlags(foot.flags))
+        if foot.tag == b'APETAGEX' and foot.zero == 0:
+            break
+    else:
+        raise ValueError('No APE footer found')
+    logging.debug(f"{foot} → {f.tell():x}")
+    f.seek(f.tell() - foot.size-32)
+    head = read_from(f, APEHeaderBytes, APEHeader)
+    head = head._replace(flags=APEFlags(head.flags))
+    if head.tag != b'APETAGEX' or head.zero != 0:
+        raise ValueError('No APE header found')
+    logging.debug(f"{head} → {f.tell():x}")
+    tags = {}
+    for _ in range(head.count):
+        tag = read_from(f, APETagBytes, APETag)
+        tag = tag._replace(flags=APEFlags(tag.flags))
+        key = b''
+        while not key.endswith(b'\x00'):
+            key += f.read(1)
+        key = key.rstrip(b'\x00')
+        val = f.read(tag.size)
+        logging.debug(f"{tag} {key} {val} → {f.tell():x}")
+        tags[key.decode('ascii')] = val.decode('ascii')
+    return tags
+
+#
+# FLAC
+#
+
+def decode_flac_metadata_block_header(f):
+    UINT32 = lambda f: read_from(f, struct('>L'), int)
+    FLACMetadataBlockHeader = bitfield('FLACMetadataBlockHeader', last_block=0x80000000,
+                                                                  block_type=0x7f000000,
+                                                                  block_size=0x00ffffff)
+    return FLACMetadataBlockHeader(UINT32(f))
+
+def decode_flac_stream_info(f):
+    UINT16 = lambda f: read_from(f, struct('>H'), int)
+    UINT32 = lambda f: read_from(f, struct('>L'), int)
+    UINT64 = lambda f: read_from(f, struct('>Q'), int)
+    MD5 = lambda f: f.read(16)
+
+    FLACStreamInfo = namedtuple('FLACStreamInfo', 'min_size f1 f2 md5')
+    FLACStreamInfo1 = bitfield('FLACStreamInfo1', max_size      =0xffff000000000000,
+                                                  min_frame_size=0x0000ffffff000000,
+                                                  max_frame_size=0x0000000000ffffff)
+    FLACStreamInfo2 = bitfield('FLACStreamInfo2', sample_rate=0xfffff00000000000,
+                                                  channels   =0x00000e0000000000,
+                                                  bits_sample=0x000001f000000000,
+                                                  samples    =0x0000000fffffffff)
+
+    return FLACStreamInfo(UINT16(f), FLACStreamInfo1(UINT64(f)), FLACStreamInfo2(UINT64(f)), MD5(f))
+
+def decode_flac_vorbis_comment(f):
+    UINT32 = lambda f: read_from(f, struct('<L'), int)
+    UTF8 = lambda f: f.read(UINT32(f)).decode('UTF8')
+    FLACVorbisComment = namedtuple('FLACVorbisComment', 'vendor tags')
+    return FLACVorbisComment(UTF8(f), [ tuple(UTF8(f).split('=', 1)) for _ in range(UINT32(f)) ])
+
+def decode_flac_picture(f):
+    UINT32 = lambda f: read_from(f, struct('>L'), int)
+    BYTES = lambda f: f.read(UINT32(f))
+    UTF8 = lambda f: f.read(UINT32(f)).decode('UTF-8')
+    FLACMetadataBlockPicture = namedtuple('FLACMetadataBlockPicture', 'pic_type mime_type pic_descr width height '
+                                                                      'color_depth color_count pic_data')
+    return FLACMetadataBlockPicture(UINT32(f), UTF8(f), UTF8(f), UINT32(f), UINT32(f), UINT32(f), UINT32(f), BYTES(f))
+
+def decode_flac(f):
+    if f.read(4) != b'fLaC':
+        raise ValueError('No FLAC header found')
+
+    block_header, pics, stream_info, vorbis_comnent = None, [], None, None
+    while not block_header or not block_header.last_block:
+        block_header = decode_flac_metadata_block_header(f)
+        logging.debug(f"{block_header} ({block_header.block_type}) → {f.tell():x}")
+
+        if block_header.block_type == 0: # STREAMINFO
+            stream_info = decode_flac_stream_info(f)
+            logging.debug(f"{stream_info} → {f.tell():x}")
+
+        elif block_header.block_type == 4: # VORBIS_COMMENT
+            vorbis_comment = decode_flac_vorbis_comment(f)
+            logging.debug(f"{vorbis_comment} → {f.tell():x}")
+
+        elif block_header.block_type == 6: # PICTURE
+            pics += [decode_flac_picture(f)]
+            #log.debug(f"{pics[-1]} → {f.tell():x}")
+            logging.debug(f"FLACMetadataBlockPicture(pic_type={pics[-1].pic_type}, mime_type={pics[-1].mime_type}, pic_descr={pics[-1].pic_descr}, width={pics[-1].width}, height={pics[-1].height}, color_depth={pics[-1].color_depth}, color_count={pics[-1].color_count}, pic_data=..{len(pics[-1].pic_data)}..) → {f.tell():x}")
+
+        else:
+            f.read(block_header.block_size)
+
+    return {
+        'stream_info': stream_info and {
+            'min_size': stream_info.min_size,
+            'max_size': stream_info.f1.max_size,
+            'min_frame_size': stream_info.f1.min_frame_size,
+            'max_frame_size': stream_info.f1.max_frame_size,
+            'sample_rate': stream_info.f2.sample_rate,
+            'channels': stream_info.f2.channels + 1,
+            'bits_per_sample': stream_info.f2.bits_sample,
+            'sample_count': stream_info.f2.samples,
+            'md5': ''.join(f"{ch:02x}" for ch in stream_info.md5)
+        },
+        'vorbis_comment': vorbis_comment and {
+            'vendor': vorbis_comment.vendor,
+            **{ k.lower(): v for (k, v) in vorbis_comment.tags }
+        },
+        'picture_count': len(pics),
+        'pictures': [ { 'type': pic.pic_type, 
+                        'mime': pic.mime_type, 
+                        'desc': pic.pic_descr, 
+                        'width': pic.width, 
+                        'height': pic.height, 
+                        'depth': pic.color_depth, 
+                        'palette': pic.color_count,
+                        'size': len(pic.pic_data) } 
+                      for pic in pics ]
+    }
+
+
+# main stuff
+
+def try_decode(fn, func):
+    try:
+        logging.debug(f"Parser start: {func.__name__}")
+        with open(fn, 'rb') as f:
+            return func(f)
+    except Exception as e:
+        if logging.getLogger().isEnabledFor(logging.DEBUG):
+            logging.exception(f"Caught {type(e).__name__} while parsing using {func.__name__} ({e})")
+    finally:
+        logging.debug(f"Parser done: {func.__name__}")
+
+def detect(fn):
+    result = { 'path': fn, 'filename': os.path.basename(fn) }
+    result['id3v1'] = try_decode(fn, decode_id3v1)
+    result['id3v2'] = try_decode(fn, decode_id3v2)
+    result['ape'] = try_decode(fn, decode_ape)
+    result['flac'] = try_decode(fn, decode_flac)
+    return { k: v for k,v in result.items() if v }
+
+def parse_args(args=sys.argv[1:]):
+    parser = argparse.ArgumentParser(description='Convert media file info to JSON')
+    parser.add_argument('source',
+                        help='File to parse')
+    parser.add_argument('-d', '--debug', action='store_const', const=logging.DEBUG, default=logging.INFO,
+                        help='output debug info')
+    parser.add_argument('-s', '--seq', action='store_true', default=False,
+                        help='ouput RS in accordance to JSON-Seq')
+    output = parser.add_mutually_exclusive_group()
+    output.add_argument('-p', '--pretty', action='store_true', default=False)
+    output.add_argument('-f', '--flat', action='store_true', default=False)
+    args = parser.parse_args(args)
+    return args
+
+if __name__ == '__main__':
+    args = parse_args()
+    logging.basicConfig(level=args.debug, format='[%(funcName)-12s] [%(levelname)-5s] %(message)s')
+    logging.debug(f"Args: {args}")
+    pretty = 4 if args.pretty \
+        else None if args.flat \
+        else 4 if sys.stdout.isatty() \
+        else None
+    if args.seq:
+        sys.stdout.write("\x1e")
+    json.dump(detect(args.source), sys.stdout, indent=pretty)
+    if args.seq:
+        sys.stdout.write("\x0a")
