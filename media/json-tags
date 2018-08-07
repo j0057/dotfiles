@@ -281,8 +281,8 @@ def detect(fn):
 
 def parse_args(args=sys.argv[1:]):
     parser = argparse.ArgumentParser(description='Convert media file info to JSON')
-    parser.add_argument('source',
-                        help='File to parse')
+    parser.add_argument('files', nargs='+',
+                        help='Files to parse')
     parser.add_argument('-d', '--debug', action='store_const', const=logging.DEBUG, default=logging.INFO,
                         help='output debug info')
     parser.add_argument('-s', '--seq', action='store_true', default=False,
@@ -301,8 +301,9 @@ if __name__ == '__main__':
         else None if args.flat \
         else 4 if sys.stdout.isatty() \
         else None
-    if args.seq:
-        sys.stdout.write("\x1e")
-    json.dump(detect(args.source), sys.stdout, indent=pretty)
-    if args.seq:
-        sys.stdout.write("\x0a")
+    for fn in args.files:
+        if args.seq:
+            sys.stdout.write("\x1e")
+        json.dump(detect(fn), sys.stdout, indent=pretty)
+        if args.seq:
+            sys.stdout.write("\x0a")
