@@ -11,6 +11,11 @@ set noswapfile
 "set t_Co=16
 colorscheme zellner
 syntax on
+highlight Folded ctermfg=darkgray
+
+filetype on
+filetype plugin on
+filetype indent on
 
 " load plugins
 let g:fzf_command_prefix="Fzf"
