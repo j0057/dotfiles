@@ -19,3 +19,6 @@
 [submodule "tmhedberg_simpylfold"]
 	path = vim/bundle/simpylfold
 	url = https://github.com/tmhedberg/simpylfold
+[submodule "konfekt_fastfold"]
+	path = vim/bundle/fastfold
+	url = https://github.com/Konfekt/FastFold
