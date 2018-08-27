@@ -12,9 +12,9 @@ bitrate() {
     mediainfo '--output=Audio;%BitRate%' "$1"
 }
 
-all() {
-    mediainfo --output=JSON "$1" | jq .
-}
+#all() {
+#    mediainfo --output=JSON "$1" | jq .
+#}
 
 case "$1" in
     report)
