@@ -1,0 +1,74 @@
+#!/usr/bin/env python3
+
+import argparse
+import glob, fnmatch
+import os
+import sys
+import time
+
+from functools import reduce
+from itertools import groupby, chain
+from os.path import basename
+from pprint import pprint
+
+def strftime(f, t):
+    return time.strftime(f, time.gmtime(t))
+
+def datasize(n):
+    return reduce(lambda a, u: a if n < 2**(10*u[0]) else f"{n/2**(10*u[0]):.2f} {u[1]}",
+                  enumerate('B KB MB GB TB PB EB YB'.split()), "0 B")
+
+def buckets(it, p):
+    return [(b, [*g]) for (b, g) in groupby(it, lambda x: x[0] // p)]
+
+def prune_backups(now, paths, force, verbosity):
+    paths = sorted((st.st_mtime, fn, st.st_size)
+                   for (fn, st) in map(lambda fn: (fn, os.stat(fn)), paths))
+    S = [0, 60*60, 60*60*24, 60*60*24*7, 60*60*24*365.2425//12, 60*60*24*365.2425, 2**64]
+    keep_size, clean_size = 0, 0
+    keep_count, clean_count = 0, 0
+    for (mn, mx, bs) in [*zip(S, S[1:], [x or 60*5 for x in S])][::-1]:
+        if verbosity >= 2:
+            print(f"--> min: {mn} max: {mx} bucket: {bs}")
+        for (_, g) in buckets([(m, p, s) for (m, p, s) in paths if mn <= now-m < mx], bs):
+            for (mt, fn, sz) in g[:-1]:
+                clean_size += sz
+                clean_count += 1
+                if verbosity >= 1:
+                    print(f"- {basename(fn)} [{strftime('%y%m%d %H%M%S', mt)}]")
+                if force:
+                    os.unlink(fn)
+            (mt, fn, sz) = g[-1]
+            keep_size += sz
+            keep_count += 1
+            if verbosity >= 1:
+                print(f"+ {basename(fn)} [{strftime('%y%m%d %H%M%S', mt)}]")
+    if verbosity >= 0:
+        print(f"kept {datasize(keep_size)} in {keep_count} files, cleaned {datasize(clean_size)} in {clean_count} files")
+
+def parse_args(argv, env):
+    parser = argparse.ArgumentParser(description='prune a list of files based on mtime')
+    parser.add_argument('-v', '--verbose', action='count', default=0,
+                        help='increase verbosity')
+    parser.add_argument('-q', '--quiet', action='count', default=0,
+                        help='decrease verbosity')
+    parser.add_argument('-f', '--force', action='store_true',
+                        default=env.get('PRUNE_FORCE', '0') == '1',
+                        help='actually do it instead of just going through the motions')
+    parser.add_argument('files', nargs='*',
+                        help='files to delete from')
+    return parser.parse_args(argv[1:])
+
+if __name__ == '__main__':
+    args = parse_args(sys.argv, os.environ)
+    if args.verbose >= 3:
+        print(f"args: {args}")
+    if args.verbose >= 1 and not args.force:
+        print("warning: no -f, --force argument or PRUNE_FORCE=1 environment variable; not doing anything")
+
+    now = time.time()
+    if args.verbose >= 2:
+        print(f"now: {now}")
+
+    files = [*chain(*[glob.glob(fn) for fn in args.files])]
+    prune_backups(now, files, args.force, args.verbose - args.quiet)

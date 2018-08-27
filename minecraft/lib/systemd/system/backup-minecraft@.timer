@@ -1,0 +1,6 @@
+[Timer]
+AccuracySec = 1s
+OnCalendar = 00..23:00..59/5:00
+
+[Install]
+WantedBy = timers.target

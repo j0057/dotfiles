@@ -1,0 +1,33 @@
+#!/bin/bash
+
+d=$(date -u +%y%m%d)
+t=$(date -u +%H%M)
+u=${1?missing username}
+
+dir_mtime() {
+    find "$1" -type f -print0 \
+        | xargs -0 stat -c %Y \
+        | awk 'BEGIN{x=0} $1>x{x=$1} END{print x}'
+}
+
+cd /home/$u/.minecraft/saves
+for w in *; do
+    dest="/home/jjm/sync/minecraft/$u/$w"
+    fn="${1}_${w}_${d}_${t}.zip"
+
+    mkdir -p "$dest"
+
+    wt=$(dir_mtime "$w")
+    dt=$(dir_mtime "$dest")
+
+    if [ "$t" = "0000" ]; then
+        echo "> $fn"
+        zip -rq  "$dest/$fn" "$w"
+    elif [ "$wt" -gt "$dt" ]; then
+        echo "> $fn"
+        zip -rq "$dest/$fn" "$w"
+        touch -d "@$wt" "$dest/$fn"
+    fi
+
+    $(dirname $0)/prune-backups -fv "$dest/*.zip"
+done

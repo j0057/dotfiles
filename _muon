@@ -18,3 +18,6 @@ stow -v -t $HOME            $1 pip
 stow -v -t $HOME/.local/bin $1 scripts
 stow -v -t $HOME/.local/bin $1 media
 stow -v -t $HOME/.ssh       $1 ssh
+
+sudo \
+stow -v -t /usr/local       $1 minecraft
