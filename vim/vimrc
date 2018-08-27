@@ -19,7 +19,6 @@ filetype indent on
 
 " load plugins
 let g:fzf_command_prefix="Fzf"
-"et g:fzf_layout={ 'right': '~40%' }
 runtime bundle/pathogen/autoload/pathogen.vim
 silent! execute pathogen#infect()
 
