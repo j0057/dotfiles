@@ -20,7 +20,7 @@ filetype indent on
 " load plugins
 let g:fzf_command_prefix="Fzf"
 "et g:fzf_layout={ 'right': '~40%' }
-let g:pathogen_disabled=["pathogen"]
+runtime bundle/pathogen/autoload/pathogen.vim
 silent! execute pathogen#infect()
 
 " leader key is hard to reach on mobile
