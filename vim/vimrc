@@ -6,6 +6,7 @@ set incsearch hlsearch
 set number
 set wildmenu
 set noswapfile
+set showcmd
 
 " colors!
 "set t_Co=16
