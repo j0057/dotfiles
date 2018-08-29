@@ -28,3 +28,6 @@
 [submodule "itchyny_landscape.vim"]
 	path = vim/bundle/landscape
 	url = https://github.com/itchyny/landscape.vim
+[submodule "davidhalter_jedi-vim"]
+	path = vim/bundle/jedi
+	url = https://github.com/davidhalter/jedi-vim
