@@ -23,6 +23,9 @@ silent! execute pathogen#infect()
 if $TERM == "xterm-256color"
     set t_Co=256
     colorscheme landscape
+    highlight StatusLine ctermfg=121 ctermbg=240
+    highlight TabLineFill cterm=NONE
+    highlight TabLineSel ctermfg=120
 else
     set t_Co=16
     colorscheme murphy
@@ -72,4 +75,4 @@ nnoremap <F5> :!./%<CR>
 nnoremap <F6> :!pytest %<CR>
 
 " statusline
-set statusline=[%n]%m%r\ %F%h%w\ [%{&ff}]\ %y\ %=%{fugitive#head(7)}\ 0x%04.4B\ %v\ %l/%L\ %p%% 
+set statusline=[%n]%m%r%h%w\ %t\ [%{&ff}]\ %y\ %=%{fugitive#head(7)}\ 0x%04.4B\ %v\ %l/%L\ %p%%
