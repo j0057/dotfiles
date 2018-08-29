@@ -89,3 +89,14 @@ autocmd  trailing_whitespace BufWrite *      if !exists("b:preserve_trailing_ws"
                                              \ | call setpos(".", cursor)
                                              \ | endif
 augroup  end
+
+" automatically remove trailing newlines to make Git happy
+augroup  trailing_newlines
+autocmd! trailing_newlines
+autocmd  trailing_newlines BufRead  *.diff let b:preserve_trailing_nl=1
+autocmd  trailing_newlines BufWrite *      if !exists("b:preserve_trailing_nl")
+                                           \ | let cursor = getpos(".")
+                                           \ | %s/\($\n\s*\)\+\%$//e
+                                           \ | call setpos(".", cursor)
+                                           \ | endif
+augroup  end
