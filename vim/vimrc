@@ -15,8 +15,20 @@ filetype on
 filetype plugin on
 filetype indent on
 
-" load plugins
+" configure fzf
 let g:fzf_command_prefix="Fzf"
+
+" configure jedi
+let g:jedi#popup_on_dot             = 0
+let g:jedi#completions_command      = "<C-Space>"
+let g:jedi#documentation_command    = "K"
+let g:jedi#goto_assignments_command = "<LEADER>pa"
+let g:jedi#goto_command             = "<LEADER>pg"
+let g:jedi#goto_definitions_command = "<LEADER>pd"
+let g:jedi#rename_command           = "<LEADER>pr"
+let g:jedi#usages_command           = "<LEADER>pu"
+
+" load plugins
 runtime bundle/pathogen/autoload/pathogen.vim
 silent! execute pathogen#infect()
 
