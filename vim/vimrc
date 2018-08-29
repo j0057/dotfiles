@@ -25,7 +25,6 @@ silent! execute pathogen#infect()
 
 " leader key is hard to reach on mobile
 set timeoutlen=2500
-" let mapleader = ','
 
 " editing .vimrc
 nnoremap <LEADER>ce :edit $MYVIMRC<CR>
