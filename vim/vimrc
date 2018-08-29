@@ -77,3 +77,15 @@ nnoremap <F6> :!pytest %<CR>
 
 " statusline
 set statusline=[%n]%m%r%h%w\ %t\ [%{&ff}]\ %y\ %=%{fugitive#head(7)}\ 0x%04.4B\ %v\ %l/%L\ %p%%
+
+" automatically remove trailing whitespace to make Git happy
+augroup  trailing_whitespace
+autocmd! trailing_whitespace
+autocmd  trailing_whitespace BufRead  *.md   let b:preserve_trailing_ws=1
+autocmd  trailing_whitespace BufRead  *.diff let b:preserve_trailing_ws=1
+autocmd  trailing_whitespace BufWrite *      if !exists("b:preserve_trailing_ws")
+                                             \ | let cursor = getpos(".")
+                                             \ | %s/\s\+$//e
+                                             \ | call setpos(".", cursor)
+                                             \ | endif
+augroup  end
