@@ -58,7 +58,7 @@ nnoremap <LEADER>s :bnext<CR>
 
 nnoremap <LEADER>bw :bwipe<CR>
 
-nnoremap <LEADER>g :grep -R <C-r><C-w> *<CR>:copen<CR>
+nnoremap <LEADER>s :grep -R <C-r><C-w> *<CR>:copen<CR>
 
 nnoremap <LEADER>ff     :FzfFiles<CR>
 nnoremap <LEADER>fg     :FzfGFiles<CR>
@@ -86,6 +86,14 @@ nnoremap <LEADER>fF     :FzfFiletypes<CR>
 
 nnoremap <F5> :!./%<CR>
 nnoremap <F6> :!pytest %<CR>
+
+nnoremap <LEADER>gs :Gstatus<CR>
+nnoremap <LEADER>gd :Gvdiff<CR>
+nnoremap <LEADER>gc :Gcommit<CR>
+nnoremap <LEADER>gp :Gpush<CR>
+nnoremap <LEADER>gf :Gfetch -p<CR>
+nnoremap <LEADER>gb :Gblame -s<CR>
+nnoremap <LEADER>gb :Gblame<CR>
 
 " statusline
 set statusline=[%n]%m%r%h%w\ %t\ [%{&ff}]\ %y\ %=%{fugitive#head(7)}\ 0x%04.4B\ %v\ %l/%L\ %p%%
