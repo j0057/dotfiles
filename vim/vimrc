@@ -49,51 +49,51 @@ endif
 set timeoutlen=2500
 
 " editing .vimrc
-nnoremap <LEADER>ce :edit $MYVIMRC<CR>
-nnoremap <LEADER>cs :source $MYVIMRC<CR>
+nmap <LEADER>ce :edit $MYVIMRC<CR>
+nmap <LEADER>cs :source $MYVIMRC<CR>
 
 " buffer switching
-nnoremap <LEADER>a :bprev<CR>
-nnoremap <LEADER>s :bnext<CR>
+nmap <LEADER>a :bprev<CR>
+nmap <LEADER>s :bnext<CR>
 
-nnoremap <LEADER>bw :bwipe<CR>
+nmap <LEADER>bw :bwipe<CR>
 
-nnoremap <LEADER>s :grep -R <C-r><C-w> *<CR>:copen<CR>
+nmap <LEADER>s :grep -R <C-r><C-w> *<CR>:copen<CR>
 
-nnoremap <LEADER>ff     :FzfFiles<CR>
-nnoremap <LEADER>fg     :FzfGFiles<CR>
-nnoremap <LEADER>fgf    :FzfGFiles<CR>
-nnoremap <LEADER>fb     :FzfBuffers<CR>
-nnoremap <LEADER>fbb    :FzfBuffers<CR>
-nnoremap <LEADER>fc     :FzfColors<CR>
-nnoremap <LEADER>fl     :FzfLines<CR>
-nnoremap <LEADER>fbl    :FzfBLines<CR>
-nnoremap <LEADER>ft     :FzfTags<CR>
-nnoremap <LEADER>fbt    :FzfBTags<CR>
-nnoremap <LEADER>fm     :FzfMarks<CR>
-nnoremap <LEADER>fw     :FzfWindows<CR>
-nnoremap <LEADER>fw     :FzfWindows<CR>
-nnoremap <LEADER>fh     :FzfHistory<CR>
-nnoremap <LEADER>fhf    :FzfHistory<CR>
-nnoremap <LEADER>fh:    :FzfHistory:<CR>
-nnoremap <LEADER>fh/    :FzfHistory/<CR>
-nnoremap <LEADER>fgc    :FzfCommits<CR>
-nnoremap <LEADER>fgb    :FzfBCommits<CR>
-nnoremap <LEADER>f:     :FzfCommands<CR>
-nnoremap <LEADER>fm     :FzfMaps<CR>
-nnoremap <LEADER>fH     :FzfHelptags<CR>
-nnoremap <LEADER>fF     :FzfFiletypes<CR>
+nmap <LEADER>ff  :FzfFiles<CR>
+nmap <LEADER>fg  :FzfGFiles<CR>
+nmap <LEADER>fgf :FzfGFiles<CR>
+nmap <LEADER>fb  :FzfBuffers<CR>
+nmap <LEADER>fbb :FzfBuffers<CR>
+nmap <LEADER>fc  :FzfColors<CR>
+nmap <LEADER>fl  :FzfLines<CR>
+nmap <LEADER>fbl :FzfBLines<CR>
+nmap <LEADER>ft  :FzfTags<CR>
+nmap <LEADER>fbt :FzfBTags<CR>
+nmap <LEADER>fm  :FzfMarks<CR>
+nmap <LEADER>fw  :FzfWindows<CR>
+nmap <LEADER>fw  :FzfWindows<CR>
+nmap <LEADER>fh  :FzfHistory<CR>
+nmap <LEADER>fhf :FzfHistory<CR>
+nmap <LEADER>fh: :FzfHistory:<CR>
+nmap <LEADER>fh/ :FzfHistory/<CR>
+nmap <LEADER>fgc :FzfCommits<CR>
+nmap <LEADER>fgb :FzfBCommits<CR>
+nmap <LEADER>f:  :FzfCommands<CR>
+nmap <LEADER>fm  :FzfMaps<CR>
+nmap <LEADER>fH  :FzfHelptags<CR>
+nmap <LEADER>fF  :FzfFiletypes<CR>
 
-nnoremap <F5> :!./%<CR>
-nnoremap <F6> :!pytest %<CR>
+nmap <F5> :!./%<CR>
+nmap <F6> :!pytest %<CR>
 
-nnoremap <LEADER>gs :Gstatus<CR>
-nnoremap <LEADER>gd :Gvdiff<CR>
-nnoremap <LEADER>gc :Gcommit<CR>
-nnoremap <LEADER>gp :Gpush<CR>
-nnoremap <LEADER>gf :Gfetch -p<CR>
-nnoremap <LEADER>gb :Gblame -s<CR>
-nnoremap <LEADER>gb :Gblame<CR>
+nmap <LEADER>gs :Gstatus<CR>
+nmap <LEADER>gd :Gvdiff<CR>
+nmap <LEADER>gc :Gcommit<CR>
+nmap <LEADER>gp :Gpush<CR>
+nmap <LEADER>gf :Gfetch -p<CR>
+nmap <LEADER>gb :Gblame -s<CR>
+nmap <LEADER>gb :Gblame<CR>
 
 " statusline
 set statusline=[%n]%m%r%h%w\ %t\ [%{&ff}]\ %y\ %=%{fugitive#head(7)}\ 0x%04.4B\ %v\ %l/%L\ %p%%
