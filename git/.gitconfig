@@ -17,8 +17,8 @@ si = diff --stat --cached
 
 lg    = log --color --oneline --graph --decorate --exclude='*gh-pages' --all
 lg-gh = log --color --oneline --graph --decorate                       --all
-lgw   = "!f() { watch --color --interval .5 git lg ; }; f"
-lgw-gh= "!f() { watch --color --interval .5 git lg-gh ; }; f"
+lgw   = "!exec watch --color --interval .5 git lg"
+lgw   = "!exec watch --color --interval .5 git lg-gh"
 
 lp    = log --color --patch
 
@@ -34,7 +34,7 @@ s = status -sb
 very-clean = clean -xfd
 list-authors = "!git log --format='%aN <%cE>' | sort -u"
 
-e = "!f() { $EDITOR $(git status --porcelain | cut -b 4-); }; f"
+e = "!exec $EDITOR $(git status --porcelain | cut -b 4-)"
 
 [push]
 default = simple
