@@ -1,6 +1,16 @@
 
 HOSTNAME=$(shell hostname | tr A-Z a-z)
 
+ifeq ($(QUIET),0)
+	STOW=stow -v
+	MKDIR=mkdir -v
+	RM=rm -v
+else
+	STOW=stow
+	MKDIR=mkdir
+	RM=rm
+endif
+
 install : MODE=-S
 install : $(HOSTNAME)
 
@@ -17,43 +27,43 @@ photon : _bash _git            _vim _pip _scripts _media _admin
 arch   : _bash _git _tmux _ssh _vim _pip _scripts
 
 _bash:
-	stow -v -t $(HOME) $(MODE) bash
+	$(STOW) $(MODE) bash -t $(HOME)
 
 _git:
-	stow -v -t $(HOME) $(MODE) git
+	$(STOW) $(MODE) git -t $(HOME)
 
 _tmux:
-	stow -v -t $(HOME) $(MODE) tmux
+	$(STOW) $(MODE) tmux -t $(HOME)
 
 _ssh:
-	mkdir -pv $(HOME)/.ssh
+	$(MKDIR) -p $(HOME)/.ssh
 	$(if $(filter -S -R,$(MODE)),echo 'Include ~/.ssh/$(HOSTNAME).conf' > ssh/config,)
-	stow -v -t $(HOME)/.ssh $(MODE) ssh
-	$(if $(filter _D,$(MODE)),rm -fv ssh/config,)
+	$(STOW) $(MODE) ssh -t $(HOME)/.ssh
+	$(if $(filter _D,$(MODE)),$(RM) -f ssh/config,)
 
 _ssh_hack:
-	stow -v -t $(HOME)/.ssh $(MODE) ssh
-	$(if $(filter -S -R,$(MODE)),cat ssh/$(HOSTNAME).conf | sed 's/Include //' | sed 's_~_$(HOME)_' | xargs cat > ~/.ssh/config,rm -fv ~/.ssh/config)
+	$(STOW) $(MODE) ssh -t $(HOME)/.ssh
+	$(if $(filter -S -R,$(MODE)),cat ssh/$(HOSTNAME).conf | sed 's/Include //' | sed 's_~_$(HOME)_' | xargs cat > ~/.ssh/config,$(RM) -f ~/.ssh/config)
 
 _vim:
-	mkdir -pv $(HOME)/.vim
-	stow -v -t $(HOME)/.vim $(MODE) vim
+	$(MKDIR) -p $(HOME)/.vim
+	$(STOW) $(MODE) vim -t $(HOME)/.vim
 
 _pip:
-	stow -v -t $(HOME) $(MODE) pip
+	$(STOW) $(MODE) pip -t $(HOME)
 
 _scripts:
-	stow -v -t $(HOME)/.local/bin $(MODE) scripts
+	$(STOW) $(MODE) scripts -t $(HOME)/.local/bin
 
 _fzf_bin:
 	./fzf-get
-	sudo stow -v -t /usr/local $(MODE) fzf
+	$(STOW) stow $(MODE) fzf -t /usr/local
 
 _media:
-	stow -v -t $(HOME)/.local/bin $(MODE) media
+	$(STOW) $(MODE) media -t $(HOME)/.local/bin
 
 _minecraft:
-	sudo stow -v -t /usr/local $(MODE) minecraft
+	sudo $(STOW) $(MODE) minecraft -t /usr/local
 
 _admin:
-	sudo stow -v -t /usr/local $(MODE) admin
+	sudo $(STOW) $(MODE) admin -t /usr/local
