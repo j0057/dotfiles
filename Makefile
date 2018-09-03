@@ -50,7 +50,7 @@ _fzf_bin:
 	sudo stow -v -t /usr/local $(MODE) fzf
 
 _media:
-	stow -v -t $(HOME)/.ocal/bin $(MODE) media
+	stow -v -t $(HOME)/.local/bin $(MODE) media
 
 _minecraft:
 	sudo stow -v -t /usr/local $(MODE) minecraft
