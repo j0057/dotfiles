@@ -51,6 +51,7 @@
 [rebase]
     autosquash = true
     autostash = true
+    stat = true
 
 [transfer]
     fsckObjects = true
