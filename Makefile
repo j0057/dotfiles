@@ -36,7 +36,7 @@ _tmux:
 	$(STOW) $(MODE) tmux -t $(HOME)
 
 _ssh:
-	$(MKDIR) -p $(HOME)/.ssh
+	@$(MKDIR) -p $(HOME)/.ssh
 	$(if $(filter -S -R,$(MODE)),echo 'Include ~/.ssh/$(HOSTNAME).conf' > ssh/config,)
 	$(STOW) $(MODE) ssh -t $(HOME)/.ssh
 	$(if $(filter _D,$(MODE)),$(RM) -f ssh/config,)
@@ -46,7 +46,7 @@ _ssh_hack:
 	$(if $(filter -S -R,$(MODE)),cat ssh/$(HOSTNAME).conf | sed 's/Include //' | sed 's_~_$(HOME)_' | xargs cat > ~/.ssh/config,$(RM) -f ~/.ssh/config)
 
 _vim:
-	$(MKDIR) -p $(HOME)/.vim
+	@$(MKDIR) -p $(HOME)/.vim
 	$(STOW) $(MODE) vim -t $(HOME)/.vim
 
 _pip:
