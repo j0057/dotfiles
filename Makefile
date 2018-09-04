@@ -20,9 +20,9 @@ clean : $(HOSTNAME)
 refresh : MODE=-R
 refresh : $(HOSTNAME)
 
-nb-xps08 : _bash _git _tmux _ssh_hack _vim _pip _scripts _fzf_bin
+nb-xps08 : _bash _git _tmux _ssh _vim _pip _scripts _fzf_bin
 
-muon   : _bash _git _tmux _ssh _vim _pip _scripts _media _ssh _minecraft
+muon   : _bash _git _tmux _ssh _vim _pip _scripts _media _minecraft
 photon : _bash _git            _vim _pip _scripts _media _admin
 arch   : _bash _git _tmux _ssh _vim _pip _scripts
 
@@ -35,15 +35,22 @@ _git:
 _tmux:
 	$(STOW) $(MODE) tmux -t $(HOME)
 
-_ssh:
+_ssh: ssh/config
 	@$(MKDIR) -p $(HOME)/.ssh
-	$(if $(filter -S -R,$(MODE)),echo 'Include ~/.ssh/$(HOSTNAME).conf' > ssh/config,)
 	$(STOW) $(MODE) ssh -t $(HOME)/.ssh
-	$(if $(filter _D,$(MODE)),$(RM) -f ssh/config,)
+	$(if $(filter -D,$(MODE)),$(RM) -f ssh/config)
 
-_ssh_hack:
-	$(STOW) $(MODE) ssh -t $(HOME)/.ssh
-	$(if $(filter -S -R,$(MODE)),cat ssh/$(HOSTNAME).conf | sed 's/Include //' | sed 's_~_$(HOME)_' | xargs cat > ~/.ssh/config,$(RM) -f ~/.ssh/config)
+# need OpenSSH 7.2+ for Include directive (current is 7.8)
+ssh/config:
+	echo 'Include ~/.ssh/$(HOSTNAME).conf' >$@
+ifeq ($(HOSTNAME),nb-xps08)
+	while grep ^Include $@ >/dev/null; do \
+		sed 's#Include ~/\.##' $@ | xargs cat >$@~; \
+		mv $@~ $@; \
+	done
+
+ssh/config: ssh/*.conf
+endif
 
 _vim:
 	@$(MKDIR) -p $(HOME)/.vim
