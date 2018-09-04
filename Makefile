@@ -60,8 +60,9 @@ _scripts:
 	$(STOW) $(MODE) scripts -t $(HOME)/.local/bin
 
 _fzf_bin:
-	./fzf-get
-	$(STOW) stow $(MODE) fzf -t /usr/local
+	make -C fzf VERBOSE=$(VERBOSE) $(if $(filter -D,$(MODE)),clean)
+	$(if $(filter -S -R,$(MODE)),$(LN) -sf /usr/local/share/fzf/vim vim/bundle/fzf,$(RM) -f vim/bundle/fzf)
+	sudo $(STOW) $(MODE) fzf -t /usr/local
 
 _media:
 	$(STOW) $(MODE) media -t $(HOME)/.local/bin
