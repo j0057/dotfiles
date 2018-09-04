@@ -1,15 +1,12 @@
 
 HOSTNAME=$(shell hostname | tr A-Z a-z)
 
-ifeq ($(QUIET),0)
-	STOW=stow -v
-	MKDIR=mkdir -v
-	RM=rm -v
-else
-	STOW=stow
-	MKDIR=mkdir
-	RM=rm
-endif
+STOW=$(if $(VERBOSE),stow -v,stow)
+MKDIR=$(if $(VERBOSE),mkdir -v,mkdir)
+RM=$(if $(VERBOSE),rm -v,rm)
+MV=$(if $(VERBOSE),mv -v,mv)
+LN=$(if $(VERBOSE),ln -v,ln)
+GREP=$(if $(VERBOSE),grep -v,grep)
 
 install : MODE=-S
 install : $(HOSTNAME)
@@ -44,9 +41,9 @@ _ssh: ssh/config
 ssh/config:
 	echo 'Include ~/.ssh/$(HOSTNAME).conf' >$@
 ifeq ($(HOSTNAME),nb-xps08)
-	while grep ^Include $@ >/dev/null; do \
+	while $(GREP) ^Include $@; do \
 		sed 's#Include ~/\.##' $@ | xargs cat >$@~; \
-		mv $@~ $@; \
+		$(MV) $@~ $@; \
 	done
 
 ssh/config: ssh/*.conf
