@@ -13,4 +13,4 @@ find /var/named/keys -type f -name '*.key' \
             awk '/Delete:/ {exit($3<NOW)}' NOW=$NOW $filename && continue
             find "$(dirname $filename)" -type f -name "$(basename -s.key $filename)*"
         done ; } \
-    | xargs $ACTION
+    | xargs -r $ACTION
