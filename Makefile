@@ -1,4 +1,6 @@
 
+default: refresh
+
 HOSTNAME=$(shell hostname | tr A-Z a-z)
 
 STOW=$(if $(VERBOSE),stow -v,stow)
