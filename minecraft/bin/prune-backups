@@ -28,23 +28,25 @@ def prune_backups(now, paths, force, verbosity):
     keep_size, clean_size = 0, 0
     keep_count, clean_count = 0, 0
     for (mn, mx, bs) in [*zip(S, S[1:], [x or 60*5 for x in S])][::-1]:
-        if verbosity >= 2:
+        if verbosity >= 3:
             print(f"--> min: {mn} max: {mx} bucket: {bs}")
         for (_, g) in buckets([(m, p, s) for (m, p, s) in paths if mn <= now-m < mx], bs):
             for (mt, fn, sz) in g[:-1]:
                 clean_size += sz
                 clean_count += 1
-                if verbosity >= 1:
+                if verbosity >= 2:
                     print(f"- {basename(fn)} [{strftime('%y%m%d %H%M%S', mt)}]")
+                elif verbosity >= 0:
+                    print(f"Remove: {basename(fn)} [{strftime('%y%m%d %H%M%S', mt)}]")
                 if force:
                     os.unlink(fn)
             (mt, fn, sz) = g[-1]
             keep_size += sz
             keep_count += 1
-            if verbosity >= 1:
+            if verbosity >= 2:
                 print(f"+ {basename(fn)} [{strftime('%y%m%d %H%M%S', mt)}]")
-    if verbosity >= 0:
-        print(f"kept {datasize(keep_size)} in {keep_count} files, cleaned {datasize(clean_size)} in {clean_count} files")
+    if verbosity >= 1:
+        print(f"Kept {datasize(keep_size)} in {keep_count} files, cleaned {datasize(clean_size)} in {clean_count} files")
 
 def parse_args(argv, env):
     parser = argparse.ArgumentParser(description='prune a list of files based on mtime')

@@ -21,13 +21,13 @@ for w in *; do
     dt=$(dir_mtime "$dest")
 
     if [ "$t" = "0000" ]; then
-        echo "> $fn"
+        echo "Backup: $fn"
         zip -rq  "$dest/$fn" "$w"
     elif [ "$wt" -gt "$dt" ]; then
-        echo "> $fn"
+        echo "Backup: $fn"
         zip -rq "$dest/$fn" "$w"
         touch -d "@$wt" "$dest/$fn"
     fi
 
-    $(dirname $0)/prune-backups -fv "$dest/*.zip"
+    $(dirname $0)/prune-backups -f "$dest/*.zip"
 done
