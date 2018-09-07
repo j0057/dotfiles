@@ -68,6 +68,7 @@ nmap <LEADER>s :grep -R <C-r><C-w> *<CR>:copen<CR>
 
 nmap <LEADER>ff  :FzfFiles<CR>
 nmap <LEADER>fg  :FzfGFiles<CR>
+nmap <LEADER>fgg :FzfGFiles<CR>
 nmap <LEADER>fgf :FzfGFiles<CR>
 nmap <LEADER>fb  :FzfBuffers<CR>
 nmap <LEADER>fbb :FzfBuffers<CR>
