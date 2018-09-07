@@ -104,17 +104,17 @@ nmap <LEADER>gb :Gblame<CR>
 
 " statusline
 let &statusline=""
-    \. "[%n]%m%r%h%w"                                   " [1][+][RO][Help][Preview]
-    \. " %t"                                            " vimrc
+    \. "[%n]%m%r%h%w"
+    \. " %t"
     \. " %#warningmsg#%{SyntasticStatuslineFlag()}%*"
-    \. "%=%y"                                           " [vim]
-    \. " [%{&fileencoding}]"                            " [utf-8]
-    \. " [%{&fileformat}]"                              " [unix]
-    \. " [%{fugitive#head(7)}]"                         " [master]
-    \. " U+%04.4B"                                      " U+2603 ☃
-    \. " %v"                                            " 66
-    \. " %l/%L"                                         " 116/140
-    \. " %p%%"                                          " 83%
+    \. "%=%y"
+    \. " [%{&fileencoding}]"
+    \. " [%{&fileformat}]"
+    \. " [%{fugitive#head(7)}]"
+    \. " U+%04.4B"
+    \. " %v"
+    \. " %l/%L"
+    \. " %p%%"
 
 " automatically remove trailing whitespace to make Git happy
 augroup  trailing_whitespace
