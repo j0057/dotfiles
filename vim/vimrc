@@ -28,6 +28,10 @@ let g:jedi#goto_definitions_command = "<LEADER>pd"
 let g:jedi#rename_command           = "<LEADER>pr"
 let g:jedi#usages_command           = "<LEADER>pu"
 
+" configure syntastic
+let g:syntastic_check_on_open    = 1
+let g:syntastic_aggregate_errors = 1
+
 " load plugins
 runtime bundle/pathogen/autoload/pathogen.vim
 silent! execute pathogen#infect()
@@ -44,6 +48,8 @@ else
     colorscheme murphy
     highlight Folded ctermfg=darkgray
 endif
+
+highlight warningmsg ctermbg=darkred
 
 " leader key is hard to reach on mobile
 set timeoutlen=2500
@@ -99,6 +105,7 @@ nmap <LEADER>gb :Gblame<CR>
 let &statusline=""
     \. "[%n]%m%r%h%w"                                   " [1][+][RO][Help][Preview]
     \. " %t"                                            " vimrc
+    \. " %#warningmsg#%{SyntasticStatuslineFlag()}%*"
     \. "%=%y"                                           " [vim]
     \. " [%{&fileencoding}]"                            " [utf-8]
     \. " [%{&fileformat}]"                              " [unix]
