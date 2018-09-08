@@ -62,9 +62,10 @@ _scripts:
 	$(STOW) $(MODE) scripts -t $(HOME)/.local/bin
 
 _fzf_bin:
-	make -C fzf VERBOSE=$(VERBOSE) $(if $(filter -D,$(MODE)),clean)
-	$(if $(filter -S -R,$(MODE)),$(LN) -sf /usr/local/share/fzf/vim vim/bundle/fzf,$(RM) -f vim/bundle/fzf)
+	$(if $(filter -S -R,$(MODE)),make -C fzf VERBOSE=$(VERBOSE))
 	sudo $(STOW) $(MODE) fzf -t /usr/local
+	$(if $(filter -D,$(MODE)),make -C fzf VERBOSE=$(VERBOSE) clean)
+	$(if $(filter -S -R,$(MODE)),$(LN) -sf /usr/local/share/fzf/vim vim/bundle/fzf,$(RM) -f vim/bundle/fzf)
 
 _media:
 	$(STOW) $(MODE) media -t $(HOME)/.local/bin
