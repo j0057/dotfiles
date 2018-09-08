@@ -1,0 +1,4 @@
+.gitattributes
+.gitignore
+Makefile
+fzf-sums.txt
