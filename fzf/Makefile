@@ -2,6 +2,11 @@ FZF_VERSION=0.17.4
 FZF_REL=https://github.com/junegunn/fzf-bin/releases/download/$(FZF_VERSION)
 FZF_REPO=https://raw.githubusercontent.com/junegunn/fzf/$(FZF_VERSION)
 
+CURL=$(if $(VERBOSE),curl,curl -s)
+SHA256SUM=$(if $(VERBOSE),sha256sum,sha256sum --quiet)
+RM=$(if $(VERBOSE),rm -v,rm)
+MKDIR=$(if $(VERBOSE),mkdir -v,mkdir)
+
 fzf: 	bin \
 		bin/fzf \
 		share/fzf/completion.bash \
@@ -9,29 +14,29 @@ fzf: 	bin \
 		share/fzf/vim/doc/fzf.txt \
 		share/fzf/vim/plugin/fzf.vim \
 		share/man/man1/fzf.1
-	sha256sum --check --quiet fzf-sums.txt
+	$(SHA256SUM) --check fzf-sums.txt
 
 clean:
-	rm -rf bin
-	rm -rf share
+	$(RM) -rf bin
+	$(RM) -rf share
 
 bin:
-	mkdir -p bin
+	$(MKDIR) -p bin
 
 bin/fzf:
-	curl -sLf $(FZF_REL)/fzf-$(FZF_VERSION)-linux_amd64.tgz | tar xzf - -C bin
+	$(CURL) -Lf $(FZF_REL)/fzf-$(FZF_VERSION)-linux_amd64.tgz | tar xzf - -C bin
 
 share/fzf/completion.bash:
-	curl -sLf --create-dirs $(FZF_REPO)/shell/completion.bash -o $@
+	$(CURL) -Lf --create-dirs $(FZF_REPO)/shell/completion.bash -o $@
 
 share/fzf/key-bindings.bash:
-	curl -sLf --create-dirs $(FZF_REPO)/shell/key-bindings.bash -o $@
+	$(CURL) -Lf --create-dirs $(FZF_REPO)/shell/key-bindings.bash -o $@
 
 share/man/man1/fzf.1:
-	curl -sLf --create-dirs $(FZF_REPO)/man/man1/fzf.1 -o $@
+	$(CURL) -Lf --create-dirs $(FZF_REPO)/man/man1/fzf.1 -o $@
 
 share/fzf/vim/doc/fzf.txt:
-	curl -sLf --create-dirs $(FZF_REPO)/doc/fzf.txt -o $@
+	$(CURL) -Lf --create-dirs $(FZF_REPO)/doc/fzf.txt -o $@
 
 share/fzf/vim/plugin/fzf.vim:
-	curl -sLf --create-dirs $(FZF_REPO)/plugin/fzf.vim -o $@
+	$(CURL) -Lf --create-dirs $(FZF_REPO)/plugin/fzf.vim -o $@
