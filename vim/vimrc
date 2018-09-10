@@ -138,3 +138,8 @@ autocmd  trailing_newlines BufWrite *      if !exists("b:preserve_trailing_nl")
                                            \ | call setpos(".", cursor)
                                            \ | endif
 augroup  end
+
+augroup  c_folding
+autocmd! c_folding
+autocmd  c_folding BufRead *.c set foldmethod=syntax foldnestmax=1
+augroup  end
