@@ -19,11 +19,10 @@ clean : $(HOSTNAME)
 refresh : MODE=-R
 refresh : $(HOSTNAME)
 
-nb-xps08 : _bash _git _tmux _ssh _vim _pip _scripts _fzf_bin
-
-muon   : _bash _git _tmux _ssh _vim _pip _scripts _media _minecraft
-photon : _bash _git            _vim _pip _scripts _media _admin
-arch   : _bash _git _tmux _ssh _vim _pip _scripts
+nb-xps08	: _hooks _bash _git _tmux _ssh _vim _pip _scripts _fzf_bin
+muon		: _hooks _bash _git _tmux _ssh _vim _pip _scripts _media _minecraft
+photon		: _hooks _bash _git            _vim _pip _scripts _media _admin
+arch		: _hooks _bash _git _tmux _ssh _vim _pip _scripts
 
 _bash:
 	$(STOW) $(MODE) bash -t $(HOME)
@@ -75,3 +74,7 @@ _minecraft:
 
 _admin:
 	sudo $(STOW) $(MODE) admin -t /usr/local
+
+_hooks:
+	@$(if $(filter -D -R,$(MODE)),$(RM) -f .git/hooks/prepare-commit-msg)
+	@$(if $(filter -S -R,$(MODE)),$(LN) -s ../../hooks/prepare-commit-msg-submodule-summary .git/hooks/prepare-commit-msg)
