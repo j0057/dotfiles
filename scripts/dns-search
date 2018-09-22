@@ -1,9 +1,4 @@
 #!/bin/bash
 curl -s 'https://data.iana.org/TLD/tlds-alpha-by-domain.txt' \
     | sed -n "2,\$ { s/.*/${1?missing name}.\\L&./ ; p }" \
-    | { while read domain ; do
-            dig +noall +answer @${2:-8.8.8.8} $domain ANY \
-                | ifne -n echo $domain &
-        done
-        wait
-    }
+    | xargs -n1 -P8 -i sh -c "dig +noall +answer @${2:-8.8.8.8} {} ANY | ifne -n echo {}"
