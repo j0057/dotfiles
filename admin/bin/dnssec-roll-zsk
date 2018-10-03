@@ -3,6 +3,9 @@
 # this script should be run once a month on the 26th:
 # 26 gen key; 27 publish next; 28 activate next; 01 inactivate current, 02 delete current
 # it will still work for months that are longer than february in non-leap years
+# XXX: doing it daily is not often enough, monthly sucks especially, why not every hour
+# XXX: yearly KSK rollover is asking for trouble
+# XXX: i want this thing to be idempotent
 
 : ${1?need a hostname}
 
@@ -19,6 +22,7 @@ ina_date=$(date -d "$cur_month + 1 month + 0 day" +%Y%m%d)
 del_date=$(date -d "$cur_month + 1 month + 1 day" +%Y%m%d)
 
 # find current key tag
+# FIXME: finds wrong key (or even KSK!! (this is really bad))
 tag=$(dig +dnssec +noall +answer $1 SOA | awk '/RRSIG/{print $11}')
 tag=$(printf '%05d' $tag)
 
@@ -29,10 +33,15 @@ if [ ! -f "/var/named/keys/$1/$old_key.key" ]; then
     exit 1
 fi
 
+# TODO: add check that this is really ZSK , not KSK
+
 # set inactivation and deletion dates for current key
+# TODO: what happened? log it
 dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date $old_key 1>/dev/null
 
 # create a new key
+# FIXME: is broken: does not change owner
+# XXX: RSA is old, can I use newer crypto?
 dnssec-keygen -K /var/named/keys/$1 -a RSASHA256 -b 2048 -P $pub_date -A $act_date $1 \
     | sed "s_^_/var/named/keys/$1_" \
     | xargs chown -v named.named
