@@ -29,7 +29,11 @@ if [ ! -f "/var/named/keys/$1/$old_key.key" ]; then
     exit 1
 fi
 
-# TODO: add check that this is really ZSK , not KSK
+# check that this is a ZSK (256) and NOT a KSK (257)
+if ! awk '/DNSKEY/{exit($4==256)?0:1}' "/var/named/keys/$1/$old_key.key"; then
+    echo "PANIC! $old_key is not a ZSK" 1>&2
+    exit 13
+fi
 
 # set inactivation and deletion dates for current key
 # TODO: what happened? log it
