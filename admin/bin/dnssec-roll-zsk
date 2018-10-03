@@ -21,12 +21,8 @@ act_date=$(date -d "$cur_month + 1 month - 1 day" +%Y%m%d)
 ina_date=$(date -d "$cur_month + 1 month + 0 day" +%Y%m%d)
 del_date=$(date -d "$cur_month + 1 month + 1 day" +%Y%m%d)
 
-# find current key tag
-# FIXME: finds wrong key (or even KSK!! (this is really bad))
-tag=$(dig +dnssec +noall +answer $1 SOA | awk '/RRSIG/{print $11}')
-tag=$(printf '%05d' $tag)
-
-old_key=K$1.+008+$tag
+# find current key
+old_key=$(dig +dnssec +noall +answer dk37.nl SOA | awk '/RRSIG/{printf "K%s+%03d+%05d\n", $1, $6, $11}')
 
 if [ ! -f "/var/named/keys/$1/$old_key.key" ]; then
     echo "error: can't find $old_key" 1>&2
