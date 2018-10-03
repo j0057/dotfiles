@@ -40,8 +40,6 @@ fi
 dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date $old_key 1>/dev/null
 
 # create a new key
-# FIXME: is broken: does not change owner
 # XXX: RSA is old, can I use newer crypto?
-dnssec-keygen -K /var/named/keys/$1 -a RSASHA256 -b 2048 -P $pub_date -A $act_date $1 \
-    | sed "s_^_/var/named/keys/$1_" \
-    | xargs chown -v named.named
+new_key=$(dnssec-keygen -K /var/named/keys/$1 -a RSASHA256 -b 2048 -P $pub_date -A $act_date $1)
+chown -v named.named /var/named/keys/$1/$new_key*
