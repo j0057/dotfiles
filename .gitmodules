@@ -37,3 +37,6 @@
 [submodule "scrooloose_syntastic"]
 	path = vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic
+[submodule "jceb_vim-orgmode"]
+	path = vim/bundle/orgmode
+	url = https://github.com/jceb/vim-orgmode
