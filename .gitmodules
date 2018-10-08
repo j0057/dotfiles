@@ -37,9 +37,6 @@
 [submodule "scrooloose_syntastic"]
 	path = vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic
-[submodule "jceb_vim-orgmode"]
-	path = vim/bundle/orgmode
-	url = https://github.com/jceb/vim-orgmode
 [submodule "tpope_vim-speeddating"]
 	path = vim/bundle/speeddating
 	url = https://github.com/tpope/vim-speeddating
