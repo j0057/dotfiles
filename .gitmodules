@@ -40,3 +40,6 @@
 [submodule "tpope_vim-speeddating"]
 	path = vim/bundle/speeddating
 	url = https://github.com/tpope/vim-speeddating
+[submodule "dbeniamine_todo.txt-vim"]
+	path = vim/bundle/todo.txt
+	url = https://github.com/dbeniamine/todo.txt-vim
