@@ -64,7 +64,9 @@ nmap <LEADER>s :bnext<CR>
 
 nmap <LEADER>bw :bwipe<CR>
 
-nmap <LEADER>s :grep -R <C-r><C-w> *<CR>:copen<CR>
+nmap <LEADER>S :grep -R <C-r><C-w> *<CR>:copen<CR>
+
+nmap <LEADER>T :edit ~/docs/todo.txt<CR>
 
 nmap <LEADER>ff  :FzfFiles<CR>
 nmap <LEADER>fg  :FzfGFiles<CR>
