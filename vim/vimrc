@@ -9,6 +9,8 @@ set wildmenu
 set noswapfile
 set showcmd
 
+let maplocalleader='-'
+
 " enable filetype magic
 syntax on
 filetype on
@@ -145,3 +147,7 @@ augroup  c_folding
 autocmd! c_folding
 autocmd  c_folding BufRead *.c set foldmethod=syntax foldnestmax=1
 augroup  end
+
+autocmd filetype todo setlocal omnifunc=todo#Complete
+autocmd filetype todo imap <buffer> + +<C-x><C-o>
+autocmd filetype todo imap <buffer> @ @<C-x><C-o>
