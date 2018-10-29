@@ -1,9 +1,10 @@
-#!/bin/bash 
+#!/bin/bash
 
 case $1 in
     create-key)
         domain=${2?Domain missing}
-        openssl genrsa -out ${domain}.key 2048
+        bits=${3:-2048}
+        openssl genrsa -out ${domain}.key $bits
         chmod 600 ${domain}.key
         ;;
     create-ca-cert)
