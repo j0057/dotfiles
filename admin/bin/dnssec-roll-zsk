@@ -31,13 +31,13 @@ fi
 
 if [ ! -f "/var/named/keys/$1/$old_key.key" ]; then
     echo "error: can't find $old_key" 1>&2
-    exit 1
+    exit 3
 fi
 
 # check that this is a ZSK (256) and NOT a KSK (257)
 if ! awk '/DNSKEY/{exit($4==256)?0:1}' "/var/named/keys/$1/$old_key.key"; then
     echo "PANIC! $old_key is not a ZSK" 1>&2
-    exit 13
+    exit 4
 fi
 
 # set inactivation and deletion dates for current key
