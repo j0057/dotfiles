@@ -24,6 +24,11 @@ del_date=$(date -d "$cur_month + 1 month + 1 day" +%Y%m%d)
 # find current key
 old_key=$(dig +dnssec +noall +answer $1 SOA | awk '/RRSIG/{printf "K%s+%03d+%05d\n", $1, $6, $11}')
 
+if [ -z "$old_key" ]; then
+    echo "error: no RRSIG found for $1/SOA in DNS" 1>&2
+    exit 2
+fi
+
 if [ ! -f "/var/named/keys/$1/$old_key.key" ]; then
     echo "error: can't find $old_key" 1>&2
     exit 1
