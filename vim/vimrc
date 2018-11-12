@@ -143,10 +143,10 @@ augroup trailing_newlines
                             \| endif
 augroup end
 
-augroup  c_folding
-autocmd! c_folding
-autocmd  c_folding BufRead *.c set foldmethod=syntax foldnestmax=1
-augroup  end
+augroup c_folding
+    autocmd!
+    autocmd BufRead *.c set foldmethod=syntax foldnestmax=1
+augroup end
 
 autocmd filetype todo setlocal omnifunc=todo#Complete
 autocmd filetype todo imap <buffer> + +<C-x><C-o>
