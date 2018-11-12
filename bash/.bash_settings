@@ -34,6 +34,11 @@ esac
 #
 # git prompt
 #
+#   dirty  unstaged *  staged +
+#   stash $
+#   untracked %
+#   upstream  behind <  ahead >  diverged <>
+#
 
 if [ -f '/usr/share/git/git-prompt.sh' ]; then
     . '/usr/share/git/git-prompt.sh'
