@@ -63,6 +63,9 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
     if [ -n "$(type -p ssh-pageant.exe)" ]; then
         eval $(ssh-pageant)
         SSH_PAGEANT_KILL_ON_LOGOUT=1
+    elif [ -n "$(type -p ssh-agent.wsl1804)" ]; then
+        eval $(ssh-agent.wsl1804)
+        export SSH_AGENT_WSL1804_KILL_ON_LOGOUT=$$
     elif [ -n "$(type -p ssh-agent)" ]; then
         eval $(ssh-agent)
         export SSH_AGENT_KILL_ON_LOGOUT=$$
