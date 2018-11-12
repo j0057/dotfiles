@@ -34,7 +34,7 @@ esac
 #
 # git prompt
 #
-#   dirty  unstaged *  staged +
+#   dirty  unstaged *  staged +  new #
 #   stash $
 #   untracked %
 #   upstream  behind <  ahead >  diverged <>
