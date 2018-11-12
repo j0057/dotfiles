@@ -51,9 +51,9 @@ GIT_PS1_SHOWSTASHSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
 GIT_PS1_SHOWUPSTREAM="auto"
 
-__exit_code() { [ $1 -ne 0 ] && echo -n "$1 " || true; }
+__exit_code() { [ $2 -ne 0 ] && printf "$1" $2 || true; }
 
-PS1='$(__exit_code $?)[\u@\h \W$(__git_ps1 " (%s)")]\$ '
+PS1='$(__exit_code "%d " $?)[\u@\h \W$(__git_ps1 " (%s)")]\$ '
 
 #
 # start ssh-(p)age(a)nt
