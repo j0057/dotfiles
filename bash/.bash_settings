@@ -91,3 +91,18 @@ umask 0022
 #    echo 4
 #    . '/usr/share/fzf/key-bindings.bash'
 #fi
+
+#
+# print some stats on login
+
+uname -a
+uptime
+
+case $(awk '/^ID=/{print $2}' FS='=' /etc/os-release) in
+    arch)
+        echo -n "Pacman updates:  "
+        checkupdates \
+            | awk '{printf "%s  ",$1; x++} END{printf "(%d)\n",x}' \
+            | fold -sw $[$(tput cols)-17] \
+            | sed '2,$s/^/\t\t /' ;;
+esac
