@@ -133,15 +133,15 @@ augroup trailing_whitespace
 augroup end
 
 " automatically remove trailing newlines to make Git happy
-augroup  trailing_newlines
-autocmd! trailing_newlines
-autocmd  trailing_newlines BufRead  *.diff let b:preserve_trailing_nl=1
-autocmd  trailing_newlines BufWrite *      if !exists("b:preserve_trailing_nl")
-                                           \ | let cursor = getpos(".")
-                                           \ | %s/\($\n\s*\)\+\%$//e
-                                           \ | call setpos(".", cursor)
-                                           \ | endif
-augroup  end
+augroup trailing_newlines
+    autocmd!
+    autocmd BufRead  *.diff let b:preserve_trailing_nl=1
+    autocmd BufWrite *      if !exists("b:preserve_trailing_nl")
+                            \| let cursor = getpos(".")
+                            \| %s/\($\n\s*\)\+\%$//e
+                            \| call setpos(".", cursor)
+                            \| endif
+augroup end
 
 augroup  c_folding
 autocmd! c_folding
