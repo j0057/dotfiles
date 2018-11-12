@@ -148,6 +148,9 @@ augroup c_folding
     autocmd BufRead *.c set foldmethod=syntax foldnestmax=1
 augroup end
 
-autocmd filetype todo setlocal omnifunc=todo#Complete
-autocmd filetype todo imap <buffer> + +<C-x><C-o>
-autocmd filetype todo imap <buffer> @ @<C-x><C-o>
+augroup todo
+    autocmd!
+    autocmd filetype todo setlocal omnifunc=todo#Complete
+                          \| imap <buffer> + +<C-x><C-o>
+                          \| imap <buffer> @ @<C-x><C-o>
+augroup end
