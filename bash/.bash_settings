@@ -32,6 +32,19 @@ case $(uname) in
 esac
 
 #
+# git prompt
+#
+
+if [ -f '/usr/share/git/git-prompt.sh' ]; then
+    . '/usr/share/git/git-prompt.sh'
+    GIT_PS1_SHOWDIRTYSTATE=1
+    GIT_PS1_SHOWSTASHSTATE=1
+    GIT_PS1_SHOWUNTRACKEDFILES=1
+    GIT_PS1_SHOWUPSTREAM="auto"
+    PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
+fi
+
+#
 # start ssh-(p)age(a)nt
 #
 
