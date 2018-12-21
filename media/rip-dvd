@@ -1,0 +1,9 @@
+#!/bin/bash
+FMT="${1?Missing printf-style format with track number (no spaces plz)}"
+lsdvd /dev/sr0 \
+    | sed 's/,//g' \
+    | awk '/^Title/{print $2}' \
+    | { while read T ; do 
+            HandBrakeCLI -i /dev/sr0 -o "$(printf "$FMT" "$T")" -t $T </dev/null ;
+        done ; 
+    }
