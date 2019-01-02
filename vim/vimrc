@@ -96,8 +96,10 @@ nmap <LEADER>fm  :FzfMaps<CR>
 nmap <LEADER>fH  :FzfHelptags<CR>
 nmap <LEADER>fF  :FzfFiletypes<CR>
 
-nmap <F5> :!./%<CR>
-nmap <F6> :!pytest %<CR>
+nmap <F5> :w<CR>:!./%<CR>
+nmap <F6> :w<CR>:!python3.7 -m pytest -k % -v<CR>
+nmap <F7> :w<CR>::!python3.7 -m pytest<CR>
+nmap <F8> :rightbelow vertical terminal python3.7 -m pytest_watch -cnw -- -k % -vv<CR>
 
 nmap <LEADER>gs :Gstatus<CR>
 nmap <LEADER>gd :Gvdiff<CR>
