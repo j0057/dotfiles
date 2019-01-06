@@ -35,9 +35,6 @@ let g:syntastic_check_on_open    = 1
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_python_python_exec = 'python3.7'
 
-" load plugins
-runtime bundle/pathogen/autoload/pathogen.vim
-silent! execute pathogen#infect()
 
 " colors
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $TERM == "tmux-256color"

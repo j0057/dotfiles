@@ -1,45 +1,42 @@
-[submodule "tpope_vim-pathogen"]
-	path = vim/bundle/pathogen
-	url = https://github.com/tpope/vim-pathogen
 [submodule "ap_vim-buftabline"]
-	path = vim/bundle/buftabline
+	path = vim/pack/plugins/start/buftabline
 	url = https://github.com/ap/vim-buftabline
 [submodule "tpope_vim-fugitive"]
-	path = vim/bundle/fugitive
+	path = vim/pack/plugins/start/fugitive
 	url = https://github.com/tpope/vim-fugitive
 [submodule "glench_vim-jinja2-syntax"]
-	path = vim/bundle/jinja2
+	path = vim/pack/plugins/start/jinja2
 	url = https://github.com/Glench/Vim-Jinja2-Syntax
 [submodule "airblade_gitgutter"]
-	path = vim/bundle/gitgutter
+	path = vim/pack/plugins/start/gitgutter
 	url = https://github.com/airblade/vim-gitgutter
 [submodule "junegunn_fzf.vim"]
-	path = vim/bundle/fzf.vim
+	path = vim/pack/plugins/start/fzf.vim
 	url = https://github.com/junegunn/fzf.vim
 [submodule "tmhedberg_simpylfold"]
-	path = vim/bundle/simpylfold
+	path = vim/pack/plugins/start/simpylfold
 	url = https://github.com/tmhedberg/simpylfold
 [submodule "konfekt_fastfold"]
-	path = vim/bundle/fastfold
+	path = vim/pack/plugins/start/fastfold
 	url = https://github.com/Konfekt/FastFold
 [submodule "joshdick_onedark.vim"]
-	path = vim/bundle/onedark
+	path = vim/pack/plugins/start/onedark
 	url = https://github.com/joshdick/onedark.vim
 [submodule "itchyny_landscape.vim"]
-	path = vim/bundle/landscape
+	path = vim/pack/plugins/start/landscape
 	url = https://github.com/itchyny/landscape.vim
 [submodule "davidhalter_jedi-vim"]
-	path = vim/bundle/jedi
+	path = vim/pack/plugins/start/jedi
 	url = https://github.com/davidhalter/jedi-vim
 [submodule "aklt_plantuml-syntax"]
-	path = vim/bundle/plantuml-syntax
+	path = vim/pack/plugins/start/plantuml-syntax
 	url = https://github.com/aklt/plantuml-syntax
 [submodule "scrooloose_syntastic"]
-	path = vim/bundle/syntastic
+	path = vim/pack/plugins/start/syntastic
 	url = https://github.com/scrooloose/syntastic
 [submodule "tpope_vim-speeddating"]
-	path = vim/bundle/speeddating
+	path = vim/pack/plugins/start/speeddating
 	url = https://github.com/tpope/vim-speeddating
 [submodule "dbeniamine_todo.txt-vim"]
-	path = vim/bundle/todo.txt
+	path = vim/pack/plugins/start/todo.txt
 	url = https://github.com/dbeniamine/todo.txt-vim
