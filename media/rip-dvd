@@ -4,6 +4,6 @@ lsdvd /dev/sr0 \
     | sed 's/,//g' \
     | awk '/^Title/{print $2}' \
     | { while read T ; do
-            HandBrakeCLI -i /dev/sr0 -o "$(printf "$FMT" "$[10#$T]")" -t $T </dev/null ;
+            HandBrakeCLI -i /dev/sr0 -o "$(printf "$FMT" "$[10#$T]")" -t $T --all-audio </dev/null ;
         done ;
     }
