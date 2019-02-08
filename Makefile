@@ -28,6 +28,7 @@ muon		: _hooks _sdreload _pacman _bash _git _tmux _ssh _vim _pip _scripts _media
 photon		: _hooks _bash _git            _vim _pip _scripts _media _admin
 proton		: _hooks _bash _git _tmux _ssh _vim _pip _scripts _media
 arch		: _hooks _bash _git _tmux _ssh _vim _pip _scripts
+neutrino	: _hooks _bash _git _tmux _ssh _vim _pip _scripts
 
 _bash:
 	$(STOW) $(MODE) bash -t $(HOME)
