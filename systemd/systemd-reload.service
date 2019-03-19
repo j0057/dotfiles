@@ -1,0 +1,10 @@
+[Unit]
+After = local-fs.target
+
+[Service]
+Type = oneshot
+ExecStart = systemctl daemon-reload
+ExecStart = systemctl start timers.target
+
+[Install]
+WantedBy = multi-user.target

@@ -5,6 +5,7 @@ HOSTNAME=$(shell hostname | tr A-Z a-z)
 
 STOW=$(if $(VERBOSE),stow -v,stow)
 MKDIR=$(if $(VERBOSE),mkdir -v,mkdir)
+CP=$(if $(VERBOSE),cp -v,cp)
 RM=$(if $(VERBOSE),rm -v,rm)
 MV=$(if $(VERBOSE),mv -v,mv)
 LN=$(if $(VERBOSE),ln -v,ln)
@@ -20,7 +21,7 @@ refresh : MODE=-R
 refresh : $(HOSTNAME)
 
 nb-xps08	: _hooks _bash _git _tmux _ssh _vim _pip _scripts _fzf_bin
-muon		: _hooks _bash _git _tmux _ssh _vim _pip _scripts _media _minecraft
+muon		: _hooks _sdreload _bash _git _tmux _ssh _vim _pip _scripts _media _minecraft
 photon		: _hooks _bash _git            _vim _pip _scripts _media _admin
 proton		: _hooks _bash _git _tmux _ssh _vim _pip _scripts _media
 arch		: _hooks _bash _git _tmux _ssh _vim _pip _scripts
@@ -79,3 +80,9 @@ _admin:
 _hooks:
 	@$(if $(filter -D -R,$(MODE)),$(RM) -f .git/hooks/prepare-commit-msg)
 	@$(if $(filter -S -R,$(MODE)),$(LN) -s ../../hooks/prepare-commit-msg-submodule-summary .git/hooks/prepare-commit-msg)
+
+_sdreload:
+	-$(if $(filter -R -D,$(MODE)),sudo -n systemctl disable systemd-reload.service)
+	$(if $(filter -R -D,$(MODE)),sudo -n $(RM) -f /etc/systemd/system/systemd-reload.service)
+	$(if $(filter -R -S,$(MODE)),sudo -n $(CP) systemd/systemd-reload.service /etc/systemd/system)
+	$(if $(filter -R -S,$(MODE)),sudo -n systemctl enable systemd-reload.service)
