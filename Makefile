@@ -1,5 +1,5 @@
 
-default: refresh
+default: reinstall
 
 HOSTNAME=$(shell hostname | tr A-Z a-z)
 
@@ -14,11 +14,11 @@ GREP=$(if $(VERBOSE),grep -v,grep)
 install : MODE=-S
 install : $(HOSTNAME)
 
-clean : MODE=-D
-clean : $(HOSTNAME)
+uninstall : MODE=-D
+uninstall : $(HOSTNAME)
 
-refresh : MODE=-R
-refresh : $(HOSTNAME)
+reinstall : MODE=-R
+reinstall : $(HOSTNAME)
 
 nb-xps08	: _hooks _bash _git _tmux _ssh _vim _pip _scripts _fzf_bin
 muon		: _hooks _sdreload _bash _git _tmux _ssh _vim _pip _scripts _media _minecraft
