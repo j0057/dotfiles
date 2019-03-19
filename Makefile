@@ -12,12 +12,15 @@ LN=$(if $(VERBOSE),ln -v,ln)
 GREP=$(if $(VERBOSE),grep -v,grep)
 
 install : MODE=-S
+install : SYSTEMD_COMMAND=enable
 install : $(HOSTNAME)
 
 uninstall : MODE=-D
+uninstall : SYSTEMD_COMMAND=disable
 uninstall : $(HOSTNAME)
 
 reinstall : MODE=-R
+reinstall : SYSTEMD_COMMAND=reenable
 reinstall : $(HOSTNAME)
 
 nb-xps08	: _hooks _bash _git _tmux _ssh _vim _pip _scripts _fzf_bin
@@ -82,7 +85,6 @@ _hooks:
 	@$(if $(filter -S -R,$(MODE)),$(LN) -s ../../hooks/prepare-commit-msg-submodule-summary .git/hooks/prepare-commit-msg)
 
 _sdreload:
-	-$(if $(filter -R -D,$(MODE)),sudo -n systemctl disable systemd-reload.service)
 	$(if $(filter -R -D,$(MODE)),sudo -n $(RM) -f /etc/systemd/system/systemd-reload.service)
 	$(if $(filter -R -S,$(MODE)),sudo -n $(CP) systemd/systemd-reload.service /etc/systemd/system)
-	$(if $(filter -R -S,$(MODE)),sudo -n systemctl enable systemd-reload.service)
+	-sudo -n systemctl $(SYSTEMD_COMMAND) systemd-reload.service
