@@ -63,7 +63,7 @@ _scripts:
 
 _fzf_bin:
 	$(if $(filter -S -R,$(MODE)),make -C fzf VERBOSE=$(VERBOSE))
-	sudo $(STOW) $(MODE) fzf -t /usr/local
+	sudo -n $(STOW) $(MODE) fzf -t /usr/local
 	$(if $(filter -D,$(MODE)),make -C fzf VERBOSE=$(VERBOSE) clean)
 	$(if $(filter -S -R,$(MODE)),$(LN) -sf /usr/local/share/fzf/vim vim/bundle/fzf,$(RM) -f vim/bundle/fzf)
 
@@ -71,10 +71,10 @@ _media:
 	$(STOW) $(MODE) media -t $(HOME)/.local/bin
 
 _minecraft:
-	sudo $(STOW) $(MODE) minecraft -t /usr/local
+	sudo -n $(STOW) $(MODE) minecraft -t /usr/local
 
 _admin:
-	sudo $(STOW) $(MODE) admin -t /usr/local
+	sudo -n $(STOW) $(MODE) admin -t /usr/local
 
 _hooks:
 	@$(if $(filter -D -R,$(MODE)),$(RM) -f .git/hooks/prepare-commit-msg)
