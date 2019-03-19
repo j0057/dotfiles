@@ -41,8 +41,8 @@
 	path = vim/pack/plugins/start/todo.txt
 	url = https://github.com/dbeniamine/todo.txt-vim
 [submodule "omnisharp_omnisharp-vim"]
-	path = vim/bundle/omnisharp
+	path = vim/pack/plugins/start/omnisharp
 	url = https://github.com/OmniSharp/omnisharp-vim.git
 [submodule "tpope_vim-dispatch"]
-	path = vim/bundle/dispatch
+	path = vim/pack/plugins/start/dispatch
 	url = https://github.com/tpope/vim-dispatch
