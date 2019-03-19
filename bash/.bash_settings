@@ -103,9 +103,8 @@ uptime
 
 case $(awk '/^ID=/{print $2}' FS='=' /etc/os-release) in
     arch)
-        echo -n "Pacman updates:  "
-        ! type -f checkupdates &> /dev/null && echo "(pacman-contrib is not installed)" || checkupdates \
+        pacman -Qu \
             | awk '{printf "%s  ",$1; x++} END{printf "(%d)\n",x}' \
             | fold -sw $[$(tput cols)-17] \
-            | sed '2,$s/^/\t\t /' ;;
+            | sed '1 s/^/Pacman updates:  /; 2,$ s/^/\t\t /' ;;
 esac

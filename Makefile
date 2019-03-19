@@ -24,7 +24,7 @@ reinstall : SYSTEMD_COMMAND=reenable
 reinstall : $(HOSTNAME)
 
 nb-xps08	: _hooks _bash _git _tmux _ssh _vim _pip _scripts _fzf_bin
-muon		: _hooks _sdreload _bash _git _tmux _ssh _vim _pip _scripts _media _minecraft
+muon		: _hooks _sdreload _pacman _bash _git _tmux _ssh _vim _pip _scripts _media _minecraft
 photon		: _hooks _bash _git            _vim _pip _scripts _media _admin
 proton		: _hooks _bash _git _tmux _ssh _vim _pip _scripts _media
 arch		: _hooks _bash _git _tmux _ssh _vim _pip _scripts
@@ -88,3 +88,7 @@ _sdreload:
 	$(if $(filter -R -D,$(MODE)),sudo -n $(RM) -f /etc/systemd/system/systemd-reload.service)
 	$(if $(filter -R -S,$(MODE)),sudo -n $(CP) systemd/systemd-reload.service /etc/systemd/system)
 	-sudo -n systemctl $(SYSTEMD_COMMAND) systemd-reload.service
+
+_pacman:
+	sudo -n $(STOW) $(MODE) pacman -t /usr/local
+	-sudo -n systemctl $(SYSTEMD_COMMAND) --now pacman-refresh.timer
