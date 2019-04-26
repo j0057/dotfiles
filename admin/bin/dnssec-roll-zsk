@@ -6,6 +6,13 @@
 
 : ${1?need a zone name}
 
+dry() {
+    echo "$@"
+    if [ "${DRY_RUN:-1}" = 0 ]; then
+        "$@"
+    fi
+}
+
 if [ "$(id -un)" != named ]; then
     echo "error: need to run as user 'named' for zone $1" >&2
     exit 1
@@ -43,16 +50,15 @@ if ! awk '/DNSKEY/{exit($4==256)?0:1}' "/var/named/keys/$1/$old_key.key"; then
 fi
 
 # set inactivation and deletion dates for current key
-echo "$1: setting $old_key to inactive $ina_date and delete $del_date"
-dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date $old_key 1>/dev/null
+dry dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date $old_key |& sed "s/^/$1: /"
 
 # create a new key
 case "$old_key" in
     K*+008+*)
-        dnssec-keygen -K /var/named/keys/$1 -a RSASHA256 -b 2048 -P $pub_date -A $act_date $1 |& sed "s/^/$1: /"
+        dry dnssec-keygen -K /var/named/keys/$1 -a RSASHA256 -b 2048 -P $pub_date -A $act_date $1 |& sed "s/^/$1: /"
         ;;
     K*+015+*)
-        dnssec-keygen -K /var/named/keys/$1 -a ED25519 -P $pub_date -A $act_date $1 |& sed "s/^/$1: /"
+        dry dnssec-keygen -K /var/named/keys/$1 -a ED25519 -P $pub_date -A $act_date $1 |& sed "s/^/$1: /"
         ;;
     *)
         echo "error: unknown algo in $old_key" >&2
