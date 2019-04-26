@@ -47,6 +47,14 @@ echo "$1: setting $old_key to inactive $ina_date and delete $del_date"
 dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date $old_key 1>/dev/null
 
 # create a new key
-# XXX: RSA is old, can I use newer crypto? --> not in Bind 9.13.2
-new_key=$(dnssec-keygen -K /var/named/keys/$1 -a RSASHA256 -b 2048 -P $pub_date -A $act_date $1)
-echo "$1: new key $new_key published on $pub_date and activated on $act_date"
+case "$old_key" in
+    K*+008+*)
+        dnssec-keygen -K /var/named/keys/$1 -a RSASHA256 -b 2048 -P $pub_date -A $act_date $1 |& sed "s/^/$1: /"
+        ;;
+    K*+015+*)
+        dnssec-keygen -K /var/named/keys/$1 -a ED25519 -P $pub_date -A $act_date $1 |& sed "s/^/$1: /"
+        ;;
+    *)
+        echo "error: unknown algo in $old_key" >&2
+        exit 5
+esac
