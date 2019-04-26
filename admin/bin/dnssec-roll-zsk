@@ -3,9 +3,6 @@
 # this script should be run once a month on the 26th:
 # 26 gen key; 27 publish next; 28 activate next; 01 inactivate current, 02 delete current
 # it will still work for months that are longer than february in non-leap years
-# XXX: doing it daily is not often enough, monthly sucks especially, why not every hour
-# XXX: yearly KSK rollover is asking for trouble
-# XXX: i want this thing to be idempotent
 
 : ${1?need a hostname}
 
