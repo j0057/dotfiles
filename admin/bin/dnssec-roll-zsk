@@ -6,6 +6,11 @@
 
 : ${1?need a zone name}
 
+if [ "$(id -un)" != named ]; then
+    echo "error: need to run as user 'named' for zone $1" >&2
+    exit 1
+fi
+
 if [ ! -d /var/named/keys/$1 ]; then
     echo "error: cannot find keys for zone $1" >&2
     exit 1
@@ -44,5 +49,4 @@ dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date $old_key 1>/dev/n
 # create a new key
 # XXX: RSA is old, can I use newer crypto? --> not in Bind 9.13.2
 new_key=$(dnssec-keygen -K /var/named/keys/$1 -a RSASHA256 -b 2048 -P $pub_date -A $act_date $1)
-chown -v named.named /var/named/keys/$1/$new_key* |& sed "s/^/$1: /"
 echo "$1: new key $new_key published on $pub_date and activated on $act_date"

@@ -1,5 +1,5 @@
 [Service]
 Type=simple
-User=root
-Group=root
+User=named
+Group=named
 ExecStart=/usr/local/bin/dnssec-roll-zsk %i
