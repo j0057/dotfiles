@@ -30,37 +30,35 @@ act_date=$(date -d "$cur_month + 1 month - 1 day" +%Y%m%d)
 ina_date=$(date -d "$cur_month + 1 month + 0 day" +%Y%m%d)
 del_date=$(date -d "$cur_month + 1 month + 1 day" +%Y%m%d)
 
-# find current key
-old_key=$(dig +dnssec +noall +answer $1 SOA | awk '/RRSIG/{printf "K%s+%03d+%05d\n", $1, $6, $11}')
+# SOA record has accompanying RRSIG records for each current ZSK
+for old_key in $(dig +dnssec +noall +answer $1 SOA | awk '$4=="RRSIG"{printf "K%s+%03d+%05d\n", $1, $6, $11}'); do
 
-if [ -z "$old_key" ]; then
-    echo "error: no RRSIG found for $1/SOA in DNS" 1>&2
-    exit 2
-fi
+    # find current key
+    if [ ! -f "/var/named/keys/$1/$old_key.key" ]; then
+        echo "error: can't find $old_key" 1>&2
+        exit 3
+    fi
 
-if [ ! -f "/var/named/keys/$1/$old_key.key" ]; then
-    echo "error: can't find $old_key" 1>&2
-    exit 3
-fi
+    # check that this is a ZSK (256) and NOT a KSK (257)
+    if ! awk '/DNSKEY/{exit($4==256)?0:1}' "/var/named/keys/$1/$old_key.key"; then
+        echo "PANIC! $old_key is not a ZSK" 1>&2
+        exit 4
+    fi
 
-# check that this is a ZSK (256) and NOT a KSK (257)
-if ! awk '/DNSKEY/{exit($4==256)?0:1}' "/var/named/keys/$1/$old_key.key"; then
-    echo "PANIC! $old_key is not a ZSK" 1>&2
-    exit 4
-fi
+    # set inactivation and deletion dates for current key
+    dry dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date $old_key |& sed "s/^/$1: /"
 
-# set inactivation and deletion dates for current key
-dry dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date $old_key |& sed "s/^/$1: /"
+    # create a new key
+    case "$old_key" in
+        K*+008+*)
+            dry dnssec-keygen -K /var/named/keys/$1 -a RSASHA256 -b 2048 -P $pub_date -A $act_date $1 |& sed "s/^/$1: /"
+            ;;
+        K*+015+*)
+            dry dnssec-keygen -K /var/named/keys/$1 -a ED25519 -P $pub_date -A $act_date $1 |& sed "s/^/$1: /"
+            ;;
+        *)
+            echo "error: unknown algo in $old_key" >&2
+            exit 5
+    esac
 
-# create a new key
-case "$old_key" in
-    K*+008+*)
-        dry dnssec-keygen -K /var/named/keys/$1 -a RSASHA256 -b 2048 -P $pub_date -A $act_date $1 |& sed "s/^/$1: /"
-        ;;
-    K*+015+*)
-        dry dnssec-keygen -K /var/named/keys/$1 -a ED25519 -P $pub_date -A $act_date $1 |& sed "s/^/$1: /"
-        ;;
-    *)
-        echo "error: unknown algo in $old_key" >&2
-        exit 5
-esac
+done
