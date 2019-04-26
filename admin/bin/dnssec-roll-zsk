@@ -4,7 +4,7 @@
 # 26 gen key; 27 publish next; 28 activate next; 01 inactivate current, 02 delete current
 # it will still work for months that are longer than february in non-leap years
 
-: ${1?need a hostname}
+: ${1?need a zone name}
 
 if [ ! -d /var/named/keys/$1 ]; then
     echo "error: cannot find keys for zone $1" >&2
