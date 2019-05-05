@@ -29,7 +29,7 @@
     ri = rebase --interactive
     rI = rebase --interactive --autosquash
 
-    s = status -sb
+    s = "!f(){ git status -sb; echo; git diff --stat; }; f"
 
     very-clean = clean -xfd
     list-authors = "!git log --format='%aN <%cE>' | sort -u"
