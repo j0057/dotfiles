@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# this script run once a year on December 1
+# this script should run once a year on December 1
 
-: ${1?need a hostname}
+: ${1?need a zone name}
 
 if [ ! -d /var/named/keys/$1 ]; then
     echo "error: cannot find keys for zone $1" >&2
@@ -37,7 +37,7 @@ chown named.named /var/named/keys/$1/$new_key*
     echo "These are the contents of the new key file, $new_key.key:"
     echo
     cat /var/named/keys/$1/$new_key.key
-    echo 
+    echo
     echo "These are the DS records, if you need them:"
     echo
     dnssec-dsfromkey /var/named/keys/$1/$new_key.key
