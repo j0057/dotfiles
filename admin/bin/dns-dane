@@ -21,6 +21,10 @@ encode_data() {
 
 set -o pipefail -o errexit
 
+# Usage: 0 CA; 1 End entity; 2 CA (self signed); 3 End entity (self-signed).
+# Selector: 0 Full cert; 1: Public key.
+# Matching Type: 0 Exact; 1: SHA-256; 2: SHA-512.
+
 cert=${1:?missing path to PEM encoded cert file}
 domain=${2:?missing domain name, eg _443._tcp}
 usage=${3:-1}
