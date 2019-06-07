@@ -154,3 +154,15 @@ augroup todo
                           \| imap <buffer> + +<C-x><C-o>
                           \| imap <buffer> @ @<C-x><C-o>
 augroup end
+
+function! FzfUnicode()
+    let result = fzf#run({'source': "awk 'BEGIN{FS=\"\\t\"}
+                        \                 /^[0-9A-F]+/{chr=strtonum(\"0x\" $1); printf(\"U+%04X -- %s -- %c                                         \\n\", chr, $2, chr)}
+                        \                 /^\\t=/{printf \"U+%04X -- %s -- %c                                        \\n\", chr, $2, chr}'
+                        \                NamesList.txt"})
+    let c = split(result[0])[0][2:]
+    let n = str2nr(c, 16)
+    return eval('"\U' . printf('%08X', n) . '"')
+endfunction
+
+imap <F12> <C-R>=FzfUnicode()<CR>
