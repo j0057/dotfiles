@@ -57,3 +57,6 @@
 
 [transfer]
 	fsckObjects = true
+
+[core]
+	safecrlf = true
