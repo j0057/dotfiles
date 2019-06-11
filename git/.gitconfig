@@ -1,57 +1,59 @@
+# vim: set noexpandtab ts=8:
+
 [alias]
-    ap = add --patch
+	ap = add --patch
 
-    cm = commit --verbose
-    co = checkout
+	cm = commit --verbose
+	co = checkout
 
-    dw = diff --stat --patch
-    dww = diff --stat --patch -w -W
-    dc = diff --stat --patch --cached
-    di = diff --stat --patch --cached
+	dw = diff --stat --patch
+	dww = diff --stat --patch -w -W
+	dc = diff --stat --patch --cached
+	di = diff --stat --patch --cached
 
-    fa = fetch --all -pv
+	fa = fetch --all -pv
 
-    sw = diff --stat
-    sc = diff --stat --cached
-    si = diff --stat --cached
+	sw = diff --stat
+	sc = diff --stat --cached
+	si = diff --stat --cached
 
-    lg    = log --color --oneline --graph --decorate --exclude='*gh-pages' --all
-    lg-gh = log --color --oneline --graph --decorate                       --all
-    lgw   = "!exec watch --color --interval .5 git lg"
-    lgw   = "!exec watch --color --interval .5 git lg-gh"
+	lg	  = log --color --oneline --graph --decorate --exclude='*gh-pages' --all
+	lg-gh = log --color --oneline --graph --decorate					   --all
+	lgw   = "!exec watch --color --interval .5 git lg"
+	lgw   = "!exec watch --color --interval .5 git lg-gh"
 
-    lp    = log --color --patch
+	lp	  = log --color --patch
 
-    rv = remote -v
+	rv = remote -v
 
-    rb = rebase
-    rc = rebase --continue
-    ri = rebase --interactive
-    rI = rebase --interactive --autosquash
+	rb = rebase
+	rc = rebase --continue
+	ri = rebase --interactive
+	rI = rebase --interactive --autosquash
 
-    s = "!f(){ git status -sb; echo; git diff --stat; }; f"
+	s = "!f(){ git status -sb; echo; git diff --stat; }; f"
 
-    very-clean = clean -xfd
-    list-authors = "!git log --format='%aN <%cE>' | sort -u"
+	very-clean = clean -xfd
+	list-authors = "!git log --format='%aN <%cE>' | sort -u"
 
-    e = "!exec $EDITOR $(git status --porcelain | cut -b 4-)"
+	e = "!exec $EDITOR $(git status --porcelain | cut -b 4-)"
 
 [push]
-    default = simple
+	default = simple
 
 [pull]
-    rebase = true
+	rebase = true
 
 [credential]
-    helper = cache --timeout 3600
+	helper = cache --timeout 3600
 
 [commit]
-    verbose = true
+	verbose = true
 
 [rebase]
-    autosquash = true
-    autostash = true
-    stat = true
+	autosquash = true
+	autostash = true
+	stat = true
 
 [transfer]
-    fsckObjects = true
+	fsckObjects = true
