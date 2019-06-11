@@ -38,6 +38,10 @@
 
 	e = "!exec $EDITOR $(git status --porcelain | cut -b 4-)"
 
+	su = submodule update
+	sr = submodule update --remote
+	ss = submodule summary
+
 [push]
 	default = simple
 
