@@ -1,3 +1,4 @@
 work.conf           filter=git-crypt-work       diff=git-crypt-work
 pk28.conf           filter=git-crypt-home       diff=git-crypt-home
+pk28-int.conf       filter=git-crypt-home       diff=git-crypt-home
 cloud1.conf         filter=git-crypt-home       diff=git-crypt-home
