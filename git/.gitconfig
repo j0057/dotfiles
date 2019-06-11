@@ -17,12 +17,12 @@
 	sc = diff --stat --cached
 	si = diff --stat --cached
 
-	lg	  = log --color --oneline --graph --decorate --exclude='*gh-pages' --all
-	lg-gh = log --color --oneline --graph --decorate					   --all
-	lgw   = "!exec watch --color --interval .5 git lg"
-	lgw   = "!exec watch --color --interval .5 git lg-gh"
+	lg = log --color --oneline --graph --decorate --exclude='*gh-pages' --all
+	lg-gh = log --color --oneline --graph --decorate --all
+	lgw = "!exec watch --color --interval .5 git lg"
+	lgw-gh = "!exec watch --color --interval .5 git lg-gh"
 
-	lp	  = log --color --patch
+	lp = log --color --patch
 
 	rv = remote -v
 
