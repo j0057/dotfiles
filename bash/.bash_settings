@@ -6,11 +6,6 @@
 
 export EDITOR=vim
 
-if type -p dotnet >/dev/null; then
-    export DOTNET_CLI_TELEMETRY_OPTOUT=1
-    export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
-fi
-
 #
 # add paths to $PATH
 #
@@ -30,6 +25,19 @@ case $(uname) in
         fi
         ;;
 esac
+
+#
+# environment variables just for Microsoft -- these might depend on ~/.local/bin being present in $PATH
+#
+
+if type -p dotnet >/dev/null; then
+    export DOTNET_CLI_TELEMETRY_OPTOUT=1
+    export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
+fi
+
+if type -p az >/dev/null; then
+    export AZURE_CORE_COLLECT_TELEMETRY=0
+fi
 
 #
 # git prompt
