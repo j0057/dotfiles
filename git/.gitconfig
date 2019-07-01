@@ -42,6 +42,8 @@
 	sr = submodule update --remote
 	ss = submodule summary
 
+	add-gh-forks = "!f() { curl -s https://api.github.com/repos/$1/$2/forks | jq -r .[].full_name | xargs -n1 bash -c 'git remote get-url $(dirname $0) &>/dev/null || git remote add --fetch $(dirname $0) github.com:$0' ; }; f"
+
 [push]
 	default = simple
 
