@@ -23,12 +23,12 @@ reinstall : MODE=-R
 reinstall : SYSTEMD_COMMAND=reenable
 reinstall : $(HOSTNAME)
 
-nb-xps08	: _hooks                   _bash _git _tmux _ssh _vim _pip _scripts _fzf_bin
-muon		: _hooks _sdreload _pacman _bash _git _tmux _ssh _vim _pip _scripts _media _minecraft
-photon		: _hooks _sdreload _pacman _bash _git            _vim _pip _scripts _media _admin
-proton		: _hooks _sdreload _pacman _bash _git _tmux _ssh _vim _pip _scripts _media
-arch		: _hooks _sdreload _pacman _bash _git _tmux _ssh _vim _pip _scripts
-neutrino	: _hooks _sdreload _pacman _bash _git _tmux _ssh _vim _pip _scripts
+nb-xps08	: _hooks         _bash _git _tmux _ssh _vim _pip _scripts _fzf_bin
+muon		: _hooks _pacman _bash _git _tmux _ssh _vim _pip _scripts _media _minecraft
+photon		: _hooks _pacman _bash _git            _vim _pip _scripts _media _admin
+proton		: _hooks _pacman _bash _git _tmux _ssh _vim _pip _scripts _media
+arch		: _hooks _pacman _bash _git _tmux _ssh _vim _pip _scripts
+neutrino	: _hooks _pacman _bash _git _tmux _ssh _vim _pip _scripts
 
 _bash:
 	$(STOW) $(MODE) bash -t $(HOME)
@@ -84,11 +84,6 @@ _admin:
 _hooks:
 	@$(if $(filter -D -R,$(MODE)),$(RM) -f .git/hooks/prepare-commit-msg)
 	@$(if $(filter -S -R,$(MODE)),$(LN) -s ../../hooks/prepare-commit-msg-submodule-summary .git/hooks/prepare-commit-msg)
-
-_sdreload:
-	$(if $(filter -R -D,$(MODE)),sudo -n $(RM) -f /etc/systemd/system/systemd-reload.service)
-	$(if $(filter -R -S,$(MODE)),sudo -n $(CP) systemd/systemd-reload.service /etc/systemd/system)
-	-sudo -n systemctl $(SYSTEMD_COMMAND) systemd-reload.service
 
 _pacman:
 	sudo -n $(STOW) $(MODE) pacman -t /usr/local
