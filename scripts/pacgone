@@ -1,0 +1,4 @@
+#!/bin/bash
+comm -13 \
+    <(pacman -Sl | awk '{print $2}' | sort) \
+    <(pacman -Q  | awk '{print $1}' | sort)
