@@ -43,3 +43,6 @@
 [submodule "j0057_vim-mdcompile"]
 	path = vim/pack/plugins/start/mdcompile
 	url = github.com:j0057/vim-mdcompile
+[submodule "cespare_vim-toml"]
+	path = vim/pack/plugins/start/toml
+	url = github.com:cespare/vim-toml
