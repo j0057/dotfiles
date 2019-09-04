@@ -6,7 +6,7 @@ set laststatus=2 modeline
 set incsearch hlsearch
 set number
 set wildmenu
-set noswapfile
+set directory=/tmp updatecount=25
 set showcmd
 
 let maplocalleader='-'
