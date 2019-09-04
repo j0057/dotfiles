@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# FIXME: this script won't work right inside an activated shell
+
+# make stdout not be a TTY
+exec 1> >(cat)
+
+# make python look at new user base dir
+export PYTHONUSERBASE="${1?missing env name}"
+
+PYTHON="${PY:-python}"
+
+# install pip and friends, and upgrade them
+if [ ! -d "$PYTHONUSERBASE" ]; then
+    if [ "${GET_PIP:-0}" = 1 ]; then
+        $PYTHON <(curl -s https://bootstrap.pypa.io/get-pip.py) \
+            --isolated \
+            --no-cache-dir --disable-pip-version-check \
+            --no-warn-script-location --progress-bar off \
+            --user
+    else
+        $PYTHON -m ensurepip --user
+        $PYTHON -m pip install \
+            --no-cache-dir --disable-pip-version-check \
+            --no-warn-script-location --progress-bar off \
+            --upgrade --user pip setuptools wheel
+    fi
+fi
+
+# assume the rest of the arguments are arguments to a `pip install` call
+if [ $# -gt 1 ]; then
+    shift
+    $PYTHON -m pip install \
+        --no-cache-dir --disable-pip-version-check \
+        --no-warn-script-location --progress-bar off \
+        --user "$@"
+fi
+
+# patch shebang lines to use env and a custom environment variable
+find $PYTHONUSERBASE/bin -maxdepth 1 -type f -exec \
+    sed -i '{}' -e "/^#!/ s|^.*[ /]\([[:alnum:]]\+\)|#!/usr/bin/env -S PYTHONUSERBASE=$PYTHONUSERBASE \1|" ';'
+
+# install script for firing up the python interpreter
+cat >$PYTHONUSERBASE/bin/$PYTHON <<EOF
+#!/usr/bin/env -S PYTHONUSERBASE=$PYTHONUSERBASE bash
+exec $(type -p $PYTHON) "\$@"
+EOF
+chmod +x $PYTHONUSERBASE/bin/$PYTHON
+
+# install activation script
+# XXX: using it will subtly mess up unrelated pythons
+cat >$PYTHONUSERBASE/bin/activate <<EOF
+#!/usr/bin/env -S PYTHONUSERBASE=$PYTHONUSERBASE bash
+export PATH="\$PYTHONUSERBASE/bin:\$PATH"
+export PS1="($(basename $PYTHONUSERBASE)) \$PS1"
+exec \$SHELL --noprofile
+EOF
+chmod +x $PYTHONUSERBASE/bin/activate
