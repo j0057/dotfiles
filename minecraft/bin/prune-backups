@@ -16,7 +16,7 @@ def strftime(f, t):
 
 def datasize(n):
     return reduce(lambda a, u: a if n < 2**(10*u[0]) else f"{n/2**(10*u[0]):.2f} {u[1]}",
-                  enumerate('B KB MB GB TB PB EB YB'.split()), "0 B")
+                  enumerate('B KB MB GB TB PB EB ZB YB'.split()), "0 B")
 
 def buckets(it, p):
     return [(b, [*g]) for (b, g) in groupby(it, lambda x: x[0] // p)]
