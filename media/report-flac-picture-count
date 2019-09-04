@@ -1,5 +1,5 @@
 #!/bin/bash
 find "${1:-.}" -name '*.flac' -print0 \
     | sort -z \
-    | parallel -0 -n"${2:-128}" -P"${3:-:8}" json-tags -s \
+    | parallel -0 -n"${2:-128}" -P"${3:-8}" json-tags -s \
     | jq --seq -r '"\(.flac.picture_count):\(.filename)"'
