@@ -46,9 +46,11 @@ for old_key in $(dig +dnssec +noall +answer $1 SOA | awk '$4=="RRSIG"{printf "K%
     fi
 
     # set inactivation and deletion dates for current key
+    echo "$1: set $old_key to inactive on $ina_date and deleted on $del_date"
     dry dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date $old_key |& sed "s/^/$1: /"
 
     # create a new key
+    echo "$1: create new key published on $pub_date and active on $act_date"
     case "$old_key" in
         K*+008+*)
             dry dnssec-keygen -K /var/named/keys/$1 -a RSASHA256 -b 2048 -P $pub_date -A $act_date $1 |& sed "s/^/$1: /"
