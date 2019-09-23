@@ -9,6 +9,11 @@ if [ ! -d /var/named/keys/$1 ]; then
     exit 1
 fi
 
+if [ $(id -un) != named ]; then
+    echo "error: $(basename $0) must run as user 'named' for zone $zone" >&2
+    exit 1
+fi
+
 # calculate dates
 cur_year=$(date +%Y)0101
 pub_date=$(date -d "$cur_year + 12 months - 2 weeks" +%Y%m%d)
@@ -28,7 +33,6 @@ dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date $old_key 1>/dev/n
 # create a new key
 new_key=$(dnssec-keygen -q -K /var/named/keys/$1 -a RSASHA256 -b 2048 -f KSK -P $pub_date -A $act_date $1)
 
-chown named.named /var/named/keys/$1/$new_key*
 
 {
     echo "Hi! This is $(basename $0). It's time to roll over the KSK for $1!"
