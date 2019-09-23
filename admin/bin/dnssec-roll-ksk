@@ -92,4 +92,4 @@ echo "$zone: new keys are ${new_keys[*]}"
     echo "Deletion date: $del_date"
     echo
 } \
-| mail -s "[DNSSEC] Manual action required for $1 KSK rollover" jjm@j0057.nl
+| mail -s "[DNSSEC] Manual action required for $1 KSK rollover" admin
