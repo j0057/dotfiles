@@ -2,7 +2,7 @@
 
 # this script should run once a year on December 1
 
-: ${1?need a zone name}
+zone="${1?need a zone name}"
 
 if [ ! -d /var/named/keys/$1 ]; then
     echo "error: cannot find keys for zone $1" >&2
@@ -21,36 +21,75 @@ act_date=$(date -d "$cur_year + 12 months - 1 weeks" +%Y%m%d)
 ina_date=$(date -d "$cur_year + 12 months + 0 weeks" +%Y%m%d)
 del_date=$(date -d "$cur_year + 12 months + 1 weeks" +%Y%m%d)
 
-# find current key tag
-tag=$(dig +dnssec +noall +answer $1 DS | awk '$4=="DS"{print $5}')
-tag=$(printf '%05d' $tag)
+# query current keys from DNS
+old_keys=($(dig +noall +answer $zone DS | awk '$4 == "DS" { printf "K%s.+%03d+%05d ", name, $6, $5 }' name=$zone))
 
-old_key=K$1.+008+$tag
+echo "$zone: current keys are ${old_keys[*]}"
 
-# set inactivation and deletion dates for current key
-dnssec-settime -K /var/named/keys/$1 -I $ina_date -D $del_date $old_key 1>/dev/null
+# set inactivation and deletion dates for current keys
+for old_key in ${old_keys[*]}; do
+    dnssec-settime -K /var/named/keys/$zone -I $ina_date -D $del_date $old_key >/dev/null
+done
 
-# create a new key
-new_key=$(dnssec-keygen -q -K /var/named/keys/$1 -a RSASHA256 -b 2048 -f KSK -P $pub_date -A $act_date $1)
+# create new keys
+new_keys=()
+for old_key in ${old_keys[*]}; do
+    case $old_key in
+        K*.+008+*)
+            new_keys+=($(dnssec-keygen -q -K /var/named/keys/$zone -a RSASHA256 -b 4096 -f KSK -P $pub_date -A $act_date $zone))
+            ;;
+        K*.+015+*)
+            new_keys+=($(dnssec-keygen -q -K /var/named/keys/$zone -a ED25519 -f KSK -P $pub_date -A $act_date $zone))
+            ;;
+        *)
+            echo "error: don't know how to create new key for $old_key" >&2
+            exit 1
+            ;;
+    esac
+done
 
+echo "$zone: new keys are ${new_keys[*]}"
 
 {
-    echo "Hi! This is $(basename $0). It's time to roll over the KSK for $1!"
-    echo "The new tag is $tag."
+    echo "Hi!"
     echo
-    echo "These are the contents of the new key file, $new_key.key:"
+    echo "This is $(basename $0) on $(hostname). It's time to roll over the KSKs for $1!"
+    echo "Please go do your thing at the registrar. :-)"
     echo
-    cat /var/named/keys/$1/$new_key.key
+    echo "Greetings,"
     echo
-    echo "These are the DS records, if you need them:"
+    getent passwd $(id -un) | awk '{ print $5 }' FS=':'
     echo
-    dnssec-dsfromkey /var/named/keys/$1/$new_key.key
+    for new_key in ${new_keys[*]}; do
+        echo "--- New key: $new_key ---"
+        echo
+        cat /var/named/keys/$zone/$new_key.key
+        echo
+    done
+    for new_key in ${new_keys[*]}; do
+        echo "--- DS record: $new_key ---"
+        echo
+        dnssec-dsfromkey /var/named/keys/$zone/$new_key.key
+        echo
+    done
+    echo "--- Old keys ---"
     echo
-    echo "These are the important dates:"
+    for old_key in ${old_keys[*]}; do
+        echo "$old_key"
+    done
     echo
-    echo "$pub_date -- $new_key gets published"
-    echo "$act_date -- $new_key gets activated"
-    echo "$ina_date -- $old_key gets inactivated"
-    echo "$del_date -- $old_key gets deleted"
+    echo "--- New keys ---"
+    echo
+    for new_key in ${new_keys[*]}; do
+        echo "$new_key"
+    done
+    echo
+    echo "--- Important dates ---"
+    echo
+    echo "Publish date: $pub_date"
+    echo "Activation date: $act_date"
+    echo "Inactivation date: $ina_date"
+    echo "Deletion date: $del_date"
+    echo
 } \
 | mail -s "[DNSSEC] Manual action required for $1 KSK rollover" jjm@j0057.nl
