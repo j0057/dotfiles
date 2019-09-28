@@ -70,3 +70,4 @@
 [diff]
 	algorithm = histogram
 	mnemonicPrefix = true
+	submodule = log
