@@ -36,6 +36,12 @@ export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
 export AZURE_CORE_COLLECT_TELEMETRY=0
 
 #
+# this one's just for Ansible/RedHat
+#
+
+export ANSIBLE_NOCOWS=1
+
+#
 # git prompt
 #
 #   dirty  unstaged *  staged +  new #
