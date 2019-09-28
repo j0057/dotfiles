@@ -1,0 +1,14 @@
+#!/bin/bash
+
+image_path=/boot$(awk '$1 == "BOOT_IMAGE" { print $2 }' RS=' ' FS='=' </proc/cmdline)
+image_owner=$(pacman -Qqo $image_path)
+
+installed_version=$(pacman -Q $image_owner | awk '{ print $2 }')
+installed_version=${installed_version//-/?}
+installed_version=${installed_version//./?}
+
+running_version=$(uname -r)
+
+if [[ $running_version != $installed_version-* ]]; then
+    exit 1
+fi
