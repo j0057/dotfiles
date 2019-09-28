@@ -66,3 +66,7 @@
 
 [core]
 	safecrlf = true
+
+[diff]
+	algorithm = histogram
+	mnemonicPrefix = true
