@@ -46,3 +46,6 @@
 [submodule "cespare_vim-toml"]
 	path = vim/pack/plugins/start/toml
 	url = github.com:cespare/vim-toml
+[submodule "j0057_geoblocks"]
+	path = geoblocks
+	url = github.com:j0057/geoblocks
