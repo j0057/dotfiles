@@ -24,8 +24,8 @@ reinstall : SYSTEMD_COMMAND=reenable
 reinstall : $(HOSTNAME)
 
 nb-xps08	: _hooks         _bash _git _tmux _ssh _vim _pip _scripts _fzf_bin
-muon		: _hooks _pacman _bash _git _tmux _ssh _vim _pip _scripts _media _minecraft
-photon		: _hooks _pacman _bash _git            _vim _pip _scripts _media _admin
+muon		: _hooks _pacman _bash _git _tmux _ssh _vim _pip _scripts _media _backup _minecraft
+photon		: _hooks _pacman _bash _git            _vim _pip _scripts _media _backup _admin
 proton		: _hooks _pacman _bash _git _tmux _ssh _vim _pip _scripts _media
 arch		: _hooks _pacman _bash _git _tmux _ssh _vim _pip _scripts
 neutrino	: _hooks _pacman _bash _git _tmux _ssh _vim _pip _scripts
@@ -74,6 +74,9 @@ _fzf_bin:
 
 _media:
 	$(STOW) $(MODE) media -t $(HOME)/.local/bin
+
+_backup:
+	sudo -n $(STOW) $(MODE) backup -t /usr/local
 
 _minecraft:
 	sudo -n $(STOW) $(MODE) minecraft -t /usr/local
