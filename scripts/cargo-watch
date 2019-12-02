@@ -1,0 +1,8 @@
+#!/bin/bash
+inotifywait -m -r -e close_write --include '.*\.rs$' . 2>/dev/null \
+    | { while read _ ; do
+            clear ;
+            cargo test &&
+            cargo run --release ;
+        done ;
+    }
