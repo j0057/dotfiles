@@ -52,3 +52,6 @@
 [submodule "j0057_backup"]
 	path = backup
 	url = github.com:j0057/backup
+[submodule "vim/pack/plugins/start/nofrils"]
+	path = vim/pack/plugins/start/nofrils
+	url = github.com:robertmeta/nofrils
