@@ -11,12 +11,6 @@ set showcmd
 
 let maplocalleader='-'
 
-" enable filetype magic
-syntax on
-filetype on
-filetype plugin on
-filetype indent on
-
 " configure fzf
 let g:fzf_command_prefix="Fzf"
 
@@ -37,19 +31,33 @@ let g:syntastic_python_python_exec = 'python3.7'
 
 
 " colors
-if $TERM == "xterm-256color" || $TERM == "screen-256color" || $TERM == "tmux-256color"
-    set t_Co=256
-    colorscheme landscape
-    highlight StatusLine ctermfg=121 ctermbg=240
-    highlight TabLineFill cterm=NONE
-    highlight TabLineSel ctermfg=120
-else
-    set t_Co=16
-    colorscheme murphy
-    highlight Folded ctermfg=darkgray
-endif
+"if $TERM == "xterm-256color" || $TERM == "screen-256color" || $TERM == "tmux-256color"
+"    set t_Co=256
+"    colorscheme torte
+"    highlight StatusLine ctermfg=121 ctermbg=240
+"    highlight TabLineFill cterm=NONE
+"    highlight TabLineSel ctermfg=120
+"else
+"    set t_Co=16
+"    colorscheme murphy
+"    highlight Folded ctermfg=darkgray
+"endif
 
-highlight warningmsg ctermbg=darkred
+set t_Co=16
+highlight link diffAdded DiffAdd
+highlight link diffRemoved DiffDelete
+let g:nofrils_heavylinenumbers=0
+let g:nofrils_heavycomments=1
+let g:nofrils_strbackgrounds=0
+colorscheme nofrils-dark
+
+" enable filetype magic
+syntax on
+filetype on
+filetype plugin on
+filetype indent on
+
+"highlight warningmsg ctermbg=darkred
 
 " leader key is hard to reach on mobile
 set timeoutlen=2500
