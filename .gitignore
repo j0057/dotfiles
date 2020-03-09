@@ -1,3 +1,4 @@
 fzf/bin
 fzf/share
 *.html
+vim/pack/plugins/start/fzf
