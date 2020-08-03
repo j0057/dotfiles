@@ -55,3 +55,6 @@
 [submodule "vim/pack/plugins/start/nofrils"]
 	path = vim/pack/plugins/start/nofrils
 	url = github.com:robertmeta/nofrils
+[submodule "hashivim_vim-terraform"]
+	path = vim/pack/plugins/start/terraform
+	url = https://github.com/hashivim/vim-terraform
