@@ -24,7 +24,7 @@ reinstall : SYSTEMD_COMMAND=reenable
 reinstall : $(HOSTNAME)
 
 nb-xps08	: _hooks         _bash _git _tmux _ssh _vim _pip _scripts _fzf_bin
-muon		: _hooks _pacman _bash _git _tmux _ssh _vim _pip _scripts _media _backup _minecraft
+muon		: _hooks _pacman _bash _git _tmux _ssh _vim _pip _scripts _media _backup
 photon		: _hooks _pacman _bash _git            _vim _pip _scripts _media _backup _admin
 proton		: _hooks _pacman _bash _git _tmux _ssh _vim _pip _scripts _media
 arch		: _hooks _pacman _bash _git _tmux _ssh _vim _pip _scripts
