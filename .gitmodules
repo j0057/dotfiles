@@ -45,7 +45,7 @@
 	url = github.com:j0057/vim-mdcompile
 [submodule "cespare_vim-toml"]
 	path = vim/pack/plugins/start/toml
-	url = github.com:cespare/vim-toml
+	url = https://github.com/cespare/vim-toml
 [submodule "j0057_geoblocks"]
 	path = geoblocks
 	url = github.com:j0057/geoblocks
@@ -54,7 +54,7 @@
 	url = github.com:j0057/backup
 [submodule "robertmeta_nofrils"]
 	path = vim/pack/colorschemes/start/nofrils
-	url = github.com:robertmeta/nofrils
+	url = https://github.com/robertmeta/nofrils
 [submodule "hashivim_vim-terraform"]
 	path = vim/pack/plugins/start/terraform
 	url = https://github.com/hashivim/vim-terraform
