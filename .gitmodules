@@ -58,3 +58,6 @@
 [submodule "dense-analysis_ale"]
 	path = vim/pack/plugins/start/ale
 	url = https://github.com/dense-analysis/ale
+[submodule "liuchengxu_vista"]
+	path = vim/pack/plugins/start/vista
+	url = https://github.com/liuchengxu/vista.vim
