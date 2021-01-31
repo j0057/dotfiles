@@ -10,6 +10,8 @@ set wildmenu
 set directory=/tmp updatecount=25
 set showcmd
 
+set listchars=tab:»\ ,eol:¬
+
 let maplocalleader='-'
 
 " configure fzf
