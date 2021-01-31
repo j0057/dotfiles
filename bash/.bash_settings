@@ -118,6 +118,5 @@ case $(awk '/^ID=/{print $2}' FS='=' /etc/os-release) in
             | awk '{printf "%s  ",$1; x++} END{printf "(%d)\n",x}' \
             | fold -sw $[$(tput cols)-17] \
             | sed '1 s/^/Pacman updates:  /; 2,$ s/^/\t\t /'
-        check-kernel-version || echo "Reboot required!"
         ;;
 esac
