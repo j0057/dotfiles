@@ -52,7 +52,7 @@
 [submodule "j0057_backup"]
 	path = backup
 	url = github.com:j0057/backup
-[submodule "vim/pack/plugins/start/nofrils"]
+[submodule "robertmeta_nofrils"]
 	path = vim/pack/colorschemes/start/nofrils
 	url = github.com:robertmeta/nofrils
 [submodule "hashivim_vim-terraform"]
