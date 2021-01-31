@@ -6,8 +6,8 @@ tgt="${2?missing target path}"
 srcdb="$(dirname "$src")/.$(basename "$src")-sha256"
 tgtdb="$(dirname "$tgt")/.$(basename "$tgt")-sha256"
 
+# grep: -v for invert match, -F for treating patterns as raw strings instead of regex, -f to read them from a file
 update-sha256sum "$srcdb" "$src" \
     | grep -v -F -f <(update-sha256sum "$tgtdb" "$tgt" | awk '{print $1}') \
     | cut -c 67- \
-    | xargs -r -d'\n' -n1 basename \
     | sort
