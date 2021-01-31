@@ -35,9 +35,6 @@ let g:syntastic_python_python_exec = 'python3.7'
 " colors
 set t_Co=16
 
-highlight link diffAdded DiffAdd
-highlight link diffRemoved DiffDelete
-
 highlight warningmsg ctermbg=darkred
 
 let g:nofrils_heavylinenumbers=0
@@ -51,6 +48,9 @@ syntax on
 filetype on
 filetype plugin on
 filetype indent on
+
+highlight link diffAdded DiffAdd
+highlight link diffRemoved DiffDelete
 
 " leader key is hard to reach on mobile
 set timeoutlen=2500
