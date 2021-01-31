@@ -55,3 +55,6 @@
 [submodule "hashivim_vim-terraform"]
 	path = vim/pack/plugins/start/terraform
 	url = https://github.com/hashivim/vim-terraform
+[submodule "dense-analysis_ale"]
+	path = vim/pack/plugins/start/ale
+	url = https://github.com/dense-analysis/ale

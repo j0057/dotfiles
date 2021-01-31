@@ -27,6 +27,11 @@ let g:jedi#goto_definitions_command = "<LEADER>pd"
 let g:jedi#rename_command           = "<LEADER>pr"
 let g:jedi#usages_command           = "<LEADER>pu"
 
+" configure ALE
+let g:ale_linters={
+            \ 'rust': ['analyzer']
+            \ }
+set omnifunc=ale#completion#OmniFunc
 
 " colors
 set t_Co=16
