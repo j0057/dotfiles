@@ -20,10 +20,10 @@
 	path = vim/pack/plugins/start/fastfold
 	url = https://github.com/Konfekt/FastFold
 [submodule "joshdick_onedark.vim"]
-	path = vim/pack/plugins/start/onedark
+	path = vim/pack/colorschemes/start/onedark
 	url = https://github.com/joshdick/onedark.vim
 [submodule "itchyny_landscape.vim"]
-	path = vim/pack/plugins/start/landscape
+	path = vim/pack/colorschemes/start/landscape
 	url = https://github.com/itchyny/landscape.vim
 [submodule "davidhalter_jedi-vim"]
 	path = vim/pack/plugins/start/jedi
@@ -53,7 +53,7 @@
 	path = backup
 	url = github.com:j0057/backup
 [submodule "vim/pack/plugins/start/nofrils"]
-	path = vim/pack/plugins/start/nofrils
+	path = vim/pack/colorschemes/start/nofrils
 	url = github.com:robertmeta/nofrils
 [submodule "hashivim_vim-terraform"]
 	path = vim/pack/plugins/start/terraform
