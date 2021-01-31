@@ -2,7 +2,8 @@
 set hidden
 set tabstop=4 shiftwidth=4 expandtab
 set nowrap
-set laststatus=2 modeline
+set laststatus=2
+set modeline modelines=2
 set incsearch hlsearch
 set number
 set wildmenu
