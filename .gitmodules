@@ -31,9 +31,6 @@
 [submodule "aklt_plantuml-syntax"]
 	path = vim/pack/plugins/start/plantuml-syntax
 	url = https://github.com/aklt/plantuml-syntax
-[submodule "scrooloose_syntastic"]
-	path = vim/pack/plugins/start/syntastic
-	url = https://github.com/scrooloose/syntastic
 [submodule "tpope_vim-speeddating"]
 	path = vim/pack/plugins/start/speeddating
 	url = https://github.com/tpope/vim-speeddating
